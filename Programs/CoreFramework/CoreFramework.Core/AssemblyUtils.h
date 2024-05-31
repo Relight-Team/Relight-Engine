@@ -3,8 +3,11 @@
 #include <iostream>
 #include <unistd.h>
 #include <limits.h>
+#include <filesystem>
+
 
 using namespace std;
+
 
 
 // Returns the currently running exe path
@@ -12,38 +15,39 @@ static string GetOriginalLoc()
 {
   char buffer[PATH_MAX];
   ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
-  if (count != -1) {
+  if (count != -1)
+  {
       buffer[count] = '\0';
       return buffer;
   }
   else
   {
-    return "ERR";
+    perror("readlink");
+    return "ERR -1";
   }
 }
 
 
 
-// TODO:
-// This other method doesn't work correctly, appears to just print the ERR. Please FIX
 
+// This code is very shitty, but hey, it now works I guess
 // Returns the input exe path
-  static string GetOriginalLoc(const char* TheAssembly)
+std::string GetOriginalLoc(const std::string& filepath)
+{
+  
+  char resolved_path[PATH_MAX];
+  if (realpath(filepath.c_str(), resolved_path) != NULL)
   {
-    char buffer[PATH_MAX];
-    ssize_t count = readlink(TheAssembly, buffer, PATH_MAX);
-    if (count != -1) {
-        buffer[count] = '\0';
-        return buffer;
-    }
-    else
-    {
-      return "ERR";
-    }
+      return std::string(resolved_path);
   }
+  else
+  {
+      // Handle error if realpath() fails
+      return "ERR -1";
+  }
+}
 
 
 
-//TODO:
 
-// Don't forget to finish the rest of the methods in this file
+// TODO: Finish this after getting all third party stuff
