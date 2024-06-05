@@ -8,14 +8,14 @@ template<typename T>
 
 
 
-public class Boxed<t>
+class Boxed
 {
     public:
         T var;
 
 
-        public Boxed(T Value)
+        Boxed(T Value)
         {
             var = Value;
         }
-}
+};
