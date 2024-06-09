@@ -1,6 +1,5 @@
 # Owned by Relight Engine 2024
 
-# A template for files lmao
+# Remove files that are are not needed to be included in Relight Repo
 
-
-Github_Uploader.py
+.Internal/
