@@ -7,3 +7,4 @@
 #include "AssemblyUtils.h"
 #include "AsyncEvent.h"
 #include "Boxed.h"
+#include "ScopeProfiler"
