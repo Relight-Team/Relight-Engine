@@ -24,6 +24,8 @@ class Task
 
   std::future<T> fut;
 
+  bool continueOnCapturedContext = true;
+
 
   public:
     Task(std::function<T()> func)
@@ -64,6 +66,28 @@ class Task
       std::this_thread::sleep_for(std::chrono::milliseconds(milisecs));
       fut();
     }
+
+
+    Task ConfigureAwait(bool continueOn)
+    {
+      continueOnCapturedContext = continueOn;
+      return *this;
+    }
+
+    T get()
+    {
+      std::future<int> futureResult = std::async(std::launch::async, fut);
+      return futureResult.get();
+    }
+  
+
+bool isCompleted()
+{
+  return fut.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
+}
+
+
+
 };
 
 template<typename T>
@@ -88,4 +112,5 @@ class CancellationToken
       {
         return fut;
       }
+
 };
