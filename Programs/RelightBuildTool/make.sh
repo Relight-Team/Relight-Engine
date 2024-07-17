@@ -1,9 +1,14 @@
 # Owned by Relight Engine 2024
 
-
+#!/bin/bash
 
 # TODO: Finish this once done
 
+BinLoc="bin"
+
+BinName="RelightBuildTool"
+
+BinFull="$BinLoc/$BinName"
 
 
-# g++ TMP.CPP -o bin/RelightBuildTool
+g++ compiletest.cpp -o "$BinFull"
