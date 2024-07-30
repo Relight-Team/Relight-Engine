@@ -1,5 +1,28 @@
 # Owned by Relight Engine 2024
 
-# Remove files that are are not needed to be included in Relight Repo
+
+
+# == General ==
+
+
+# Remove personal directories
 
 .Internal/
+
+# Remove compiled directories
+
+Programs/RelightBuildTool/Tmp/
+
+# Remove uneeded directories
+
+Programs/RelightBuildTool_Backup
+
+# Remove compiled files
+
+Programs/RelightBuildTool/GlobalCfg.py
+
+# == Python ==
+
+# remove python's cache code
+
+**__pycache__

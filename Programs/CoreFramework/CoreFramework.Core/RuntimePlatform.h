@@ -34,9 +34,13 @@ std::string GetCurrent()
  {
    return "Linux";
  }
-  else
+  else if(IsApple() == true)
  {
    return "Apple";
+ }
+ else
+ {
+    return "Other"
  }
 }
 
