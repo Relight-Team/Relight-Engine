@@ -56,6 +56,7 @@ def Private_VarGet(string):
     # Remove the "
 
     ret = ret.replace('"', '')
+    ret = ret.replace("\n", "")
 
     # convert string to different type
 
@@ -84,6 +85,7 @@ def Private_VarGet(string):
             while ret[inde] != ',':
                 tmp += ret[inde]
                 inde += 1
+
                 #print(inde)
             ret_New.append(tmp)
             indeArray += 1
@@ -95,6 +97,7 @@ def Private_VarGet(string):
     else:
         ret_New = ret
 
+
     return ret_New
 
 
@@ -105,6 +108,7 @@ def GetVar(URL, VarName):
         # Read each line
         for line in file:
             # Seperate Var name with value
-            NameTmp = Private_NameGet(line)
-            if NameTmp = VarName:
-                return Private_VarGet(line)
+            if not line == "" and line != "\n":
+                NameTmp = Private_NameGet(line)
+                if NameTmp == VarName:
+                    return Private_VarGet(line)

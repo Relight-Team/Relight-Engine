@@ -1,16 +1,25 @@
 # Owned by Relight Engine 2024
 
-#TODO: I'm making this without any files to test it on, make sure I go back later and ensure this actually run correctly
-
 import argparse
 import os
 import RBT_Target as Targ
 
+cfgver = "RBT_Ver = [0, 0, 2]\n"
+
+
+#Clear Tmp directory
+
+for filename in os.listdir("Tmp"):
+    file_path = os.path.join("Tmp", filename)
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+
+print("Cleaning Temp File")
 
 # Create/Reset Config file
 def CreateConfig():
     fil = open("GlobalCfg.py", "w")
-    fil.write('RBT_Ver = [0, 0, 1]\nEngine_Directory = ""')
+    fil.write(cfgver + 'Engine_Directory = ""')
     fil.close
 
 class ConfigError(Exception):
@@ -49,7 +58,7 @@ if cfg.Engine_Directory == "":
         choice2 = input("> ")
         if choice2 == "1":
             fil = open("GlobalCfg.py", "w")
-            fil.write('RBT_Ver = [0, 0, 1]\nEngine_Directory = "' + parent_dir02 + '"')
+            fil.write(cfgver + 'Engine_Directory = "' + parent_dir02 + '"')
             fil.close
         elif choice2 == "2":
             raise ConfigError("ERROR: Failed to auto-set config, please manually set the engine directory yourself")
@@ -80,9 +89,14 @@ def main(Target):
 
     args = parser.parse_args()
 
-    Targ.Compile(Target, cfg.Engine_Directory, )
+    TF = args.Target
 
-main(args.Target)
+    Targ.Compile(TF, cfg.Engine_Directory)
+
+
+# So, if it's main() i doesn't store the arg, but if it's main(""), it does? Python, make it make sense
+
+main("")
 
 
 

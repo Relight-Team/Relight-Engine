@@ -17,7 +17,7 @@ PublicDepend = []
 
 PrivateDepend = []
 
-BuildCom = "g++ "
+
 
 def Build(f, ED):
 
@@ -31,21 +31,27 @@ def Build(f, ED):
 
     Name = Core.GetVar(f, "Name")
 
+    BuildCom = "g++ "
 
-
+    print("Building Module " + Name)
 
     # Start compiling/Applying settings
 
     index = 0
 
+
+
     while index < len(PublicDepend):
 
         # Public Depend
 
-        BuildCom += "-I" + EngineDir + "/" + PublicDepend[index] + "/Public "
+        BuildCom += "-I" + EngineDir + "/Runtime/" + PublicDepend[index] + "/Public "
 
-        # TODO: Add Private Depend
+        index += 1
 
-        BuildCom += EngineDir + "/" + Name + "/Public/" + Name + ".h -o Tmp/" + Name + ".o"
+    # TODO: Add Private Depend
 
-        os.system(BuildCom)
+    BuildCom += "-c " + os.path.dirname(f) + "/Public/" + Name + ".cpp -o Tmp/" + Name + ".so"
+
+
+    os.system(BuildCom)

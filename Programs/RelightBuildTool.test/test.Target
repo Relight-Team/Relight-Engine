@@ -1,0 +1,5 @@
+Name = "TestTarget"
+
+Target = "Game"
+
+ExtraDependencies = ["Module1"]

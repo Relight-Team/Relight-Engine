@@ -17,6 +17,8 @@ EngineDir = ""
 
 ExtraDepend = []
 
+ThirdPartyDepend = []
+
 platform = ""
 
 Plat_Dir = ""
@@ -36,21 +38,38 @@ def Compile(f, ED):
 
     ExtraDepend = Core.GetVar(f, "ExtraDependencies")
 
+    ThirdPartyDepend = Core.GetVar(f, "ThirdPartyDependencies")
+
     #Build each module and store it to "tmp"
+    if ExtraDepend is not None:
+        for i in range(len(ExtraDepend)):
+            dire = os.path.dirname(f)
+            VarOld = ExtraDepend[i].replace("\n", "")
+            Var = "/" + VarOld + "/" + VarOld + ".Build"
 
-    for i in len(ExtraDepend):
-        Var = ExtraDepend[i] + "/" + ExtraDepend[i] + ".Build"
+            URL = dire + Var
 
-        URL = EngineDir + Var
+            Build.Build(URL, EngineDir)
 
-        Build.Build(URL, EngineDir)
+
+     #Build each third party module and store it into tmp as well
+    if ThirdPartyDepend is not None:
+        for i in range(len(ThirdPartyDepend)):
+
+
+            VarOld = i.replace("\n", "")
+            Var = "/" + ThirdPartyDepend[i] + "/" + ThirdPartyDepend[i] + ".Build"
+
+            URL = EngineDir + "/ThirdParty/" + Var
+
+            Build.Build(URL, EngineDir)
 
     # Get each file name in the tmp directory
 
     files = []
 
-    for fil in os.listdir("tmp"):
-        full_path = os.path.join("tmp", fil)
+    for fil in os.listdir("Tmp"):
+        full_path = os.path.join("Tmp", fil)
 
         if os.path.isfile(full_path):
             files.append(fil)
@@ -61,7 +80,7 @@ def Compile(f, ED):
     comm = "g++ "
 
     for ind in files:
-        comm += files[ind] + " "
+        comm += "Tmp/" + ind + " "
 
 
     targCom = ""
@@ -72,7 +91,7 @@ def Compile(f, ED):
         targCom = Plat_Dir + "/bin/"
 
 
-    elif Target == "Full" or Target == "Client" or Target == "Server" or Target == "Editor" Target == "Software":
+    elif Target == "Full" or Target == "Client" or Target == "Server" or Target == "Editor" or Target == "Software":
         targCom = EngineDir + "/Bin/" + Target + "/" + Name + "/"
 
     else:
@@ -80,3 +99,8 @@ def Compile(f, ED):
 
 
     comm += "-o " + targCom + Name
+
+
+    os.system(comm)
+
+    print(Name + " with " + Target + " Target is Completed")
