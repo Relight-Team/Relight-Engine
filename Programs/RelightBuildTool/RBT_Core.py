@@ -112,3 +112,9 @@ def GetVar(URL, VarName):
                 NameTmp = Private_NameGet(line)
                 if NameTmp == VarName:
                     return Private_VarGet(line)
+
+
+
+def CheckFolder(URL):
+    if not os.path.exists(URL):
+        os.makedirs(URL)
