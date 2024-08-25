@@ -4,6 +4,7 @@ import os
 
 import RBT_Core as Core
 
+import Compiler.GPP.common as Compiler
 
 # values
 
@@ -17,7 +18,7 @@ PublicDepend = []
 
 PrivateDepend = []
 
-PrecompileUnix = ""
+PrecompileU = ""
 
 Dyn_Lib = ""
 
@@ -39,14 +40,14 @@ def Build(f, ED, Plat):
 
     PublicDepend = Core.GetVar(f, "PublicDependencies")
     PrivateDepend = Core.GetVar(f, "PrivateDependencies")
-    PrecompileUnix = Core.GetVar(f, "PrecompileUnix")
+    PrecompileU = Core.GetVar(f, "PrecompileUnix")
 
     Name = Core.GetVar(f, "Name")
 
-    BuildCom = "g++ "
+    BuildCom = Compiler.Start()
 
     if Plat == "Win64":
-        BuildCom = "x86_64-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ "
+        BuildCom = Compiler.Start("Win64")
 
     print("Building Module " + Name)
 
@@ -60,7 +61,7 @@ def Build(f, ED, Plat):
 
             # Public Depend
 
-            BuildCom += "-I" + EngineDir + "/Runtime/" + PrivateDepend[index] + "/Private "
+            BuildCom += Compiler.PrivateLink(EngineDir, PrivateDepend[index])
 
             index += 1
 
@@ -69,16 +70,19 @@ def Build(f, ED, Plat):
 
             # Public Depend
 
-            BuildCom += "-I" + EngineDir + "/Runtime/" + PublicDepend[index] + "/Public "
+           BuildCom += Compiler.PublicLink(EngineDir, PublicDepend[index])
 
-            index += 1
-
-
-    if PrecompileUnix is not None:
-        os.system("cp " + os.path.dirname(f) + "/" + PrecompileUnix + " Tmp/")
-
-    # Final step
-    BuildCom += "-c " + os.path.dirname(f) + "/Public/" + Name + ".cpp -o Tmp/" + Name + Dyn_Lib
+           index += 1
 
 
-    os.system(BuildCom)
+    if PrecompileU is not None:
+        os.system("cp " + os.path.dirname(f) + "/" + PrecompileU + " Tmp/")
+
+    # Final step, only if PrecompileU isn't settings
+
+    if PrecompileU is None:
+        #BuildCom = Compiler.Return()
+
+        BuildCom += Compiler.Finish(os.path.dirname(f), Name, Dyn_Lib)
+
+        os.system(BuildCom)

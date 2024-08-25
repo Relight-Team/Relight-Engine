@@ -4,7 +4,9 @@ import argparse
 import os
 import RBT_Target as Targ
 
-cfgver = "RBT_Ver = [0, 0, 3]\n"
+cfgver = "RBT_Ver = [0, 0, 4]\n"
+
+Compiler = "Compiler = 'g++'\n"
 
 
 def main(Target, Platform):
@@ -30,7 +32,7 @@ def main(Target, Platform):
 # Create/Reset Config file
     def CreateConfig():
         fil = open("GlobalCfg.py", "w")
-        fil.write(cfgver + 'Engine_Directory = ""')
+        fil.write(cfgver + 'Engine_Directory = ""\n' + Compiler)
         fil.close
 
     class ConfigError(Exception):
@@ -69,7 +71,7 @@ def main(Target, Platform):
             choice2 = input("> ")
             if choice2 == "1":
                 fil = open("GlobalCfg.py", "w")
-                fil.write(cfgver + 'Engine_Directory = "' + parent_dir02 + '"')
+                fil.write(cfgver + 'Engine_Directory = "' + parent_dir02 + '"\n' + Compiler)
                 fil.close
                 # Simple hack to fix the insta-crash
                 raise ConfigError("Completed! Please re-run the program")

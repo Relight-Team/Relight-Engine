@@ -56,10 +56,10 @@ def Compile(f, ED, Plat):
      #Build each third party module and store it into tmp as well
     if ThirdPartyDepend is not None:
         for i in range(len(ThirdPartyDepend)):
+            dire = os.path.dirname(f)
+            VarOld = ThirdPartyDepend[i].replace("\n", "")
+            Var = "/" + VarOld + "/" + ThirdPartyDepend[i] + ".Build"
 
-
-            VarOld = i.replace("\n", "")
-            Var = "/" + ThirdPartyDepend[i] + "/" + ThirdPartyDepend[i] + ".Build"
 
             URL = EngineDir + "/ThirdParty/" + Var
 
@@ -112,6 +112,7 @@ def Compile(f, ED, Plat):
 
     comm += "-o " + targCom + Name + Exec
 
+    print(comm)
 
     os.system(comm)
 
