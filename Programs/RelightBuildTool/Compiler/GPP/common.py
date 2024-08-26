@@ -19,6 +19,8 @@ def Finish(dire, name, dyn):
     return "-c " + dire + "/Public/" + name + ".cpp -o Tmp/" + name + dyn
 
 
-
 def Return():
     return command
+
+def FinalCompile(targCom, Name):
+    return "-o " + targCom + Name

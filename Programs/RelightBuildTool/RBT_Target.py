@@ -6,6 +6,8 @@ import RBT_Core as Core
 
 import RBT_Build as Build
 
+import Compiler.GPP.common as Compilers
+
 
 # Values
 
@@ -78,10 +80,10 @@ def Compile(f, ED, Plat):
 
     # Compile each .o file into a single executable
 
-    comm = "g++ "
+    comm = Compilers.Start()
 
     if Plat == "Win64":
-        comm = "x86_64-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ "
+        comm = Compilesr.Start("Win64")
 
     for ind in files:
         comm += "Tmp/" + ind + " "
@@ -110,7 +112,7 @@ def Compile(f, ED, Plat):
         Exec = ".exe"
 
 
-    comm += "-o " + targCom + Name + Exec
+    comm += Compilers.FinalCompile(targCom, Name + Exec)
 
     print(comm)
 
