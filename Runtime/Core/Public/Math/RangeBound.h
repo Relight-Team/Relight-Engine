@@ -90,7 +90,7 @@ namespace CORE_API
                 }
             }
 
-            static bool LesserOfLow(RangeBound Range1, RangeBound Range2)
+            static RangeBound LesserOfLow(RangeBound Range1, RangeBound Range2)
             {
                 if(Range1.IsOpen())
                 {
@@ -122,7 +122,7 @@ namespace CORE_API
                 }
             }
 
-            static bool GreaterOfLow(RangeBound Range1, RangeBound Range2)
+            static RangeBound GreaterOfLow(RangeBound Range1, RangeBound Range2)
             {
                 if(Range1.IsOpen())
                 {
@@ -156,7 +156,7 @@ namespace CORE_API
 
 
 
-            static bool LesserOfUp(RangeBound Range1, RangeBound Range2)
+            static RangeBound LesserOfUp(RangeBound Range1, RangeBound Range2)
             {
                 if(Range1.IsOpen())
                 {
@@ -189,7 +189,7 @@ namespace CORE_API
             }
 
 
-            static bool GreaterOfUp(RangeBound Range1, RangeBound Range2)
+            static RangeBound GreaterOfUp(RangeBound Range1, RangeBound Range2)
             {
                 if(Range1.IsOpen())
                 {
