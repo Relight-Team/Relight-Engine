@@ -1,0 +1,3 @@
+Name = "SDL2"
+
+PrecompileUnix = "SDL-gui-backend/lib/Unix/x86_64-unknown-linux-gnu/libSDL2_fPIC.a"
