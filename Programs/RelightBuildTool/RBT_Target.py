@@ -40,7 +40,6 @@ def Compile(f, ED, Plat):
 
     ExtraDepend = Core.GetVar(f, "ExtraDependencies")
 
-    ThirdPartyDepend = Core.GetVar(f, "ThirdPartyDependencies")
 
 
     #Build each module and store it to "tmp"

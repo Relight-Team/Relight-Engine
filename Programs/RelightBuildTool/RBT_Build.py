@@ -40,6 +40,7 @@ def Build(f, ED, Plat):
 
     PublicDepend = Core.GetVar(f, "PublicDependencies")
     PrivateDepend = Core.GetVar(f, "PrivateDependencies")
+    ThirdPartyDepend = Core.GetVar(f, "ThirdPartyDependencies")
     PrecompileU = Core.GetVar(f, "PrecompileUnix")
 
     Name = Core.GetVar(f, "Name")
@@ -73,6 +74,19 @@ def Build(f, ED, Plat):
            BuildCom += Compiler.PublicLink(EngineDir, PublicDepend[index])
 
            index += 1
+
+
+     #Build each third party module and store it into tmp as well
+    if ThirdPartyDepend is not None:
+        for i in range(len(ThirdPartyDepend)):
+            dire = os.path.dirname(f)
+            VarOld = ThirdPartyDepend[i].replace("\n", "")
+            Var = "/" + VarOld + "/" + ThirdPartyDepend[i] + ".Build"
+
+
+            URL = EngineDir + "/ThirdParty/" + Var
+
+            Build(URL, EngineDir, Plat)
 
 
     if PrecompileU is not None:
