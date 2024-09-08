@@ -30,6 +30,8 @@ def Build(f, ED, Plat):
 
     EngineDir = ED
 
+    RBT_TMP_Path = EngineDir + "/Programs/RelightBuildTool/Tmp"
+
     if Plat == "Unix":
         Dyn_Lib = ".so"
     elif Plat == "Win64":
@@ -60,7 +62,7 @@ def Build(f, ED, Plat):
     if PrivateDepend is not None:
         while index < len(PrivateDepend):
 
-            # Public Depend
+            # private Depend
 
             BuildCom += Compiler.PrivateLink(EngineDir, PrivateDepend[index])
 
@@ -97,6 +99,7 @@ def Build(f, ED, Plat):
     if PrecompileU is None:
         #BuildCom = Compiler.Return()
 
-        BuildCom += Compiler.Finish(os.path.dirname(f), Name, Dyn_Lib)
+        BuildCom += Compiler.Finish(os.path.dirname(f), Name, Dyn_Lib, RBT_TMP_Path)
+
 
         os.system(BuildCom)

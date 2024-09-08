@@ -12,11 +12,11 @@ def PrivateLink(dire, item):
 
 
 def PublicLink(dire, item):
-    return "-I " + dire + "/Runtime/" + item + "/Public "
+    return "-I" + dire + "/Runtime/" + item + "/Public "
 
 
-def Finish(dire, name, dyn):
-    return "-c " + dire + "/Public/" + name + ".cpp -o Tmp/" + name + dyn
+def Finish(dire, name, dyn, RBT):
+    return "-c " + dire + "/Public/" + name + ".cpp -o " + RBT + "/" + name + dyn
 
 
 def Return():

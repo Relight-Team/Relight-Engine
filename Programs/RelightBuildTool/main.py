@@ -22,10 +22,6 @@ def main(Target, Platform):
 
     #parser.add_argument('BuildCfg', type=str, help="The state of the output")
 
-    for filename in os.listdir("Tmp"):
-        file_path = os.path.join("Tmp", filename)
-        if os.path.isfile(file_path):
-            os.remove(file_path)
 
     print("Cleaning Temp File")
 
@@ -48,6 +44,8 @@ def main(Target, Platform):
 
 
     import GlobalCfg as cfg
+
+
 
     # RBT's auto-generate engine directory system
 
@@ -83,6 +81,13 @@ def main(Target, Platform):
             raise ConfigError("ERROR: Engine Directory Config is blank, please manually set the engine directory")
         else:
             raise ValueError("ERROR: Unknown option selected " + choice1)
+
+    RBT_TMP_Path = cfg.Engine_Directory + "/Programs/RelightBuildTool/Tmp"
+
+    for filename in os.listdir(RBT_TMP_Path):
+        file_path = os.path.join(RBT_TMP_Path, filename)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
 
     args = parser.parse_args()
 

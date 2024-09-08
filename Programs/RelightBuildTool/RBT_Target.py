@@ -70,8 +70,10 @@ def Compile(f, ED, Plat):
 
     files = []
 
-    for fil in os.listdir("Tmp"):
-        full_path = os.path.join("Tmp", fil)
+    RBT_TMP_Path = EngineDir + "/Programs/RelightBuildTool/Tmp"
+
+    for fil in os.listdir(RBT_TMP_Path):
+        full_path = os.path.join(RBT_TMP_Path, fil)
 
         if os.path.isfile(full_path):
             files.append(fil)
@@ -85,7 +87,7 @@ def Compile(f, ED, Plat):
         comm = Compilesr.Start("Win64")
 
     for ind in files:
-        comm += "Tmp/" + ind + " "
+        comm += RBT_TMP_Path + "/" + ind + " "
 
 
     targCom = ""
