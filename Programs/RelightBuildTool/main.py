@@ -4,7 +4,7 @@ import argparse
 import os
 import RBT_Target as Targ
 
-cfgver = "RBT_Ver = [0, 0, 4]\n"
+cfgver = "RBT_Ver = [0, 0, 5]\n"
 
 Compiler = "Compiler = 'g++'\n"
 
@@ -39,7 +39,7 @@ def main(Target, Platform):
     # Check for Config system
 
 
-    if not os.path.exists("GlobalCfg.py"):
+    if not os.path.exists("GlobalCfg.py") and os.path.exists("RBT_Target"):
         CreateConfig()
 
 

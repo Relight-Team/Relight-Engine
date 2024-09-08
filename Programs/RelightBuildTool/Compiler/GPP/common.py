@@ -15,8 +15,10 @@ def PublicLink(dire, item):
     return "-I" + dire + "/Runtime/" + item + "/Public "
 
 
-def Finish(dire, name, dyn, RBT):
-    return "-c " + dire + "/Public/" + name + ".cpp -o " + RBT + "/" + name + dyn
+def Finish(dire, name, EntryFile, dyn, RBT):
+#    print("-c " + dire + "/Public/" + EntryFile + " -o " + RBT + "/" + name + dyn)
+    return "-c " + dire + "/Public/" + EntryFile + " -o " + RBT + "/" + name + dyn
+
 
 
 def Return():

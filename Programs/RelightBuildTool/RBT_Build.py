@@ -40,6 +40,7 @@ def Build(f, ED, Plat):
 
     # Set values
 
+    EntryFile = Core.GetVar(f, "EntryFile")
     PublicDepend = Core.GetVar(f, "PublicDependencies")
     PrivateDepend = Core.GetVar(f, "PrivateDependencies")
     ThirdPartyDepend = Core.GetVar(f, "ThirdPartyDependencies")
@@ -99,7 +100,7 @@ def Build(f, ED, Plat):
     if PrecompileU is None:
         #BuildCom = Compiler.Return()
 
-        BuildCom += Compiler.Finish(os.path.dirname(f), Name, Dyn_Lib, RBT_TMP_Path)
+        BuildCom += Compiler.Finish(os.path.dirname(f), Name, EntryFile, Dyn_Lib, RBT_TMP_Path)
 
 
         os.system(BuildCom)
