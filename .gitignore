@@ -13,6 +13,16 @@
 
 Programs/RelightBuildTool/Tmp/
 
+Bin/Client
+
+Bin/Editor
+
+Bin/Full
+
+Bin/Server
+
+Bin/Software
+
 # Remove uneeded directories
 
 Programs/RelightBuildTool_Backup
@@ -20,6 +30,7 @@ Programs/RelightBuildTool_Backup
 # Remove compiled files
 
 Programs/RelightBuildTool/GlobalCfg.py
+
 
 # == Python ==
 
