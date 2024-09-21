@@ -1,1 +1,5 @@
-Name = "Core"
+{
+    "Name": "Core",
+
+    "EntryFile": "Core.cpp"
+}

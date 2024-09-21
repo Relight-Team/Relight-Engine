@@ -13,19 +13,11 @@
 
 Programs/RelightBuildTool/Tmp/
 
-Bin/Client
-
-Bin/Editor
-
-Bin/Full
-
-Bin/Server
-
-Bin/Software
+Bin/
 
 # Remove uneeded directories
 
-Programs/RelightBuildTool_Backup
+Programs/RelightBuildTool/.Cashe1/
 
 # Remove compiled files
 

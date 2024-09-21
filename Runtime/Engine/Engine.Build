@@ -1,3 +1,7 @@
-Name = "Engine"
+{
+    "Name": "Engine",
 
-PublicDependencies = ["Core", "ApplicationCore"]
+    "Dependencies": ["Core", "ApplicationCore"],
+
+    "EntryFile": "Engine.cpp"
+}

@@ -4,9 +4,12 @@ import argparse
 import os
 import RBT_Target as Targ
 
-cfgver = "RBT_Ver = [0, 0, 5]\n"
+import CreateCfg as CCfg
 
-Compiler = "Compiler = 'g++'\n"
+
+
+RBT = os.path.dirname(os.path.abspath(__file__)) + "/"
+
 
 
 def main(Target, Platform):
@@ -22,14 +25,10 @@ def main(Target, Platform):
 
     #parser.add_argument('BuildCfg', type=str, help="The state of the output")
 
+    print()
+    print("Cleaning cashe folder")
+    print()
 
-    print("Cleaning Temp File")
-
-# Create/Reset Config file
-    def CreateConfig():
-        fil = open("GlobalCfg.py", "w")
-        fil.write(cfgver + 'Engine_Directory = ""\n' + Compiler)
-        fil.close
 
     class ConfigError(Exception):
         def __init__(self, message):
@@ -38,54 +37,22 @@ def main(Target, Platform):
 
     # Check for Config system
 
+    if not os.path.exists(RBT + "GlobalCfg.py"):
+        CCfg.CreateConfig()
 
-    if not os.path.exists("GlobalCfg.py") and os.path.exists("RBT_Target"):
-        CreateConfig()
+    # RBT's auto-generate engine directory system
+
+    CCfg.BuildConfig()
 
 
     import GlobalCfg as cfg
 
 
+    RBT_TMP_Path_02 = cfg.Engine_Directory + "/Programs/RelightBuildTool/.Cashe1"
 
-    # RBT's auto-generate engine directory system
 
-    if cfg.Engine_Directory == "":
-        print("Warning: the config file for the engine directory is blank, do you want RBT to auto-generate the directory?")
-        print("1 = yes")
-        print("2 = no")
-        choice1 = input("> ")
-
-        if choice1 == "1":
-            print("generating...")
-            current_dir = os.getcwd()
-            parent_dir01 = os.path.dirname(current_dir)
-            parent_dir02 = os.path.dirname(parent_dir01)
-            print("")
-            print("Generation complete, is this the correct engine directory?")
-            print("1 = yes")
-            print("2 = no")
-            print("")
-            print(parent_dir02)
-            choice2 = input("> ")
-            if choice2 == "1":
-                fil = open("GlobalCfg.py", "w")
-                fil.write(cfgver + 'Engine_Directory = "' + parent_dir02 + '"\n' + Compiler)
-                fil.close
-                # Simple hack to fix the insta-crash
-                raise ConfigError("Completed! Please re-run the program")
-            elif choice2 == "2":
-                raise ConfigError("ERROR: Failed to auto-set config, please manually set the engine directory yourself")
-            else:
-                raise ValueError("ERROR: Unknown option selected " + choice2)
-        elif choice1 == "2":
-            raise ConfigError("ERROR: Engine Directory Config is blank, please manually set the engine directory")
-        else:
-            raise ValueError("ERROR: Unknown option selected " + choice1)
-
-    RBT_TMP_Path = cfg.Engine_Directory + "/Programs/RelightBuildTool/Tmp"
-
-    for filename in os.listdir(RBT_TMP_Path):
-        file_path = os.path.join(RBT_TMP_Path, filename)
+    for filename in os.listdir(RBT_TMP_Path_02):
+        file_path = os.path.join(RBT_TMP_Path_02, filename)
         if os.path.isfile(file_path):
             os.remove(file_path)
 
@@ -98,7 +65,7 @@ def main(Target, Platform):
     Targ.Compile(TF, cfg.Engine_Directory, PT)
 
 
-# So, if it's main() i doesn't store the arg, but if it's main(""), it does? Python, make it make sense
+# So, if it's main() i doesn't store the arg, but if it's main("", ""), it does? Python, make it make sense
 
 main("", "")
 
