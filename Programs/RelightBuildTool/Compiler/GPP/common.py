@@ -11,8 +11,6 @@ def Start(Platform='Unix'):
 #def PrivateLink(dire, item):
 #    return "-I" + dire + "/Runtime/" + item + "/Private "
 
-def PrivateLink(dire):
-    return "-I" + dire + "/Private"
 
 
 def PublicLink(dire):
@@ -22,7 +20,10 @@ def CompileTag():
     return "-c "
 
 def LinkTag():
-    return "-L "
+    return "-L"
+
+def LinkTagMini():
+    return "-l"
 
 def LinkCashe(Cashe1, Dep, Static_Lib):
     return "-L" + Cashe1 + "/" + Dep + Static_Lib + " "
@@ -32,3 +33,6 @@ def Output():
 
 def ComToStatic():
     return " ar rcs "
+
+def Define():
+    return "-D"

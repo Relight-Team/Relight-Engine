@@ -1,3 +1,11 @@
-Name = "ApplicationCore"
+{
+    "Name": "ApplicationCore",
 
-ThirdPartyDepend = ["SDL2"]
+    "Dependencies": ["Core"],
+
+    "ThirdPartyLink": ["SDL2"],
+
+    "ThirdPartyDependencies": ["SDL2"],
+
+    "EntryFile": "ApplicationCore.cpp"
+}

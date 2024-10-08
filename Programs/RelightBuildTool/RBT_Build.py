@@ -26,8 +26,6 @@ PublicLink = []
 
 PrivateLink = []
 
-PrecompileU = ""
-
 Dyn_Lib = ""
 
 Static_Lib = ""
@@ -43,8 +41,9 @@ def Build(f, URL, ED, Plat, Always, Output):
     Cashe1 = ED + "/Programs/RelightBuildTool/.Cashe1"
 
     Depend = Core.GetVar(f, "Dependencies")
-    ThirdPartyDepend = Core.GetVar(f, "ThirdPartyDependencies")
-    PrecompileU = Core.GetVar(f, "PrecompileUnix")
+    ThirdDepend = Core.GetVar(f, "ThirdPartyDependencies")
+    ThirdLink = Core.GetVar(f, "ThirdPartyLink")
+
     Name = Core.GetVar(f, "Name")
     PublicEntry = Core.GetVar(f, "EntryFile")
 
@@ -53,6 +52,7 @@ def Build(f, URL, ED, Plat, Always, Output):
     Dyn_Lib = ""
 
     print("Building " + Name + "...")
+
 
     BuildCom = Compiler.Start()
 
@@ -73,15 +73,27 @@ def Build(f, URL, ED, Plat, Always, Output):
 
     Comp_Com += Compiler.CompileTag()
 
+    # Link to public
+
+    Comp_Com += "-I" + URL + "Src "
+
     # Public Link
     if PublicLink is not None:
         for Path in PublicLink:
             Comp_Com += Compiler.PublicLink(Path)
 
-    # Private Link
-    if PrivateLink is not None:
-        for Path in PrivateLink:
-            Comp_Com += Compiler.PrivateLink(Path)
+    # Define Based on compiled platform
+
+    if Plat == "Win64":
+
+        Comp_Com += Compiler.Define() + "WINDOWS=1 "
+        Comp_Com += Compiler.Define() + "UNIX=0 "
+
+    elif Plat == "Unix":
+
+        Comp_Com += Compiler.Define() + "WINDOWS=0 "
+        Comp_Com += Compiler.Define() + "UNIX=1 "
+
 
     # Link for depend
 
@@ -90,18 +102,37 @@ def Build(f, URL, ED, Plat, Always, Output):
     if tmp is not None:
         for t in tmp:
             #Comp_Com += "-I" + EngineDir + "/Runtime/" + t + "/Public "
-            a = EngineDir + "/Runtime/" + t + "/Public "
+            a = EngineDir + "/Runtime/" + t + "/Src "
             Comp_Com += Compiler.PublicLink(a)
+
+
+    # Link for Third
+
+    tmp2 = TotalLink(f, EngineDir)
+    print(tmp2)
+
+    if tmp2 is not None:
+        for t in tmp2:
+            fil = EngineDir + "/Runtime/" + t + "/" + t + ".Build"
+            ta = Core.GetVar(fil, "ThirdPartyDependencies")
+            if ta is not None:
+                for item in ta:
+                    a = EngineDir + "/ThirdParty/" + item + "/Include "
+                    b = EngineDir + "/ThirdParty/" + item + "/Implement "
+                    Comp_Com += Compiler.PublicLink(a)
+                    Comp_Com += Compiler.LinkTag() + b
+                    Comp_Com += Compiler.LinkTagMini() + item + " "
+
 
     #Dependencies
     if Depend is not None:
         for Dep in Depend:
             # If depend is already compiled, link it,
-            # Otherwise, build it, then linCok it
+            # Otherwise, build it, then link it
 
-            a = EngineDir + "/Runtime/" + Dep + "/Public "
+            #a = EngineDir + "/Runtime/" + Dep + "/Private "
             
-            Comp_Com += Compiler.PublicLink(a)
+            #Comp_Com += Compiler.PublicLink(a)
 
             if Core.CheckFile(Bin_Loc_Engine + Dep + Static_Lib):
                 b = Cashe1 + "/" + Dep + Static_Lib + " "
@@ -111,6 +142,7 @@ def Build(f, URL, ED, Plat, Always, Output):
                 b = Cashe1 + "/" + Dep + Static_Lib + " "
                 Comp_Com += Compiler.LinkTag() + b
             else:
+
                 Build(EngineDir + "/Runtime/" + Dep + "/" + Dep + ".Build",
                       EngineDir + "/Runtime/" + Dep + "/", EngineDir, Plat,
                       Always, Cashe1)
@@ -118,10 +150,26 @@ def Build(f, URL, ED, Plat, Always, Output):
                 b = Cashe1 + "/" + Dep + Static_Lib + " "
                 Comp_Com += Compiler.LinkTag() + b
 
-    Comp_Com += URL + "Public/" + PublicEntry
+
+    # 3rd party Dependencies
+
+
+    if ThirdDepend is not None:
+
+        for Dep in ThirdDepend:
+                Comp_Com += Compiler.LinkTag() + EngineDir + "/ThirdParty/" + Dep + "/Implement/" + Dep + ".a "
+
+
+    if ThirdLink is not None:
+        for Lnk in ThirdLink:
+            Comp_Com += Compiler.PublicLink(EngineDir + "/ThirdParty/"+ Dep + "/Include ")
+
+
+
+    Comp_Com += URL + "Src/" + PublicEntry
 
     Comp_Com += Compiler.Output() + Cashe1 + "/" + Name + Static_Lib
-    #print("\n" + Comp_Com + "\n")
+    print("\n" + Comp_Com + "\n")
 
     os.system(Comp_Com)
 
@@ -131,11 +179,26 @@ def Build(f, URL, ED, Plat, Always, Output):
 
     Comp_Com += Cashe1 + "/" + Name + ".a " + Cashe1 + "/" + Name + Static_Lib
 
-    #print(Comp_Com)
+    print("\n" + Comp_Com + "\n")
 
     os.system(Comp_Com)
 
 
+
+#def FThirdLink(f, EngineDir):
+#    # Initialize an empty set to store unique dependencies
+#    all_dependencies = set()
+#
+#    # Recursive function to gather dependencies
+#    def gather_dependencies(dep_file):
+#        Third = Core.GetVar(file, "ThirdPartyDependencies") or []
+#        for T in Third:
+#            # Add the dependency to the set
+#            all_dependencies.add(T)
+#           # Check if the dependency has its own dependencies and gather them recursively
+#           dep_file = os.path.join(EngineDir, "Runtime", T, T + ".Build")
+#            if os.path.isfile(dep_file):
+#                gather_dependencies(dep_file)
 
 
 
@@ -154,8 +217,32 @@ def TotalLink(f, EngineDir):
             if os.path.isfile(dep_file):
                 gather_dependencies(dep_file)
 
+
+
+
     # Start gathering from the initial build file
     gather_dependencies(f)
 
     # Return the combined list of dependencies
     return list(all_dependencies)
+
+
+def ExternalThirdParty(f, EngineDir):
+    # Link for Third
+
+    tmp2 = TotalLink(f, EngineDir)
+    print(tmp2)
+
+    if tmp2 is not None:
+        for t in tmp2:
+            fil = EngineDir + "/Runtime/" + t + "/" + t + ".Build"
+            ta = Core.GetVar(fil, "ThirdPartyDependencies")
+            if ta is not None:
+                for item in ta:
+                    b = EngineDir + "/ThirdParty/" + item + "/Implement "
+                    Y = Compiler.LinkTag() + b
+                    Z = Compiler.LinkTagMini() + item + " "
+
+                    return Y + " " + Z
+
+    return ""

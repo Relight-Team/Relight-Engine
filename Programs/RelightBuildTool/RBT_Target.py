@@ -96,26 +96,33 @@ def Compile(f, ED, Plat):
     
     Comp_Com += Compiler.Output() + TargCom + Name + Exec + " "
 
+     # Add .a files to command
+
+
 
     # main .o file
 
     for Depend in ExtraDepend:
         Comp_Com += Cashe1 + "/" + Depend + ".o "
 
+
+    Comp_Com += Compiler.LinkTag() + EngineDir + "/Bin/" + Plat + " "
+
     # Move .a from cashe to /Bin
     for fil in os.listdir(Cashe1):
         full_path = os.path.join(Cashe1, fil)
 
         NoExte = os.path.splitext(fil)[0]
+
         
         if os.path.isfile(full_path):
             if ".a" in full_path and not Core.ArraySearch(NoExte, ExtraDepend):
                 os.system("mv " + Cashe1 + "/" + fil + " " + EngineDir + "/Bin/" + Plat + "/" + fil)
+
+                Comp_Com += Compiler.LinkTagMini() + ":" +  fil + " "
     
 
-    # Add .a files to command
 
-    Comp_Com += Compiler.LinkTag() + EngineDir + "/Bin/" + Plat + ""
 
     #for ind in ExtraDepend:
     #    Comp_Com += " -l:" + ind + ".a"
@@ -124,7 +131,20 @@ def Compile(f, ED, Plat):
     for id in files:
         Comp_Com += id + " "
 
-    #print(Comp_Com)
+
+
+    # g++ requires me to re-add the same 3rd party libraries
+
+    # Fuck g++ all my homies hate g++
+
+    if ExtraDepend is not None:
+        for i in range(len(ExtraDepend)):
+            dire = os.path.dirname(f)
+            VarOld = ExtraDepend[i].replace("\n", "")
+            Var = "/" + VarOld + "/" + VarOld + ".Build"
+            Comp_Com += Build.ExternalThirdParty(dire + Var, EngineDir)
+
+    print("\n" + Comp_Com + "\n")
 
     os.system(Comp_Com + "\n")
 
