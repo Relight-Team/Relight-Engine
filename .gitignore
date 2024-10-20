@@ -11,7 +11,6 @@
 
 # Remove compiled directories
 
-Programs/RelightBuildTool/Tmp/
 
 Bin/
 
