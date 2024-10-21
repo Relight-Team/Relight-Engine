@@ -1,6 +1,8 @@
 {
     "Name": "ApplicationCore",
 
+    "Description": "Core functions for starting and managing the game window",
+
     "Dependencies": ["Core"],
 
     "ThirdPartyLink": ["SDL2"],

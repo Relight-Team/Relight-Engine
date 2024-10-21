@@ -1,6 +1,8 @@
 {
     "Name": "Engine",
 
+    "Description": "Systems that is required to manage a game",
+
     "Dependencies": ["Core", "ApplicationCore"],
 
     "EntryFile": "Engine.cpp"

@@ -1,0 +1,9 @@
+{
+    "Name": "Launch",
+
+    "Description": "Functions that handles the main game loop and launching of the game",
+
+    "Dependencies": ["Core", "ApplicationCore"],
+
+    "EntryFile": "Launch.cpp"
+}
