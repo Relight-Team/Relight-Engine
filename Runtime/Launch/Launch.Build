@@ -1,9 +1,8 @@
-{
-    "Name": "Launch",
+Name = "Launch"
 
-    "Description": "Functions that handles the main game loop and launching of the game",
+Description = "Functions that handles the main game loop and launching of the game"
 
-    "Dependencies": ["Core", "ApplicationCore"],
+Dependencies = ["Core", "ApplicationCore"]
 
-    "EntryFile": "Launch.cpp"
-}
+EntryFile = "Launch.cpp"
+
