@@ -1,8 +1,6 @@
 import os
-import json
+import FileSystem as FS
 
-
-# The code will now be using a json
 
 
 
@@ -10,10 +8,9 @@ import json
 def GetVar(URL, VarName):
     #print(URL)
     #print(VarName)
-    with open(URL, 'r') as file:
+       with open(URL, 'r') as file:
         try:
-            data = json.load(file)
-            return data[VarName]
+            return FS.InternalGetVar(URL, VarName)
         except:
             return None
 
@@ -23,8 +20,7 @@ def GetVar(URL, VarName):
 def GetVarOptional(URL, VarName, Alt):
     with open(URL, 'r') as file:
         try:
-            data = json.load(URL)
-            return data.get
+            return FS.InternalGetVar(URL, VarName)
         except:
             return Alt
 
@@ -48,3 +44,6 @@ def ArraySearch(Search, Array):
         if Search == Array[i]:
             return True
     return False
+
+def ChangeVar(Var, New):
+    FS.ChangeVarInternal(Var, New)

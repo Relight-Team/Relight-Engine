@@ -1,13 +1,12 @@
-{
-    "Name": "ApplicationCore",
+Name = "ApplicationCore"
 
-    "Description": "Core functions for starting and managing the game window",
+Description = "Core functions for starting and managing the game window"
 
-    "Dependencies": ["Core"],
+Dependencies = ["Core"]
 
-    "ThirdPartyLink": ["SDL2"],
+EntryFile = "ApplicationCore.cpp"
 
-    "ThirdPartyDependencies": ["SDL2"],
+if UNIX:
+    ThirdPartyLink = ["SDL2"]
 
-    "EntryFile": "ApplicationCore.cpp"
-}
+    ThirdPartyDependencies = ["SDL2"]

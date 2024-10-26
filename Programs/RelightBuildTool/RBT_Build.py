@@ -93,6 +93,7 @@ def Build(f, URL, ED, Plat, Always, Output):
 
         Comp_Com += Compiler.Define() + "WINDOWS=0 "
         Comp_Com += Compiler.Define() + "UNIX=1 "
+        Core.ChangeVar("UNIX", "1")
 
 
     # Link for depend
