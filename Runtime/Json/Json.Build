@@ -1,0 +1,8 @@
+Name = "Json"
+
+Description = "Manages Json files"
+
+Dependencies = ["Core"]
+
+EntryFile = "Json.cpp"
+

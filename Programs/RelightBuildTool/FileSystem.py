@@ -1,3 +1,7 @@
+#TODO: This code is AI-assisted, if you know anything about me, I'm not a fan of that thing.
+# AKA, the quaility of this code is very shit, but sadly I have no idea how to get it to work
+# correctly otherwise, please revise this later to make it more... human, I guess?
+
 # Read values and execute code from a txt file
 
 UNIX = False
