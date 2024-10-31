@@ -16,6 +16,8 @@ clear
 
 git add .
 
+echo ""
+
 git commit -m "$CommitComment"
 
 git push origin main
