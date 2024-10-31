@@ -1,5 +1,5 @@
 #pragma once
-// includes all core stuff //
+// includes all public core stuff //
 
 
 // Math
@@ -9,3 +9,7 @@
 
 // Log
 #include "Log/Log.h"
+
+// Etc
+
+#include "Etc/Config.cpp"
