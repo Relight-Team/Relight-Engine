@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-//This is an internal file for config.cpp, this does NOT need to be public for the CORE_API
+//This is an internal file for config.cpp, this does NOT need to be public for the CORE_API. Multiple files might use these functions
 
 std::string ReadLineInternal(std::stirng ConfigFile, int Line)
 {
@@ -68,4 +68,45 @@ std::string ReadInternal(std::string ConfigFile)
     }
 
     return Text;
+}
+
+
+std::string RemoveBrackets(std::string Text)
+{
+
+    std::string Ret;
+
+    for(int i = 0; i < Text.size(); i++)
+    {
+        if(!(Text[i] == "[" && Text[i] == "]")
+        {
+            Ret += Text[i];
+        }
+    }
+    return Ret;
+}
+
+std::string GetVarAsString(Text, VarName)
+{
+    std::string Ret;
+
+    for(int i = 0; i < Text.size(); i++)
+    {
+        if(ContainsInternal(Text[i], VarName))
+        {
+            int a = 0;
+
+            while(Text[i][a] != "=")
+            {
+                a++;
+            }
+
+            while(a < Text[i].size())
+            {
+                Ret += Text[i][a];
+            }
+        }
+    }
+
+    return Ret;
 }
