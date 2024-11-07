@@ -80,6 +80,8 @@ namespace CORE_INTERNAL
 
 // Default Warnings for Relight Engine
 
+#pragma once
+
 static CORE_INTERNAL::LogWarning Log = CORE_INTERNAL::LogWarning("LOG", "White"); // For information
 
 static CORE_INTERNAL::LogWarning Warning = CORE_INTERNAL::LogWarning("WARNING", "Yellow"); // For issues to look at, but nothing critical

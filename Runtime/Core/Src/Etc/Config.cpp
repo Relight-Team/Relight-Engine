@@ -1,6 +1,7 @@
-#include "Log.h"
+#include "Log/Log.h"
 #include "Config_Internal.cpp"
 #include <iostream>
+#include <vector>
 
 
 // Note, params for getting values in configs
@@ -19,57 +20,99 @@ class Config
 
         static void GetString(std::string PClass, std::string Value, std::string& Store, std::string File)
         {
-            // TODO: Test this code!
 
-            SetText(File);
+             std::vector<std::string> a = ReturnClassText(PClass, File);
 
-            std::string tmp = ReturnClassText(PClass);
+             std::string b = ReturnValueText(a, Value);
 
-            std::string Ret;
 
-            Ret = GetVarAsString(Tmp, Value);
+             std::string c = ReturnVar(b);
 
-            // Already string, no need to convert it!
 
-            Store = Ret;
+             // Already String, no need to convert it!
+
+             Store = c;
+
         }
 
 
     private:
 
-    std::string Text;
+        // Shitty fucking hacks coming up!!!
 
-    void SetText(std::string ConfigFile)
-    {
-        Text = ReadInternal(ConfigFile);
-    }
+        // This should return all the text from a class via file
+
+        // TODO: Any better optimized way?
+
+        static std::vector<std::string> ReturnClassText(std::string PClass, const std::string File)
+        {
+
+            std::vector<std::string> Tmp = ReadInternal(File);
+
+            // Find index of PClass
+
+            int i = FindTextIndex(File, AddBrackets(PClass));
 
 
-    // Shitty fucking hack coming up!!!
+            // Fix bug to not detect itself
+            i += 1;
 
-    // This should return all the text from a class via file
+            std::vector<std::string> Ret;
 
-    // TODO: Any better optimized way?
+            // Loop each vector and store it in Ret, until brackets are found
 
-    std::string ReturnClassText(std::string PClass)
-    {
+            while(!(ContainsInternal(Tmp[i], "[")) && i < Tmp.size())
+            {
+                Ret.push_back(Tmp[i]);
+                i++;
+            }
+
+
+            return Ret;
+        }
+
+        static std::string ReturnValueText(std::vector<std::string> Vet, std::string Value)
+        {
+            for(int i = 0; i < Vet.size(); i++)
+            {
+                if(ContainsInternal(Vet[i], Value))
+                {
+                    return Vet[i];
+                }
+            }
+
+            return "";
+        }
+
+
+        static std::string ReturnVar(std::string Value)
+        {
+        int i = 0;
+
+        // iterate until i is at '='
+
+        while(Value[i] != '=')
+        {
+            i++;
+        }
+
+        // If nothing is after i, return nothing
+
+        if(i == Value.size())
+        {
+            return "";
+        }
+
+        // store var and return it
 
         std::string Ret;
 
-        for(int i = 0; i < Text.size(); i++)
+        for(int a = i + 1; a < Value.size(); a++)
         {
-            if(RemoveBrackets(Text[i]) == PClass)
-            {
-                i++;
-
-                while(!(ContainsInternal(Text[i], "[")) && i < Text.size())
-                {
-                    Ret += Text[i];
-                }
-            }
+            Ret += Value[a];
         }
 
         return Ret;
-    }
+        }
 
 };

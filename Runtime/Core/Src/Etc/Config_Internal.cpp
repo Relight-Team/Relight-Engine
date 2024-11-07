@@ -3,31 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 //This is an internal file for config.cpp, this does NOT need to be public for the CORE_API. Multiple files might use these functions
 
-std::string ReadLineInternal(std::stirng ConfigFile, int Line)
-{
-   std::ifstream file(ConfigFile);
-
-   return std::getline(ConfigFile, Line);
-}
-
-int FileLengthInternal(std::string ConfigFile)
-{
-    std::ifstream file(ConfigFile);
-
-    std::string Line;
-
-    int i = 0;
-
-    while(std::getline(ConfigFile, Line))
-    {
-        i++;
-    }
-
-    return i;
-}
 
 
 // This should detect if the beginning text contains context, no matter how big context is
@@ -52,61 +31,57 @@ bool ContainsInternal(std::string Line, std::string Context)
     return true;
 }
 
-std::string ReadInternal(std::string ConfigFile)
+
+
+std::vector<std::string> ReadInternal(const std::string ConfigFile)
 {
     std::string Text;
 
-    for(int i = 0; i > FileLengthInternal(ConfigFile); i++)
+    std::vector<std::string> Ret;
+
+    std::ifstream MyReadFile(ConfigFile);
+
+    while(std::getline(MyReadFile, Text))
     {
-        // ignore ; comments
-
-        if(!(ContainsInternal(ReadLineInternal(ConfigFile, i), ";")))
+        if(!(ContainsInternal(Text, ";")))
         {
-            Text += ReadLineInternal(ConfigFile, i);
-        }
-
-    }
-
-    return Text;
-}
-
-
-std::string RemoveBrackets(std::string Text)
-{
-
-    std::string Ret;
-
-    for(int i = 0; i < Text.size(); i++)
-    {
-        if(!(Text[i] == "[" && Text[i] == "]")
-        {
-            Ret += Text[i];
-        }
-    }
-    return Ret;
-}
-
-std::string GetVarAsString(Text, VarName)
-{
-    std::string Ret;
-
-    for(int i = 0; i < Text.size(); i++)
-    {
-        if(ContainsInternal(Text[i], VarName))
-        {
-            int a = 0;
-
-            while(Text[i][a] != "=")
-            {
-                a++;
-            }
-
-            while(a < Text[i].size())
-            {
-                Ret += Text[i][a];
-            }
+            Ret.push_back(Text);
         }
     }
 
     return Ret;
+}
+
+
+
+int FindTextIndex(std::string ConfigFile, std::string Context)
+{
+
+    std::vector<std::string> tmp = ReadInternal(ConfigFile);
+
+
+
+    if(tmp.empty())
+    {
+        return -1;
+    }
+
+    for(int i = 0; i < tmp.size(); i++)
+    {
+        if(tmp[i].find(Context) != std::string::npos)
+        {
+            return i;
+        }
+    }
+    return -1; // if -1, then it wasn't found
+}
+
+
+
+
+
+// This is a lazy way to clean up the code
+std::string AddBrackets(std::string Text)
+{
+    return "[" + Text + "]";
 }

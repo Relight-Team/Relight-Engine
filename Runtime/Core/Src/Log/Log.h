@@ -2,6 +2,8 @@
 
 // Handles Relight's Log System
 
+#pragma once
+
 #include "LogCategory.h"
 #include "LogWarning.h"
 
