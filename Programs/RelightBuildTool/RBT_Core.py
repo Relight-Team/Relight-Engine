@@ -47,3 +47,9 @@ def ArraySearch(Search, Array):
 
 def ChangeVar(Var, New):
     FS.ChangeVarInternal(Var, New)
+
+
+
+def PrintDebug(Text, Show):
+    if Show == True:
+        print(Text)

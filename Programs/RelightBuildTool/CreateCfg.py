@@ -7,6 +7,8 @@ cfgver = "RBT_Ver = [0, 1, 0]\n"
 
 Compiler = "Compiler = 'g++'\n"
 
+ShowDebug = "ShowDebug = False\n"
+
 RBT = os.path.dirname(os.path.abspath(__file__)) + "/"
 
 
@@ -21,7 +23,7 @@ class ConfigError(Exception):
 
 def CreateConfig():
     fil = open(RBT + "GlobalCfg.py", "w")
-    fil.write(cfgver + 'Engine_Directory = ""\n' + Compiler)
+    fil.write(cfgver + 'Engine_Directory = ""\n' + Compiler + ShowDebug)
     fil.close
 
 def BuildConfig():

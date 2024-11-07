@@ -34,8 +34,11 @@ PublicEntry = ""
 
 Cashe1 = ""
 
+def PrintDebug(Text, Show):
+    if Show == True:
+        print(Text)
 
-def Build(f, URL, ED, Plat, Always, Output):
+def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     Bin_Loc_Engine = ED + "/Bin/Engine/" + Plat + "/"
     Cashe1 = ED + "/Programs/RelightBuildTool/.Cashe1"
@@ -110,7 +113,7 @@ def Build(f, URL, ED, Plat, Always, Output):
     # Link for Third
 
     tmp2 = TotalLink(f, EngineDir)
-    print(tmp2)
+    PrintDebug(tmp2, Debug)
 
     if tmp2 is not None:
         for t in tmp2:
@@ -146,7 +149,7 @@ def Build(f, URL, ED, Plat, Always, Output):
 
                 Build(EngineDir + "/Runtime/" + Dep + "/" + Dep + ".Build",
                       EngineDir + "/Runtime/" + Dep + "/", EngineDir, Plat,
-                      Always, Cashe1)
+                      Always, Cashe1, Debug)
 
                 b = Cashe1 + "/" + Dep + Static_Lib + " "
                 Comp_Com += Compiler.LinkTag() + b
@@ -170,7 +173,7 @@ def Build(f, URL, ED, Plat, Always, Output):
     Comp_Com += URL + "Src/" + PublicEntry
 
     Comp_Com += Compiler.Output() + Cashe1 + "/" + Name + Static_Lib
-    print("\n" + Comp_Com + "\n")
+    PrintDebug("\n" + Comp_Com + "\n", Debug)
 
     os.system(Comp_Com)
 
@@ -180,7 +183,7 @@ def Build(f, URL, ED, Plat, Always, Output):
 
     Comp_Com += Cashe1 + "/" + Name + ".a " + Cashe1 + "/" + Name + Static_Lib
 
-    print("\n" + Comp_Com + "\n")
+    PrintDebug("\n" + Comp_Com + "\n", Debug)
 
     os.system(Comp_Com)
 
@@ -228,11 +231,11 @@ def TotalLink(f, EngineDir):
     return list(all_dependencies)
 
 
-def ExternalThirdParty(f, EngineDir):
+def ExternalThirdParty(f, EngineDir, Debug):
     # Link for Third
 
     tmp2 = TotalLink(f, EngineDir)
-    print(tmp2)
+    PrintDebug(tmp2, Debug)
 
     if tmp2 is not None:
         for t in tmp2:

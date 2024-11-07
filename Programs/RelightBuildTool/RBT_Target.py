@@ -24,8 +24,12 @@ Plat_Dir = ""
 
 Exec = ""
 
+def PrintDebug(Text, Show):
+    if Show == True:
+        print(Text)
 
-def Compile(f, ED, Plat):
+
+def Compile(f, ED, Plat, Debug):
 
     # set values
 
@@ -54,7 +58,7 @@ def Compile(f, ED, Plat):
 
             URL_Without_Build = dire + "/" + VarOld + "/"
 
-            Build.Build(URL, URL_Without_Build, EngineDir, Plat, AlwaysUpdate, EngineDir + "/Programs/RelightBuildTool/.Cashe1")
+            Build.Build(URL, URL_Without_Build, EngineDir, Plat, AlwaysUpdate, EngineDir + "/Programs/RelightBuildTool/.Cashe1", Debug)
 
 
     print()
@@ -142,9 +146,9 @@ def Compile(f, ED, Plat):
             dire = os.path.dirname(f)
             VarOld = ExtraDepend[i].replace("\n", "")
             Var = "/" + VarOld + "/" + VarOld + ".Build"
-            Comp_Com += Build.ExternalThirdParty(dire + Var, EngineDir)
+            Comp_Com += Build.ExternalThirdParty(dire + Var, EngineDir, Debug)
 
-    print("\n" + Comp_Com + "\n")
+    PrintDebug(("\n" + Comp_Com + "\n"), Debug)
 
     os.system(Comp_Com + "\n")
 

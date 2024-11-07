@@ -62,7 +62,7 @@ def main(Target, Platform):
 
     PT = args.Platform
 
-    Targ.Compile(TF, cfg.Engine_Directory, PT)
+    Targ.Compile(TF, cfg.Engine_Directory, PT, cfg.ShowDebug)
 
 
 # So, if it's main() i doesn't store the arg, but if it's main("", ""), it does? Python, make it make sense
