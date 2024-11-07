@@ -61,7 +61,7 @@ class Config
 
             // Loop each vector and store it in Ret, until brackets are found
 
-            while(!(ContainsInternal(Tmp[i], "[")) && i < Tmp.size())
+            while(i < Tmp.size() && !(ContainsInternal(Tmp[i], "[")))
             {
                 Ret.push_back(Tmp[i]);
                 i++;
