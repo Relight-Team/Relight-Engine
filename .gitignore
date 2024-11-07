@@ -18,6 +18,8 @@ Bin/
 
 Programs/RelightBuildTool/.Cashe1/
 
+Configs/Test.cfg
+
 # Remove compiled files
 
 Programs/RelightBuildTool/GlobalCfg.py
