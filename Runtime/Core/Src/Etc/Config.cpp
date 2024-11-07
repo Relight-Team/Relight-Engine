@@ -36,6 +36,27 @@ class Config
         }
 
 
+
+        static void GetInt(std::string PClass, std::string Value, int& Store, std::string File)
+        {
+
+             std::vector<std::string> a = ReturnClassText(PClass, File);
+
+             std::string b = ReturnValueText(a, Value);
+
+
+             std::string c = ReturnVar(b);
+
+
+             // Convert string to int
+
+             int tmp = std::stoi(c);
+
+             Store = tmp;
+
+        }
+
+
     private:
 
         // Shitty fucking hacks coming up!!!
