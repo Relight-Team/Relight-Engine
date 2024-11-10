@@ -98,7 +98,7 @@ def Compile(f, ED, Plat, Debug):
         Exec = ".exe"
 
     
-    Comp_Com += Compiler.Output() + TargCom + Name + Exec + " "
+    Comp_Com += Compiler.Output(TargCom + Name + Exec + " ")
 
      # Add .a files to command
 
@@ -110,7 +110,7 @@ def Compile(f, ED, Plat, Debug):
         Comp_Com += Cashe1 + "/" + Depend + ".o "
 
 
-    Comp_Com += Compiler.LinkTag() + EngineDir + "/Bin/" + Plat + " "
+    Comp_Com += Compiler.LinkTag(EngineDir + "/Bin/" + Plat + " ")
 
     # Move .a from cashe to /Bin
     for fil in os.listdir(Cashe1):
@@ -123,7 +123,7 @@ def Compile(f, ED, Plat, Debug):
             if ".a" in full_path and not Core.ArraySearch(NoExte, ExtraDepend):
                 os.system("mv " + Cashe1 + "/" + fil + " " + EngineDir + "/Bin/" + Plat + "/" + fil)
 
-                Comp_Com += Compiler.LinkTagMini() + ":" +  fil + " "
+                Comp_Com += Compiler.LinkTagMini(":" +  fil + " ")
     
 
 
@@ -139,7 +139,7 @@ def Compile(f, ED, Plat, Debug):
 
     # g++ requires me to re-add the same 3rd party libraries
 
-    # Fuck g++ all my homies hate g++
+    # Fuck g++ all my homies hate g++ (jk love you g++)
 
     if ExtraDepend is not None:
         for i in range(len(ExtraDepend)):

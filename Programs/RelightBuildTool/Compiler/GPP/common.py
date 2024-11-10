@@ -19,20 +19,20 @@ def PublicLink(dire):
 def CompileTag():
     return "-c "
 
-def LinkTag():
-    return "-L"
+def LinkTag(dire):
+    return "-L" + dire
 
-def LinkTagMini():
-    return "-l"
+def LinkTagMini(dire):
+    return "-l" + dire
 
 def LinkCashe(Cashe1, Dep, Static_Lib):
     return "-L" + Cashe1 + "/" + Dep + Static_Lib + " "
 
-def Output():
-    return " -o "
+def Output(dire):
+    return " -o " + dire
 
-def ComToStatic():
-    return " ar rcs "
+def ComToStatic(dire):
+    return " ar rcs " + dire
 
-def Define():
-    return "-D"
+def Define(DefText):
+    return "-D" + DefText + " "

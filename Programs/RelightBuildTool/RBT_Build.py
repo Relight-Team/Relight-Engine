@@ -78,7 +78,7 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     # Link to public
 
-    Comp_Com += "-I" + URL + "Src "
+    Comp_Com += Compiler.PublicLink(URL + "Src ")
 
     # Public Link
     if PublicLink is not None:
@@ -89,13 +89,13 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     if Plat == "Win64":
 
-        Comp_Com += Compiler.Define() + "WINDOWS=1 "
-        Comp_Com += Compiler.Define() + "UNIX=0 "
+        Comp_Com += Compiler.Define("WINDOWS=1")
+        Comp_Com += Compiler.Define("UNIX=0")
 
     elif Plat == "Unix":
 
-        Comp_Com += Compiler.Define() + "WINDOWS=0 "
-        Comp_Com += Compiler.Define() + "UNIX=1 "
+        Comp_Com += Compiler.Define("WINDOWS=0")
+        Comp_Com += Compiler.Define("UNIX=1")
         Core.ChangeVar("UNIX", "1")
 
 
@@ -124,8 +124,8 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
                     a = EngineDir + "/ThirdParty/" + item + "/Include "
                     b = EngineDir + "/ThirdParty/" + item + "/Implement "
                     Comp_Com += Compiler.PublicLink(a)
-                    Comp_Com += Compiler.LinkTag() + b
-                    Comp_Com += Compiler.LinkTagMini() + item + " "
+                    Comp_Com += Compiler.LinkTag(b)
+                    Comp_Com += Compiler.LinkTagMini(item + " ")
 
 
     #Dependencies
@@ -140,11 +140,11 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
             if Core.CheckFile(Bin_Loc_Engine + Dep + Static_Lib):
                 b = Cashe1 + "/" + Dep + Static_Lib + " "
-                Comp_Com += Compiler.LinkTag() + b
+                Comp_Com += Compiler.LinkTag(b)
 
             elif Core.CheckFile(Cashe1 + "/" + Dep + Static_Lib):
                 b = Cashe1 + "/" + Dep + Static_Lib + " "
-                Comp_Com += Compiler.LinkTag() + b
+                Comp_Com += Compiler.LinkTag(b)
             else:
 
                 Build(EngineDir + "/Runtime/" + Dep + "/" + Dep + ".Build",
@@ -152,7 +152,7 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
                       Always, Cashe1, Debug)
 
                 b = Cashe1 + "/" + Dep + Static_Lib + " "
-                Comp_Com += Compiler.LinkTag() + b
+                Comp_Com += Compiler.LinkTag(b)
 
 
     # 3rd party Dependencies
@@ -161,7 +161,7 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
     if ThirdDepend is not None:
 
         for Dep in ThirdDepend:
-                Comp_Com += Compiler.LinkTag() + EngineDir + "/ThirdParty/" + Dep + "/Implement/" + Dep + ".a "
+                Comp_Com += Compiler.LinkTag(EngineDir + "/ThirdParty/" + Dep + "/Implement/" + Dep + ".a ")
 
 
     if ThirdLink is not None:
@@ -172,16 +172,14 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     Comp_Com += URL + "Src/" + PublicEntry
 
-    Comp_Com += Compiler.Output() + Cashe1 + "/" + Name + Static_Lib
+    Comp_Com += Compiler.Output(Cashe1 + "/" + Name + Static_Lib)
     PrintDebug("\n" + Comp_Com + "\n", Debug)
 
     os.system(Comp_Com)
 
     # Convert to static .a stuff
 
-    Comp_Com = Compiler.ComToStatic()
-
-    Comp_Com += Cashe1 + "/" + Name + ".a " + Cashe1 + "/" + Name + Static_Lib
+    Comp_Com = Compiler.ComToStatic(Cashe1 + "/" + Name + ".a " + Cashe1 + "/" + Name + Static_Lib)
 
     PrintDebug("\n" + Comp_Com + "\n", Debug)
 
@@ -244,8 +242,8 @@ def ExternalThirdParty(f, EngineDir, Debug):
             if ta is not None:
                 for item in ta:
                     b = EngineDir + "/ThirdParty/" + item + "/Implement "
-                    Y = Compiler.LinkTag() + b
-                    Z = Compiler.LinkTagMini() + item + " "
+                    Y = Compiler.LinkTag(b)
+                    Z = Compiler.LinkTagMini(item + " ")
 
                     return Y + " " + Z
 
