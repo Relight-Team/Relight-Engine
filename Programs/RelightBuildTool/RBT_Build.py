@@ -99,6 +99,12 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
         Core.ChangeVar("UNIX", "1")
 
 
+
+    # Set engine directory
+
+    Comp_Com += Compiler.Define('ENGINEDIR=\\"' + EngineDir + '\\"')
+
+
     # Link for depend
 
     tmp = TotalLink(f, EngineDir)
