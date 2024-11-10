@@ -57,6 +57,46 @@ class Config
         }
 
 
+        static void GetDouble(std::string PClass, std::string Value, double& Store, std::string File)
+        {
+
+             std::vector<std::string> a = ReturnClassText(PClass, File);
+
+             std::string b = ReturnValueText(a, Value);
+
+
+             std::string c = ReturnVar(b);
+
+
+             // Convert string to double
+
+             double tmp = std::stod(c);
+
+             Store = tmp;
+
+        }
+
+
+        static void GetBool(std::string PClass, std::string Value, bool& Store, std::string File)
+        {
+
+             std::vector<std::string> a = ReturnClassText(PClass, File);
+
+             std::string b = ReturnValueText(a, Value);
+
+
+             std::string c = ReturnVar(b);
+
+
+             // Convert string to boolean
+
+             bool tmp = StringToBool(c);
+
+             Store = tmp;
+
+        }
+
+
     private:
 
         // Shitty fucking hacks coming up!!!

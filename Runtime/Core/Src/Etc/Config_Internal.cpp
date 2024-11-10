@@ -1,6 +1,8 @@
 #include "Log/Log.h"
 
 #include <iostream>
+#include <string>
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -84,4 +86,25 @@ int FindTextIndex(std::string ConfigFile, std::string Context)
 std::string AddBrackets(std::string Text)
 {
     return "[" + Text + "]";
+}
+
+bool StringToBool(std::string Text)
+{
+    std::string tmp = Text;
+
+    std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower); // not case sensitive
+
+    if(tmp == "true")
+    {
+        return true;
+    }
+    else if(tmp == "false")
+    {
+        return false;
+    }
+    else
+    {
+        // If it fails, just return false
+        return false;
+    }
 }
