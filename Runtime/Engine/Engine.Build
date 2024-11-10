@@ -1,9 +1,7 @@
-{
-    "Name": "Engine",
+Name = "Engine"
 
-    "Description": "Systems that is required to manage a game",
+Description = "Systems that is required to manage a game"
 
-    "Dependencies": ["Core", "ApplicationCore"],
+Dependencies = ["Core", "ApplicationCore"]
 
-    "EntryFile": "Engine.cpp"
-}
+EntryFile = "Engine.cpp"
