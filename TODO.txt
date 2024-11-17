@@ -1,0 +1,17 @@
+General TODO's in no order:
+
+- Low-Level classes: for now, we are using the basic g++ standard, which while ok for now, will become an issue for compatiblity in the future, add low-level features (custom string classes, ints, etc) in the core module
+
+- UE compatiblity: Low-level stuff, such as the internals of the engine, can be written uniquely, however, it order to keep the "reverse-engineer" branding, compatiblity is benificial for high-level API (Or, as an alternative, have a custom fork or plugin that adds additional UE API compatiblity)
+
+- Basic engine features: As of writing this (11/16/2024), the majority of the engine is incomplete, and doesn't even have a proper loop yet. In order to officialy be considered a usable engine, add the core features (Draw, Input, Audio, Models, Levels, Particles, etc)
+
+- performance: Ensure that the engine has high-performance, remember that you can always rewrite certain aspects of code to increase performance. Also, while it's ok for now, make sure we re-implement features such as UCLASS or UPROPERTY in order to increase performance and usability
+
+- SDK: Currently, RelightBuildTool is written in python instead of C#, allowing for compiling the application on Linux. but this codebase is written mainly for command-line compiling, such as g++ or Clang++. SDK's may require RBT to be restructured for those use. RelightBuildTool was always a pain in the ass, so as of (11/16/2024), I'm taking a break from rewriting it, but may do it again in the future
+
+- Contributers: Currently, as of writing this, I am the only contributer, and while this is fine, it could cause quality issues for the engine, as making a complex engine for the first time, while currently learning memory management and game engine design will take me a long time to do alone. Get a proper prototype of the engine done, and hope to recrute your friends :)
+
+- Graphics: The main motivation is to have the tech from Unreal Engine and reimplement them into a FOSS engine, all while making an engine for the first time. This can be done, but requires a lot of work. One main aspect from this is the graphics. I do NOT was basic graphics like godot or unity, and while those options might become available in Relight, I do not want it to be the only option. Ensure that the graphics looks good in the future
+
+- Windows support: Currently, this engine only works on linux, however, I want this to be cross-platform. Find a way to test Relight Engine on Windows
