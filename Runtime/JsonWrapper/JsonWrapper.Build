@@ -6,3 +6,5 @@ Dependencies = ["Core"]
 
 EntryFile = "JsonWrapper.cpp"
 
+# for nlohmann's json API
+ThirdPartyLink = ["nlohmann"]

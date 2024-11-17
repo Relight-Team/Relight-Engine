@@ -172,7 +172,7 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     if ThirdLink is not None:
         for Lnk in ThirdLink:
-            Comp_Com += Compiler.PublicLink(EngineDir + "/ThirdParty/"+ Dep + "/Include ")
+            Comp_Com += Compiler.PublicLink(EngineDir + "/ThirdParty/"+ Lnk + "/Include ")
 
 
 

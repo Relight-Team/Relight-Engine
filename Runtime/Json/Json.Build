@@ -2,7 +2,7 @@ Name = "Json"
 
 Description = "Manages Json files"
 
-Dependencies = ["Core"]
+Dependencies = ["Core", "JsonWrapper"]
 
 EntryFile = "Json.cpp"
 
