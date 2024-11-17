@@ -1,0 +1,8 @@
+Name = "JsonWrapper"
+
+Description = "Abstracts different JSON C++ API's"
+
+Dependencies = ["Core"]
+
+EntryFile = "JsonWrapper.cpp"
+

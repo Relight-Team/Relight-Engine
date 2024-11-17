@@ -6,7 +6,7 @@
 
 #include "Log/Log.h"
 
-//TODO: FINISH THIS FILE@
+//TODO: FINISH THIS FILE!
 
 // this whole entire thing is just a shitty fucking hack
 
@@ -23,32 +23,33 @@ CORE_API::LogCategory* JSON_PARSE_ERR = new CORE_API::LogCategory("JSON PARSING"
 // if it's a structure, it will look like this
 // ParentStructure.ChildStructure.Value=3
 
-bool ContainsInternal(std::string Line, std::string Context)
+
+
+
+// ---------- //
+
+
+std::string RemoveSpaceOutOfQuote(std::string A)
 {
-    int LineSize = Line.size();
-    int ContextSize = Context.size();
+    // How this works...
+    // Let's say the value is
+    //         "ParentVar": "Parent Value",
+    //
 
-    // if Line is smaller than context, no need to return true
-    if(LineSize < ContextSize)
-    {
-        return false;
-    }
 
-    for(int i = 0; i < ContextSize; i++)
-    {
-        if(!(Context[i] == Line[i]))
-        {
-            return false;
-        }
-    }
-    return true;
+    std::vector<std::string> Vect;
+
 }
+
 
 
 bool ContainsAnywhereInternal(std::string Line, std::string Context)
 {
       return Line.find(Context) != std::string::npos;
 }
+
+
+
 
 std::string RemoveLast(std::string Text)
 {
@@ -78,10 +79,27 @@ std::string RemoveLast(std::string Text)
     return Ret;
 }
 
-// A shitty fucking hack where we split the string to 2
-std::vector<std::string> ShittyHack(std::string Text)
+
+
+bool ContainsInternal(std::string Line, std::string Context)
 {
-    //TODO: FIX THIS FUCKING SHIT
+    int LineSize = Line.size();
+    int ContextSize = Context.size();
+
+    // if Line is smaller than context, no need to return true
+    if(LineSize < ContextSize)
+    {
+        return false;
+    }
+
+    for(int i = 0; i < ContextSize; i++)
+    {
+        if(!(Context[i] == Line[i]))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 
@@ -96,64 +114,22 @@ std::vector<std::string> Parse(std::string JsonFile)
 
     std::vector<std::string> Ret;
 
-    // this value that handles the main structure before value name (Minor TODO: describe this value better? I don't think this comment clearly explain what ParentString does)
-
     std::string ParentString = "";
 
-
+// For each line
     while(std::getline(MyReadFile, Text))
     {
-
-        if(ContainsAnywhereInternal(Text, "{"))
+        // if Text has a {, store everything before {
+        if(ContainsInternal(Text, "{"))
         {
-            std::string EndDot = "";
-            // if there's already a value in ParentString, add a '.'
+            std::string EndDot; // simply adds a . at the end
 
+            //
             if(ParentString != "")
             {
-                ParentString += '.';
-                EndDot = ".";
+                ParentString += '.'; // add . to the start, seperating the previous item for the current
             }
-
-            // start from index 0 of line, loop, and store it until the current index is '{'
-
-            std::string tmp;
-
-            for(int i = 0; Text[i] != '{'; i++)
-            {
-                tmp += Text[i];
-            }
-
-            // remove whitespace TODO: Removes whitespace from actual value as well, avoid this somehow...
-            //tmp.erase(std::remove_if(tmp.begin(), tmp.end(), ::isspace), tmp.end());
-            // remove :
-            tmp.erase(std::remove(tmp.begin(), tmp.end(), ':'), tmp.end());
-            // remove "
-            tmp.erase(std::remove(tmp.begin(), tmp.end(), '"'), tmp.end());
-
-            // store it to ParentString
-            ParentString += tmp + EndDot;
-        }
-
-        // if } detected, remove the section from ParentString
-
-        if(ContainsAnywhereInternal(Text, "}") && ParentString != "")
-        {
-            RemoveLast(Text);
-        }
-
-
-        // Add to Vector that will be returned
-        if(!(ContainsAnywhereInternal(Text, "}") || ContainsAnywhereInternal(Text, "{") || Text == ""))
-        {
-            Ret.push_back(ParentString + Text);
+            EndDot = ".";
         }
     }
-
-    return Ret;
 }
-
-
-
-
-
