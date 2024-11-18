@@ -2,9 +2,11 @@ Name = "OpenGL_RHI"
 
 Description = "Adds Abstraction to OpenGL for RHI"
 
-Dependencies = ["Core", "RHI"]
+Dependencies = ["Core", "ApplicationCore"]
 
-EntryFile = "OpenGL.cpp"
+#Dependencies = ["Core", "RHI", "ApplicationCore"]
+
+EntryFile = "OpenGLRHI.cpp"
 
 if UNIX:
     ThirdPartyLink = ["SDL2"]
