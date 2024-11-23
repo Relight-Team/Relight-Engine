@@ -12,4 +12,4 @@
 
 // Etc
 
-#include "Etc/Config.cpp"
+#include "Etc/Config.h"

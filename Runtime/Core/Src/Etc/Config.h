@@ -90,7 +90,7 @@ class Config
 
              // Convert string to boolean
 
-             bool tmp = StringToBool(c);
+             bool tmp = ENGINE_INTERNAL::StringToBool(c);
 
              Store = tmp;
 
@@ -108,11 +108,11 @@ class Config
         static std::vector<std::string> ReturnClassText(std::string PClass, const std::string File)
         {
 
-            std::vector<std::string> Tmp = ReadInternal(File);
+            std::vector<std::string> Tmp = ENGINE_INTERNAL::ReadInternal(File);
 
             // Find index of PClass
 
-            int i = FindTextIndex(File, AddBrackets(PClass));
+            int i = ENGINE_INTERNAL::FindTextIndex(File, ENGINE_INTERNAL::AddBrackets(PClass));
 
 
             // Fix bug to not detect itself
@@ -122,7 +122,7 @@ class Config
 
             // Loop each vector and store it in Ret, until brackets are found
 
-            while(i < Tmp.size() && !(ContainsInternal(Tmp[i], "[")))
+            while(i < Tmp.size() && !(ENGINE_INTERNAL::ContainsInternal(Tmp[i], "[")))
             {
                 Ret.push_back(Tmp[i]);
                 i++;
@@ -136,7 +136,7 @@ class Config
         {
             for(int i = 0; i < Vet.size(); i++)
             {
-                if(ContainsInternal(Vet[i], Value))
+                if(ENGINE_INTERNAL::ContainsInternal(Vet[i], Value))
                 {
                     return Vet[i];
                 }

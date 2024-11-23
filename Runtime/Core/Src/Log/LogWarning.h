@@ -3,7 +3,7 @@
 using namespace std;
 
 
-namespace CORE_INTERNAL
+namespace ENGINE_INTERNAL
 {
     class LogWarning
     {
@@ -82,11 +82,11 @@ namespace CORE_INTERNAL
 
 #pragma once
 
-static CORE_INTERNAL::LogWarning Log = CORE_INTERNAL::LogWarning("LOG", "White"); // For information
+static ENGINE_INTERNAL::LogWarning Log = ENGINE_INTERNAL::LogWarning("LOG", "White"); // For information
 
-static CORE_INTERNAL::LogWarning Warning = CORE_INTERNAL::LogWarning("WARNING", "Yellow"); // For issues to look at, but nothing critical
+static ENGINE_INTERNAL::LogWarning Warning = ENGINE_INTERNAL::LogWarning("WARNING", "Yellow"); // For issues to look at, but nothing critical
 
-static CORE_INTERNAL::LogWarning Error = CORE_INTERNAL::LogWarning("ERROR", "Red"); // For critical issues to fix, but allows the program to continue running
+static ENGINE_INTERNAL::LogWarning Error = ENGINE_INTERNAL::LogWarning("ERROR", "Red"); // For critical issues to fix, but allows the program to continue running
 
-static CORE_INTERNAL::LogWarning Fatal = CORE_INTERNAL::LogWarning("FATAL", "Dark Red"); // For issues so critical, it forces the program to close
+static ENGINE_INTERNAL::LogWarning Fatal = ENGINE_INTERNAL::LogWarning("FATAL", "Dark Red"); // For issues so critical, it forces the program to close
 

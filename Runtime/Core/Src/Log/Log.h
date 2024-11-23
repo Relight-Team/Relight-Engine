@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void LOG(CORE_API::LogCategory Category, CORE_INTERNAL::LogWarning Warning, string Text)
+void LOG(CORE_API::LogCategory Category, ENGINE_INTERNAL::LogWarning Warning, string Text)
 {
     cout << Warning.ConvertColor(Warning.GetColor());
     cout << Category.GetName() << ": ";

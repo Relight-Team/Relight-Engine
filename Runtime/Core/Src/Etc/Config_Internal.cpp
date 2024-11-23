@@ -7,6 +7,10 @@
 #include <sstream>
 #include <vector>
 
+
+namespace ENGINE_INTERNAL
+{
+
 //This is an internal file for config.cpp, this does NOT need to be public for the CORE_API. Multiple files might use these functions
 
 
@@ -107,4 +111,5 @@ bool StringToBool(std::string Text)
         // If it fails, just return false
         return false;
     }
+}
 }
