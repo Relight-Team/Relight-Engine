@@ -1,19 +1,22 @@
 #pragma once
 
 #include "GlobalJson.h"
-#include "Serialization/Types.h"
+//#include "Serialization/Types.h"
 #include "DOM/JsonClass.h" // For storing
 #include <iostream>
 #include <typeinfo>
+#include <variant>
 
 namespace JSON_API
 {
-    class JsonValue:
+    template <typename C>
+    class JsonValue
+    {
         public:
 
             // Constructer
 
-            template <typename T> Input;
+            template <typename Input>
             JsonValue(Input VarInput, std::string NameInput)
             {
                 Var = VarInput;
@@ -29,7 +32,7 @@ namespace JSON_API
             {
                 if(IsValid("int"))
                 {
-                    Ref = GetNumber();
+                    Ref = std::get<int>(Var);
                     return true;
                 }
                 else
@@ -42,7 +45,7 @@ namespace JSON_API
             {
                 if(IsValid("double"))
                 {
-                    Ref = GetNumber();
+                    Ref = std::get<double>(Var);
                     return true;
                 }
                 else
@@ -79,10 +82,10 @@ namespace JSON_API
 
             std::string ReturnType()
             {
-                return str(typeid(Var));
+                return typeid(Var).name();
             }
 
-            template <typename T> Any;
+            template <typename Any>
 
             // Will attempted to return the value, no matter what type it is
 
@@ -113,30 +116,21 @@ namespace JSON_API
 
         private:
 
-            template <typename T> Var;
+            std::variant<int, double, std::string, bool> Var;
 
             std::string Name;
 
             // Get's
 
-            int GetNumber()
-            {
-                return Var;
-            }
-
-            double GetNumber()
-            {
-                return Var;
-            }
 
             std::string GetString()
             {
-                return Var;
+                return std::get<std::string>(Var);
             }
 
             bool GetBool()
             {
-                return Var;
+                return std::get<bool>(Var);;
             }
 
 
@@ -148,4 +142,5 @@ namespace JSON_API
                 }
                 return false;
             }
+    };
 }

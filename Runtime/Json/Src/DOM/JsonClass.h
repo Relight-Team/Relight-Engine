@@ -1,3 +1,4 @@
+#pragma once
 #include "GlobalJson.h"
 #include "DOM/JsonVar.h"
 #include <iostream>
@@ -7,15 +8,17 @@
 
 namespace JSON_API
 {
-    class JsonObject:
+    class JsonObject
+    {
 
         public:
 
-            void AddValue(std::string& Name, JsonValue& Value)
+            template <typename A>
+            void AddValue(std::string& Name, JsonValue<A>& Value)
             {
-                template <typename T> T;
-
-                JsonMap[Name] = Value.TryGet(T);
+                A Tmp;
+                Value.TryGet(Tmp);
+                JsonMap[Name] = Tmp;
             }
 
             void RemoveValue(std::string& Name)
@@ -34,7 +37,8 @@ namespace JSON_API
                 return false;
             }
 
-            void SetValue(std::string& Name, JsonValue& Value)
+            template <typename A>
+            void SetValue(std::string& Name, JsonValue<A>& Value)
             {
                 AddValue(Name, Value);
             }
@@ -44,7 +48,7 @@ namespace JSON_API
             {
                 for(const auto& Pair : JsonMap)
                 {
-                    if(Pair.first == Name && typeid(Pair.second) == Type)
+                    if(Pair.first == Name && typeid(Pair.second).name() == Type)
                     {
                         return true;
                     }
@@ -53,66 +57,33 @@ namespace JSON_API
             }
 
 
-            // Get stuff from map
 
-            int GetNumber(std::string Key)
-            {
-                return JsonMap.find(Key);
-            }
+
 
             // please make this work
 
-            double GetNumberDouble(std::string Key)
-            {
-                return JsonMap.find(Key);
-            }
 
             bool TryGetNumber(std::string Key, int& Output)
             {
-                i = GetNumber(Key)
+                auto i = JsonMap.find(Key);
+
+                // If the type is incorrect, return error
+
+                if(typeid(i->second).name() != "int")
+                {
+                    return false;
+                }
+
 
                 if(i != JsonMap.end())
                 {
-                    Output = i;
-                    return true
+                    int a;
+                    VarientToInt(i->second, a);
+
+                    Output = a;
+                    return true;
                 }
-                return false
-            }
-
-            bool TryGetNumber(std::string Key, double& Output)
-            {
-                i = GetNumberDouble(Key)
-
-                if(i != JsonMap.end())
-                {
-                    Output = i;
-                    return true
-                }
-                return false
-            }
-
-            bool TryGetString(std::string Key, std::string& Output)
-            {
-                i = JsonMap.find(Key)
-
-                if(i != JsonMap.end())
-                {
-                    Output = i;
-                    return true
-                }
-                return false
-            }
-
-            bool TryGetBool(std::string Key, bool& Output)
-            {
-                i = JsonMap.find(Key)
-
-                if(i != JsonMap.end())
-                {
-                    Output = i;
-                    return true
-                }
-                return false
+                return false;
             }
 
             // TODO: Array and Object support
@@ -146,6 +117,7 @@ namespace JSON_API
 
             std::map<std::string, ValueType> JsonMap;
 
+    };
 
 
 }
