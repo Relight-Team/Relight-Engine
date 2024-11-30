@@ -41,6 +41,8 @@ namespace JSON_API
 
 
 
+
+
     bool Deserialize(std::string Input, JSON_API::JsonObject& Output)
     {
         if(Input == "")
@@ -48,6 +50,57 @@ namespace JSON_API
             return false;
         }
 
+        std::string Name;
+        std::string ValueStr;
+
+        bool IsQuote = false; // This is so we can store the contents in the quote, while keeping name and value seperated
+        bool IsValue = false; // If we are currently in a variable (both name and value)
+        bool IsName = true; // If true, then the quotes will be stored in the name. If false, then the quotes wil be stored as the value
+
+        for(int i = 1; i < Input.size() - 1; i++)
+        {
+
+            if(IsQuote == true)
+            {
+                if(IsName == true)
+                {
+                    Name += Input[i];
+                }
+                else
+                {
+                    ValueStr += Input[i];
+                }
+            }
+
+            if(Input[i] == ',' && IsQuote == false)
+            {
+
+                auto tmp = JSON_API::JsonValue<std::string>(StringToVar<std::string>(ValueStr));
+
+                Output.AddValue(Name, tmp);
+
+                // Reset everything!
+
+                Name == "";
+                ValueStr == "";
+
+                IsQuote = false;
+                IsValue = false;
+                IsName = false;
+            }
+
+            if(Input[i] == ':' && IsQuote == false)
+            {
+                InvertBool(IsName);
+            }
+
+            if(Input[i] == '"')
+            {
+                InvertBool(IsQuote);
+            }
+        }
+
+        return true;
 
     }
 }
