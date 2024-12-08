@@ -1,6 +1,15 @@
 #pragma once
+
+#ifndef GlobalJson
+#define GlobalJson
+
+#include "GlobalJson.h"
+
+#endif
+
 #include "GlobalJson.h"
 #include "DOM/JsonVar.h"
+#include "Core.h"
 #include <iostream>
 #include <typeinfo>
 #include <map>
@@ -67,12 +76,23 @@ namespace JSON_API
             {
                 auto i = JsonMap.find(Key);
 
-                // If the type is incorrect, return error
-
-                if(typeid(i->second).name() != "int")
+                if (i == JsonMap.end())
                 {
+                    JSON_INTERNAL::PrintJsonError(Error, "Couldn't find " + Key + " key when running TryGetNumber()");
                     return false;
                 }
+
+
+                if (auto p = std::get_if<int>(&i->second))
+                {
+                    Output = *p;
+                    JSON_INTERNAL::PrintJsonError(Log, "Successfully retrieved " + Key + " as int: " + std::to_string(Output));
+                    return true;
+                }
+
+
+                JSON_INTERNAL::PrintJsonError(Error, "Attempting to get " + Key + " key as a int, but got " + typeid(i->second).name() + " instead");
+                return false;
 
 
                 if(i != JsonMap.end())
@@ -113,7 +133,7 @@ namespace JSON_API
 
         private:
 
-            using ValueType = std::variant<int, double, std::string, bool>;
+            using ValueType = std::variant<int, std::string, double, bool>;
 
             std::map<std::string, ValueType> JsonMap;
 

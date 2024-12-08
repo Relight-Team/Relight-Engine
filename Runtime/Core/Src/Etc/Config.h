@@ -1,3 +1,4 @@
+#pragma once
 #include "Log/Log.h"
 #include "Config_Internal.cpp"
 #include <iostream>

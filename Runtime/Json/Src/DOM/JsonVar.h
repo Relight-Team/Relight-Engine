@@ -1,8 +1,17 @@
 #pragma once
 
+#ifndef GlobalJson
+#define GlobalJson
+
 #include "GlobalJson.h"
+
+#endif
+
+
+#pragma once
 //#include "Serialization/Types.h"
 #include "DOM/JsonClass.h" // For storing
+#include "Core.h"
 #include <iostream>
 #include <typeinfo>
 #include <variant>
@@ -16,8 +25,7 @@ namespace JSON_API
 
             // Constructer
 
-            template <typename Input>
-            JsonValue(Input VarInput)
+            JsonValue(std::variant<int, std::string, double, bool> VarInput)
             {
                 Var = VarInput;
             }
@@ -31,6 +39,7 @@ namespace JSON_API
                 }
                 else
                 {
+                    JSON_INTERNAL::PrintJsonError(Error, "Json Value tried to get int, but instead got incompatible variable type instead");
                     return false;
                 }
             }
@@ -44,6 +53,7 @@ namespace JSON_API
                 }
                 else
                 {
+                    JSON_INTERNAL::PrintJsonError(Error, "Json Value tried to get int, but instead got incompatible variable type instead");
                     return false;
                 }
             }
@@ -57,6 +67,7 @@ namespace JSON_API
                 }
                 else
                 {
+                    JSON_INTERNAL::PrintJsonError(Error, "Json Value tried to get int, but instead got incompatible variable type instead");
                     return false;
                 }
             }
@@ -70,6 +81,7 @@ namespace JSON_API
                 }
                 else
                 {
+                    JSON_INTERNAL::PrintJsonError(Error, "Json Value tried to get int, but instead got incompatible variable type instead");
                     return false;
                 }
             }
@@ -128,7 +140,7 @@ namespace JSON_API
 
         private:
 
-            std::variant<int, double, std::string, bool> Var;
+            std::variant<int, std::string, double, bool> Var;
 
             // Get's
 
