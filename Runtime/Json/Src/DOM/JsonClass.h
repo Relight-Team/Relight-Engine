@@ -82,17 +82,23 @@ namespace JSON_API
                     return false;
                 }
 
+                // I wanna cry
 
-                if (auto p = std::get_if<int>(&i->second))
-                {
-                    Output = *p;
-                    JSON_INTERNAL::PrintJsonError(Log, "Successfully retrieved " + Key + " as int: " + std::to_string(Output));
-                    return true;
-                }
+                //JSON_INTERNAL::PrintJsonError(Log, std::to_string(Output));
+
+                JSON_INTERNAL::PrintJsonError(Log, std::to_string(JsonMap[j]));
+
+                int test = *j;
+
+                JSON_INTERNAL::PrintJsonError(Log, std::to_string(test));
+
+                Output = test;
+
+                return true;
 
 
-                JSON_INTERNAL::PrintJsonError(Error, "Attempting to get " + Key + " key as a int, but got " + typeid(i->second).name() + " instead");
-                return false;
+                //JSON_INTERNAL::PrintJsonError(Error, "Attempting to get " + Key + " key as a int, but got " + typeid(i->second).name() + " instead");
+                //return false;
 
 
                 if(i != JsonMap.end())
