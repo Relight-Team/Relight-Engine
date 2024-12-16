@@ -37,13 +37,11 @@ class Array
             InternalChangeSize(Size);
         }
 
-        void Init(T Input[])
+        void Init(T Input[], int Size)
         {
-            InternalChangeSize(sizeof(Input));
-
-            for(int i = 0; i < sizeof(Input); i++)
+            for (int i = 0; i < Size; i++)
             {
-                Arr[i] = Input[i];
+                this->Add(Input[i]);
             }
         }
 
@@ -64,6 +62,22 @@ class Array
             return Arr[i];
         }
 
+        Array<T>& operator=(Array<T>& B)
+        {
+            this->Empty();
+            for(int i = 0; i < B.Num(); i++)
+            {
+                this->Add(B[i]);
+            }
+            return *this;
+        }
+
+        Array<T>& operator+=(Array<T>& B)
+        {
+            this->Append(B, B.Num());
+            return *this;
+        }
+
         // == Queries ==
 
         // Returns the number of elements
@@ -76,6 +90,18 @@ class Array
         int Size()
         {
             return CurrentSize - 1;
+        }
+
+        // for debugging only
+        void Print()
+        {
+            std::string tmp;
+            for(int i = 0; i < CurrentSize; i++)
+            {
+                std::cout << Arr[i];
+                std::cout << " | ";
+            }
+            std::cout << std::endl;
         }
 
 
