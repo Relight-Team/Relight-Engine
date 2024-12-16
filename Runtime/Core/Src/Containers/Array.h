@@ -72,6 +72,13 @@ class Array
             return CurrentSize;
         }
 
+        // Like Num(), but assumes the first element index is 0 instead of 1
+        int Size()
+        {
+            return CurrentSize - 1;
+        }
+
+
         bool Contains(T Input)
         {
             for(int i = 0; i < CurrentSize; i++)
@@ -102,6 +109,58 @@ class Array
             return false;
         }
 
+        bool FindLast(T Input, int& Value)
+        {
+            if(!(Contains(Input)))
+            {
+                return false;
+            }
+
+            for(int i = CurrentSize - 1; i >= 0; i++)
+            {
+                if(Arr[i] == Input)
+                {
+                    Value = i;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        int GetTypeSize()
+        {
+            return sizeof(T);
+        }
+
+        bool IsValidIndex(int Index)
+        {
+            if(Index >= 0 && Index <= CurrentSize)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        T Last()
+        {
+            return Arr[CurrentSize - 1];
+        }
+
+        T Last(int a)
+        {
+            return Arr[CurrentSize - 1 - a];
+        }
+
+        T Top()
+        {
+            return Arr[0];
+        }
+
+        T Top(int a)
+        {
+            return Arr[0 + a];
+        }
+
         // == Write ==
 
         void Add(T Input)
@@ -113,7 +172,21 @@ class Array
             Arr[OldSize] = Input;
         }
 
-        //void Append
+        void Append(Array& Input, int Size)
+        {
+
+            int OldSize = CurrentSize;
+
+            for(int i = 0; i < Size; i++)
+            {
+                this->Add(Input[i]);
+            }
+        }
+
+        void SetNum(int NewSize)
+        {
+            InternalChangeSize(NewSize);
+        }
 
         // Only adds the value if it doesn't exist in an array
         void AddUnique(T Input)
@@ -135,16 +208,77 @@ class Array
             }
         }
 
+        void Insert(T Input, int Index)
+        {
+            InternalChangeSize(CurrentSize + 1);
+
+            for(int i = CurrentSize; i > Index + 1; i--)
+            {
+                Arr[i] = Arr[i - 1];
+            }
+            Arr[Index] = Input;
+        }
+
+        void RemoveAt(int Index)
+        {
+
+            int Cur = CurrentSize;
+            for(int i = Index; i < this->Num(); i++)
+            {
+                Arr[i] = Arr[i + 1];
+            }
+
+            InternalChangeSize(CurrentSize - 1);
+        }
+
+        bool RemoveSingle(T Input)
+        {
+
+            int StoreIndex;
+
+            for(int i = 0; i < CurrentSize; i++)
+            {
+                if(Arr[i] == Input)
+                {
+                    this->RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        void Remove(T Input)
+        {
+
+            int StoreIndex;
+
+            for(int i = 0; i < CurrentSize; i++)
+            {
+                if(Arr[i] == Input)
+                {
+                    this->RemoveAt(i);
+                }
+            }
+        }
+
+        void Empty()
+        {
+            InternalChangeSize(0);
+        }
+
         // Destructor to free memory
     ~Array()
     {
         delete[] Arr;
+        Arr = nullptr;
     }
 
     private:
 
     T* Arr;
 
+
+    // Reminder, this assumes the first element is 1, this is very annoying, but some functions requires it
     int CurrentSize;
 
     void InternalChangeSize(int Size)
@@ -153,14 +287,16 @@ class Array
         T* NewArr = new T[Size];
 
 
+        int CopySize = (Size < CurrentSize) ? Size : CurrentSize;
 
-        if (Arr != nullptr)
-        {
-            for(int i = 0; i <= CurrentSize; i++)
+            if (Arr != nullptr)
             {
-                NewArr[i] = Arr[i];
+                for(int i = 0; i < CopySize; i++)
+                {
+                    NewArr[i] = Arr[i];
+                }
             }
-        }
+
 
         delete[] Arr;
 
