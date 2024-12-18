@@ -6,13 +6,17 @@
 
 // This array class can be treated as either a static array or dynamic array
 
-#include "Core.h" // TODO: replace this for minimal version
+#pragma once
 
-#include <iostream> // TODO: Replace this with Relight's alt
+#include "Log/Log.h"
+
+//#include <iostream> // TODO: Replace this with Relight's alt
 
 CORE_API::LogCategory* Array_Error = new CORE_API::LogCategory("Array");
 
+
 template <typename T>
+
 
 class Array
 {

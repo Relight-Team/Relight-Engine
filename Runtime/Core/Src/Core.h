@@ -1,6 +1,7 @@
 #pragma once
 // includes all public core stuff //
 
+#include "CoreMinimal.h"
 
 // Math
 
