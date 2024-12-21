@@ -1,5 +1,7 @@
 // RELIGHT ENGINE'S MAP SYSTEM!
 
+// Reminder: This is UNRELEATED to any level/world system, this is simply a Relight replacement for std::map
+
 
 #pragma once
 
