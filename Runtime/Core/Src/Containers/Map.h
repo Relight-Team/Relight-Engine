@@ -7,6 +7,10 @@
 
 #include "Containers/Array.h"
 
+#include <iostream>
+
+CORE_API::LogCategory* Map_Error = new CORE_API::LogCategory("Map");
+
 template <typename KeyType, typename ValueType>
 
 class Map
@@ -15,6 +19,37 @@ class Map
     public:
 
     // Read
+
+    int Size()
+    {
+        return Key.Size();
+    }
+
+    bool Exist(KeyType Name)
+    {
+        if(Key.Contains(Name))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    int Find(KeyType A)
+    {
+        int i;
+        Key.Find(A, i);
+        return i;
+    }
+
+    KeyType First(int i)
+    {
+        return Key[i];
+    }
+
+    ValueType Second(int i)
+    {
+        return Value[i];
+    }
 
     // Write
 
@@ -26,7 +61,7 @@ class Map
         if(Key.Contains(K))
         {
             int i;
-            K.find(K, i);
+            Key.Find(K, i);
             Value[i] = V;
         }
 
@@ -37,6 +72,17 @@ class Map
             Value.Add(V);
         }
 
+    }
+
+    void Remove(KeyType K)
+    {
+        if(Key.Contains(K))
+        {
+            int i;
+            Key.Find(K, i);
+            Key.RemoveAt(i);
+            Value.RemoveAt(i);
+        }
     }
 
     // Operators
