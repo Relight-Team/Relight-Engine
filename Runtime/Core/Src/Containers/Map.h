@@ -103,6 +103,4 @@ class Map
         Array<KeyType> Key;
 
         Array<ValueType> Value;
-
-        int SizeVal = 0;
 };
