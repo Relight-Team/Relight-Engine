@@ -118,9 +118,9 @@ namespace JSON_API
 
             if(Input[i] == ',' && IsQuote == false)
             {
-                std::variant<int, std::string, double, bool>  i = ConvertStringToVar(ValueStr, Type);
+                std::any i = ConvertStringToVar(ValueStr, Type);
 
-                auto tmp = JSON_API::JsonValue<std::variant<int, std::string, double, bool>>(i);
+                auto tmp = JSON_API::JsonValue<std::any>(i);
 
                 Output.AddValue(Name, tmp);
 
@@ -149,26 +149,28 @@ namespace JSON_API
 
             if(Input[i] == ':' && Input[i + 1] == '"' && IsQuote == false)
             {
-               Type = 0;
+               Type = 0; // String
             }
-            if(Input[i] == ':' && isdigit(Input[i + 1]) && IsQuote == false)
+
+            if(Input[i] == ':' && isdigit(Input[i + 1]) && IsQuote == false) // Int / Double
             {
                 // Detects if it's an int or double
                 for(int j = i; Input[j] != ','; j++)
                 {
                     if(Input[j] == '.')
                     {
-                        Type = 2;
+                        Type = 2; // Double
                     }
 
                 if(Type != 2)
                 {
-                    Type = 1;
+                    Type = 1; // Int
                 }
             }
+
             if(Input[i] == ':' && (Input[i + 1] == 't' || Input[i + 1] == 'f') && IsQuote == false)
             {
-                Type = 3;
+                Type = 3; // Boolean
             }
 
             // == //

@@ -25,17 +25,9 @@ void InvertBool(bool& Input)
 
 // template used so any varient
 template <typename P>
-bool VarientToInt(P Varient, int& Output)
+int VarientToInt(P Varient)
 {
-    try
-    {
-        Output = std::get<int>(Varient);
-        return true;
-    }
-    catch(const std::bad_variant_access& e)
-    {
-        return false;
-    }
+    return std::get<int>(Varient);
 }
 
 
