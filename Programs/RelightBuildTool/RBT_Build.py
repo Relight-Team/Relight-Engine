@@ -2,10 +2,6 @@
 
 # build the build files, and store each one in .Output
 
-#Output = side-Modules to combine into a single module for Cashe1
-
-#Cashe1 = Modules combine into a single executable/library
-
 import os
 
 import RBT_Core as Core
@@ -32,7 +28,7 @@ Static_Lib = ""
 
 PublicEntry = ""
 
-Cashe1 = ""
+Cashe = ""
 
 def PrintDebug(Text, Show):
     if Show == True:
@@ -41,7 +37,7 @@ def PrintDebug(Text, Show):
 def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     Bin_Loc_Engine = ED + "/Bin/Engine/" + Plat + "/"
-    Cashe1 = ED + "/Programs/RelightBuildTool/.Cashe1"
+    Cashe = ED + "/Programs/RelightBuildTool/.Cashe"
 
     Depend = Core.GetVar(f, "Dependencies")
     ThirdDepend = Core.GetVar(f, "ThirdPartyDependencies")
@@ -145,19 +141,19 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
             #Comp_Com += Compiler.PublicLink(a)
 
             if Core.CheckFile(Bin_Loc_Engine + Dep + Static_Lib):
-                b = Cashe1 + "/" + Dep + Static_Lib + " "
+                b = Cashe + "/" + Dep + Static_Lib + " "
                 Comp_Com += Compiler.LinkTag(b)
 
-            elif Core.CheckFile(Cashe1 + "/" + Dep + Static_Lib):
-                b = Cashe1 + "/" + Dep + Static_Lib + " "
+            elif Core.CheckFile(Cashe + "/" + Dep + Static_Lib):
+                b = Cashe + "/" + Dep + Static_Lib + " "
                 Comp_Com += Compiler.LinkTag(b)
             else:
 
                 Build(EngineDir + "/Runtime/" + Dep + "/" + Dep + ".Build",
                       EngineDir + "/Runtime/" + Dep + "/", EngineDir, Plat,
-                      Always, Cashe1, Debug)
+                      Always, Cashe, Debug)
 
-                b = Cashe1 + "/" + Dep + Static_Lib + " "
+                b = Cashe + "/" + Dep + Static_Lib + " "
                 Comp_Com += Compiler.LinkTag(b)
 
 
@@ -178,14 +174,14 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     Comp_Com += URL + "Src/" + PublicEntry
 
-    Comp_Com += Compiler.Output(Cashe1 + "/" + Name + Static_Lib)
+    Comp_Com += Compiler.Output(Cashe + "/" + Name + Static_Lib)
     PrintDebug("\n" + Comp_Com + "\n", Debug)
 
     os.system(Comp_Com)
 
     # Convert to static .a stuff
 
-    Comp_Com = Compiler.ComToStatic(Cashe1 + "/" + Name + ".a " + Cashe1 + "/" + Name + Static_Lib)
+    Comp_Com = Compiler.ComToStatic(Cashe + "/" + Name + ".a " + Cashe + "/" + Name + Static_Lib)
 
     PrintDebug("\n" + Comp_Com + "\n", Debug)
 

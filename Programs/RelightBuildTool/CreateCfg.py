@@ -3,7 +3,7 @@ import os
 
 # Default shit
 
-cfgver = "RBT_Ver = [0, 1, 0]\n"
+cfgver = "RBT_Ver = [0, 2, 0]\n"
 
 Compiler = "Compiler = 'g++'\n"
 
@@ -63,4 +63,3 @@ def BuildConfig():
             raise ConfigError("ERROR: Engine Directory Config is blank, please manually set the engine directory")
         else:
             raise ValueError("ERROR: Unknown option selected " + choice1)
-

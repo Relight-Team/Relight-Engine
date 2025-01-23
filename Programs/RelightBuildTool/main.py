@@ -48,7 +48,7 @@ def main(Target, Platform):
     import GlobalCfg as cfg
 
 
-    RBT_TMP_Path_02 = cfg.Engine_Directory + "/Programs/RelightBuildTool/.Cashe1"
+    RBT_TMP_Path_02 = cfg.Engine_Directory + "/Programs/RelightBuildTool/.Cashe"
 
 
     for filename in os.listdir(RBT_TMP_Path_02):
@@ -65,9 +65,4 @@ def main(Target, Platform):
     Targ.Compile(TF, cfg.Engine_Directory, PT, cfg.ShowDebug)
 
 
-# So, if it's main() i doesn't store the arg, but if it's main("", ""), it does? Python, make it make sense
-
 main("", "")
-
-
-

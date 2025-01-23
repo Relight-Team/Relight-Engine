@@ -36,3 +36,6 @@ def ComToStatic(dire):
 
 def Define(DefText):
     return "-D" + DefText + " "
+
+def LoopCpp(Source):
+    return '$(find ' + Source + ' -type f -name "*.cpp" | head -n 1) '

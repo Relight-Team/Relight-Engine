@@ -35,7 +35,7 @@ def Compile(f, ED, Plat, Debug):
 
     EngineDir = ED
 
-    Cashe1 = EngineDir + "/Programs/RelightBuildTool/.Cashe1"
+    Cashe1 = EngineDir + "/Programs/RelightBuildTool/.Cashe"
 
     Plat_Dir = os.path.dirname(f)
 
@@ -58,7 +58,7 @@ def Compile(f, ED, Plat, Debug):
 
             URL_Without_Build = dire + "/" + VarOld + "/"
 
-            Build.Build(URL, URL_Without_Build, EngineDir, Plat, AlwaysUpdate, EngineDir + "/Programs/RelightBuildTool/.Cashe1", Debug)
+            Build.Build(URL, URL_Without_Build, EngineDir, Plat, AlwaysUpdate, EngineDir + "/Programs/RelightBuildTool/.Cashe", Debug)
 
 
     print()
@@ -84,7 +84,7 @@ def Compile(f, ED, Plat, Debug):
 
 
     elif Target == "Engine" or Target == "Editor" or Target == "Programs":
-        TargCom = EngineDir + "/Bin/" + Target + "/" + Plat + "/"
+        TargCom = EngineDir + "/bin/" + Target + "/" + Plat + "/"
         Core.CheckFolder(TargCom)
 
     else:
@@ -110,7 +110,7 @@ def Compile(f, ED, Plat, Debug):
         Comp_Com += Cashe1 + "/" + Depend + ".o "
 
 
-    Comp_Com += Compiler.LinkTag(EngineDir + "/Bin/" + Plat + " ")
+    Comp_Com += Compiler.LinkTag(EngineDir + "/bin/" + Plat + " ")
 
     # Move .a from cashe to /Bin
     for fil in os.listdir(Cashe1):
@@ -121,7 +121,7 @@ def Compile(f, ED, Plat, Debug):
         
         if os.path.isfile(full_path):
             if ".a" in full_path and not Core.ArraySearch(NoExte, ExtraDepend):
-                os.system("mv " + Cashe1 + "/" + fil + " " + EngineDir + "/Bin/" + Plat + "/" + fil)
+                os.system("mv " + Cashe1 + "/" + fil + " " + EngineDir + "/bin/" + Plat + "/" + fil)
 
                 Comp_Com += Compiler.LinkTagMini(":" +  fil + " ")
     
@@ -135,11 +135,6 @@ def Compile(f, ED, Plat, Debug):
     for id in files:
         Comp_Com += id + " "
 
-
-
-    # g++ requires me to re-add the same 3rd party libraries
-
-    # Fuck g++ all my homies hate g++ (jk love you g++)
 
     if ExtraDepend is not None:
         for i in range(len(ExtraDepend)):
