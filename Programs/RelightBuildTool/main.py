@@ -37,7 +37,7 @@ def main(Target, Platform):
 
     # Check for Config system
 
-    if not os.path.exists(RBT + "GlobalCfg.py"):
+    if not os.path.exists(RBT + "Configuration.py"):
         CCfg.CreateConfig()
 
     # RBT's auto-generate engine directory system
@@ -45,7 +45,7 @@ def main(Target, Platform):
     CCfg.BuildConfig()
 
 
-    import GlobalCfg as cfg
+    import Configuration as cfg
 
 
     RBT_TMP_Path_02 = cfg.Engine_Directory + "/Programs/RelightBuildTool/.Cashe"

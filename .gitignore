@@ -22,7 +22,7 @@ Configs/Test.cfg
 
 # Remove compiled files
 
-Programs/RelightBuildTool/GlobalCfg.py
+Programs/RelightBuildTool/Configuration.py
 
 
 # == Python ==

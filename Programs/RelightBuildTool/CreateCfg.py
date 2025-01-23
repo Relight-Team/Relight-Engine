@@ -22,14 +22,14 @@ class ConfigError(Exception):
 # Create/Reset Config file
 
 def CreateConfig():
-    fil = open(RBT + "GlobalCfg.py", "w")
+    fil = open(RBT + "Configuration.py", "w")
     fil.write(cfgver + 'Engine_Directory = ""\n' + Compiler + ShowDebug)
     fil.close
 
 def BuildConfig():
     # RBT's auto-generate engine directory system
 
-    import GlobalCfg as cfg
+    import Configuration as cfg
 
     if cfg.Engine_Directory == "":
         print("Warning: the config file for the engine directory is blank, do you want RBT to auto-generate the directory?")
@@ -50,8 +50,8 @@ def BuildConfig():
             print(parent_dir02)
             choice2 = input("> ")
             if choice2 == "1":
-                fil = open(RBT + "GlobalCfg.py", "w")
-                fil.write(cfgver + 'Engine_Directory = "' + parent_dir02 + '"\n' + Compiler)
+                fil = open(RBT + "Configuration.py", "w")
+                fil.write(cfgver + 'Engine_Directory = "' + parent_dir02 + '"\n' + Compiler + ShowDebug)
                 fil.close
                 # Simple hack to fix the insta-crash
                 raise ConfigError("Completed! Please re-run the program")
