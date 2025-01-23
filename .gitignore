@@ -12,11 +12,11 @@
 # Remove compiled directories
 
 
-Bin/
+bin/
 
 # Remove uneeded directories
 
-Programs/RelightBuildTool/.Cashe1/
+Programs/RelightBuildTool/.Cashe/
 
 Configs/Test.cfg
 
