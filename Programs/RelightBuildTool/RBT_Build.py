@@ -172,7 +172,7 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
 
 
-    Comp_Com += Compiler.LoopCpp(URL + "Src/")
+    Comp_Com += Compiler.LoopCpp(URL + "Src/"
 
     Comp_Com += Compiler.Output(Cashe + "/" + Name + Static_Lib)
     PrintDebug("\n" + Comp_Com + "\n", Debug)
