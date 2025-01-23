@@ -1,5 +1,3 @@
 Name = "Core"
 
 Description = "Common functions that is used throughout the entire engine"
-
-EntryFile = "Core.cpp"

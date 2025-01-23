@@ -26,8 +26,6 @@ Dyn_Lib = ""
 
 Static_Lib = ""
 
-PublicEntry = ""
-
 Cashe = ""
 
 def PrintDebug(Text, Show):
@@ -44,7 +42,6 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
     ThirdLink = Core.GetVar(f, "ThirdPartyLink")
 
     Name = Core.GetVar(f, "Name")
-    PublicEntry = Core.GetVar(f, "EntryFile")
 
     EngineDir = ED
 

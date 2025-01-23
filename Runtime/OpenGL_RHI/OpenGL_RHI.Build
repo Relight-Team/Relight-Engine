@@ -6,8 +6,6 @@ Dependencies = ["Core", "ApplicationCore"]
 
 #Dependencies = ["Core", "RHI", "ApplicationCore"]
 
-EntryFile = "OpenGLRHI.cpp"
-
 if UNIX:
     ThirdPartyLink = ["SDL2"]
 

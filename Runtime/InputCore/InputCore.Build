@@ -4,8 +4,6 @@ Description = "Handles inputs from device"
 
 Dependencies = ["Core"]
 
-EntryFile = "InputCore.cpp"
-
 if UNIX:
     ThirdPartyLink = ["SDL2"]
 

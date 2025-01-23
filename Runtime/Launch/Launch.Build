@@ -4,5 +4,3 @@ Description = "Functions that handles the main game loop and launching of the ga
 
 Dependencies = ["Core", "ApplicationCore"]
 
-EntryFile = "Launch.cpp"
-
