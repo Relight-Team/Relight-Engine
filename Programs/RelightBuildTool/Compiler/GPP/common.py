@@ -8,9 +8,8 @@ def Start(Platform='Unix'):
         return "g++ "
 
 
-#def PrivateLink(dire, item):
-#    return "-I" + dire + "/Runtime/" + item + "/Private "
-
+def Name():
+    return "g++"
 
 
 def PublicLink(dire):

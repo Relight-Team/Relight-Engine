@@ -1,6 +1,6 @@
 # Owned by Relight Engine 2024
 
-# build the build files, and store each one in .Output
+# build the build files, and store each one in .Cashe
 
 import os
 
@@ -104,7 +104,6 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
 
     if tmp is not None:
         for t in tmp:
-            #Comp_Com += "-I" + EngineDir + "/Runtime/" + t + "/Public "
             a = EngineDir + "/Runtime/" + t + "/Src "
             Comp_Com += Compiler.PublicLink(a)
 
@@ -132,10 +131,6 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
         for Dep in Depend:
             # If depend is already compiled, link it,
             # Otherwise, build it, then link it
-
-            #a = EngineDir + "/Runtime/" + Dep + "/Private "
-            
-            #Comp_Com += Compiler.PublicLink(a)
 
             if Core.CheckFile(Bin_Loc_Engine + Dep + Static_Lib):
                 b = Cashe + "/" + Dep + Static_Lib + " "
@@ -183,23 +178,6 @@ def Build(f, URL, ED, Plat, Always, Output, Debug):
     PrintDebug("\n" + Comp_Com + "\n", Debug)
 
     os.system(Comp_Com)
-
-
-
-#def FThirdLink(f, EngineDir):
-#    # Initialize an empty set to store unique dependencies
-#    all_dependencies = set()
-#
-#    # Recursive function to gather dependencies
-#    def gather_dependencies(dep_file):
-#        Third = Core.GetVar(file, "ThirdPartyDependencies") or []
-#        for T in Third:
-#            # Add the dependency to the set
-#            all_dependencies.add(T)
-#           # Check if the dependency has its own dependencies and gather them recursively
-#           dep_file = os.path.join(EngineDir, "Runtime", T, T + ".Build")
-#            if os.path.isfile(dep_file):
-#                gather_dependencies(dep_file)
 
 
 

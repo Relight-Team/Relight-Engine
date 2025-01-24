@@ -128,20 +128,18 @@ def Compile(f, ED, Plat, Debug):
 
 
 
-    #for ind in ExtraDepend:
-    #    Comp_Com += " -l:" + ind + ".a"
         
 
     for id in files:
         Comp_Com += id + " "
 
-
-    if ExtraDepend is not None:
-        for i in range(len(ExtraDepend)):
-            dire = os.path.dirname(f)
-            VarOld = ExtraDepend[i].replace("\n", "")
-            Var = "/" + VarOld + "/" + VarOld + ".Build"
-            Comp_Com += Build.ExternalThirdParty(dire + Var, EngineDir, Debug)
+    if Compiler.Name() == "g++" or Compiler.Name() == "Clang":
+        if ExtraDepend is not None:
+            for i in range(len(ExtraDepend)):
+                dire = os.path.dirname(f)
+                VarOld = ExtraDepend[i].replace("\n", "")
+                Var = "/" + VarOld + "/" + VarOld + ".Build"
+                Comp_Com += Build.ExternalThirdParty(dire + Var, EngineDir, Debug)
 
     PrintDebug(("\n" + Comp_Com + "\n"), Debug)
 
