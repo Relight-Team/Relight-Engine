@@ -5,11 +5,11 @@ def Start(Platform='Unix'):
     if Platform == 'Win64':
         return "x86_64-w64-mingw32-g++ -static -static-libgcc -static-libstdc++ "
     else:
-        return "g++ "
+        return "clang "
 
 
 def Name():
-    return "g++"
+    return "clang"
 
 
 def PublicLink(dire):
@@ -28,7 +28,7 @@ def LinkCashe(Cashe1, Dep, Static_Lib):
     return "-L" + Cashe1 + "/" + Dep + Static_Lib + " "
 
 def Output(dire):
-    return " -o " + dire
+    return " -o " + dire + " -lstdc++ "
 
 def ComToStatic(dire):
     return " ar rcs " + dire
