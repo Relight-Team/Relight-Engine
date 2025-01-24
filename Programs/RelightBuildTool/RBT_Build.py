@@ -6,7 +6,7 @@ import os
 
 import RBT_Core as Core
 
-import Compiler.GPP.common as Compiler
+import RBT_Platform as Compiler
 
 # values
 
