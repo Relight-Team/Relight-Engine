@@ -25,9 +25,9 @@ def main(Target, Platform):
 
     #parser.add_argument('BuildCfg', type=str, help="The state of the output")
 
-    print()
-    print("Cleaning cashe folder")
-    print()
+
+
+
 
 
     class ConfigError(Exception):
@@ -44,9 +44,25 @@ def main(Target, Platform):
 
     CCfg.BuildConfig()
 
+    args = parser.parse_args()
+
 
     import Configuration as cfg
 
+    print("---------------------------------------------------------------")
+    print("|                    Relight Build Tool                       |")
+    print("---------------------------------------------------------------")
+    print("RBT Version: " + str(cfg.RBT_Ver[0]) + "." + str(cfg.RBT_Ver[1]) + "." + str(cfg.RBT_Ver[2]))
+    print("Engine Directory: " + cfg.Engine_Directory)
+    print("Host OS: " + os.name)
+    print("Target OS: " + args.Platform)
+    print("Compiler: " + cfg.Compiler)
+    print("Targeting: " + args.Target)
+    print("==========")
+
+    print()
+    print("Cleaning cashe folder")
+    print()
 
     RBT_TMP_Path_02 = cfg.Engine_Directory + "/Programs/RelightBuildTool/.Cashe"
 
@@ -56,7 +72,6 @@ def main(Target, Platform):
         if os.path.isfile(file_path):
             os.remove(file_path)
 
-    args = parser.parse_args()
 
     TF = args.Target
 
