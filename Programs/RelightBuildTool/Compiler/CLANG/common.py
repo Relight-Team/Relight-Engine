@@ -9,7 +9,7 @@ def Start(Platform='Unix'):
 
 
 def Name():
-    return "clang"
+    return "Clang"
 
 
 def PublicLink(dire):
@@ -19,6 +19,9 @@ def CompileTag():
     return "-c "
 
 def LinkTag(dire):
+    return ""
+
+def LinkTagFinal(dire):
     return "-L" + dire
 
 def LinkTagMini(dire):
@@ -28,7 +31,7 @@ def LinkCashe(Cashe1, Dep, Static_Lib):
     return "-L" + Cashe1 + "/" + Dep + Static_Lib + " "
 
 def Output(dire):
-    return " -o " + dire + " -lstdc++ "
+    return " -o " + dire
 
 def ComToStatic(dire):
     return " ar rcs " + dire

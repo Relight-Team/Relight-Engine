@@ -37,6 +37,9 @@ def CompileTag():
 def LinkTag(dire):
     return T.LinkTag(dire)
 
+def LinkTagFinal(dire):
+    return T.LinkTagFinal(dire)
+
 def LinkTagMini(dire):
     return T.LinkTagMini(dire)
 

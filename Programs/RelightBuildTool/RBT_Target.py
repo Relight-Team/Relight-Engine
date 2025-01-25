@@ -28,8 +28,25 @@ def PrintDebug(Text, Show):
     if Show == True:
         print(Text)
 
+def ReturnNoDuplicateArrays(Array):
+    Ret = []
+    i = 0
+    while i < len(Array):
+        Repeat = False
+        j = i
+        while j < len(Array):
+            if Array[i] == Array[j]:
+                Repeat = True
+            j += 1
+        if Repeat == False:
+            Ret += Array[i]
+        i += 1
+    return Ret
+
 
 def Compile(f, ED, Plat, Debug):
+
+    ClangThirdDepend = []
 
     # set values
 
@@ -47,7 +64,10 @@ def Compile(f, ED, Plat, Debug):
 
     AlwaysUpdate = Core.GetVarOptional(f, "AlwaysUpdateDynamic", False)
 
-    #Build each module and store it to ".Cashe1"
+
+    # Store All thirdPartyDepend names (For Clang)
+
+    #Build each module and store it to ".Cashe"
     if ExtraDepend is not None:
         for i in range(len(ExtraDepend)):
             dire = os.path.dirname(f)
@@ -57,6 +77,8 @@ def Compile(f, ED, Plat, Debug):
             URL = dire + Var
 
             URL_Without_Build = dire + "/" + VarOld + "/"
+
+            ClangThirdDepend += Build.ReturnThirdPartyDependencies(URL)
 
             Build.Build(URL, URL_Without_Build, EngineDir, Plat, AlwaysUpdate, EngineDir + "/Programs/RelightBuildTool/.Cashe", Debug)
 
@@ -110,7 +132,8 @@ def Compile(f, ED, Plat, Debug):
         Comp_Com += Cashe1 + "/" + Depend + ".o "
 
 
-    Comp_Com += Compiler.LinkTag(EngineDir + "/bin/" + Plat + " ")
+    Comp_Com += Compiler.LinkTagFinal(EngineDir + "/bin/" + Plat + " ")
+
 
     # Move .a from cashe to /Bin
     for fil in os.listdir(Cashe1):
@@ -141,7 +164,14 @@ def Compile(f, ED, Plat, Debug):
                 Var = "/" + VarOld + "/" + VarOld + ".Build"
                 Comp_Com += Build.ExternalThirdParty(dire + Var, EngineDir, Debug)
 
-    PrintDebug(("\n" + Comp_Com + "\n"), Debug)
+
+    # Add Library command for each Third Party, basic hack for now(Clang Only)
+    if(Compiler.Name() == "Clang"):
+        if ClangThirdDepend != []:
+            NewDepend = ReturnNoDuplicateArrays(ClangThirdDepend)
+            for item in NewDepend:
+                Comp_Com += "-L" + EngineDir + "/ThirdParty/" + item + "/Implement -l" + item + " "
+        Comp_Com += " -lstdc++ "
 
     os.system(Comp_Com + "\n")
 

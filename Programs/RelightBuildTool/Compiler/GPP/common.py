@@ -21,6 +21,9 @@ def CompileTag():
 def LinkTag(dire):
     return "-L" + dire
 
+def LinkTagFinal(dire):
+    return "-L" + dire
+
 def LinkTagMini(dire):
     return "-l" + dire
 
