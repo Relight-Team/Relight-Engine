@@ -43,6 +43,12 @@ def LinkTagFinal(dire):
 def LinkTagMini(dire):
     return T.LinkTagMini(dire)
 
+def LinkTagMiniFinal(dire):
+    if T.Name() == "Clang":
+        return T.LinkTagMiniFinal(dire)
+    else:
+        return T.LinkTagMini(dire)
+
 def LinkCashe(Cashe1, Dep, Static_Lib):
     return T.LinkCashe(Cashe1, Dep, Static_Lib)
 

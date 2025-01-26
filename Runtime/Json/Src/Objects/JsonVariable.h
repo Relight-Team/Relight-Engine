@@ -216,7 +216,7 @@ namespace JSON_API
 
             virtual const bool GetString(std::string& Output) override
             {
-                if(Value = true)
+                if(Value == true)
                 {
                     Output = "true";
                 }

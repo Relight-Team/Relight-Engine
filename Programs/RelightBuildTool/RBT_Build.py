@@ -32,11 +32,6 @@ def PrintDebug(Text, Show):
     if Show == True:
         print(Text)
 
-def ReturnThirdPartyDependencies(f):
-    a = Core.GetVar(f, "ThirdPartyDependencies")
-    if(a == None):
-        return ""
-    return a
 
 def Build(f, URL, ED, Plat, Always, Output, Debug):
 

@@ -33,15 +33,30 @@ def ReturnNoDuplicateArrays(Array):
     i = 0
     while i < len(Array):
         Repeat = False
-        j = i
-        while j < len(Array):
-            if Array[i] == Array[j]:
+        j = 0
+        while j < len(Ret):
+            if Array[i] == Ret[j]:
                 Repeat = True
             j += 1
         if Repeat == False:
-            Ret += Array[i]
+            Ret.append(Array[i])
         i += 1
     return Ret
+
+def process_files(f, Array, EngineDire):
+    if os.path.exists(f):
+        TmpDependencies = Core.GetVar(f, 'Dependencies')
+        TmpThirdParty = Core.GetVar(f, 'ThirdPartyDependencies')
+
+        if Core.GetVar(f, 'ExtraDependencies') is not None:
+            TmpDependencies += Core.GetVar(f, 'ExtraDependencies')
+
+        if TmpThirdParty is not None:
+            Array.extend(TmpThirdParty)
+
+        if TmpDependencies is not None:
+            for i in TmpDependencies:
+                process_files(EngineDire + "/Runtime/" + i + "/" + i + ".Build", Array, EngineDire)
 
 
 def Compile(f, ED, Plat, Debug):
@@ -77,8 +92,6 @@ def Compile(f, ED, Plat, Debug):
             URL = dire + Var
 
             URL_Without_Build = dire + "/" + VarOld + "/"
-
-            ClangThirdDepend += Build.ReturnThirdPartyDependencies(URL)
 
             Build.Build(URL, URL_Without_Build, EngineDir, Plat, AlwaysUpdate, EngineDir + "/Programs/RelightBuildTool/.Cashe", Debug)
 
@@ -119,7 +132,7 @@ def Compile(f, ED, Plat, Debug):
     elif Plat == "Win64":
         Exec = ".exe"
 
-    
+
     Comp_Com += Compiler.Output(TargCom + Name + Exec + " ")
 
      # Add .a files to command
@@ -141,17 +154,14 @@ def Compile(f, ED, Plat, Debug):
 
         NoExte = os.path.splitext(fil)[0]
 
-        
+
         if os.path.isfile(full_path):
             if ".a" in full_path and not Core.ArraySearch(NoExte, ExtraDepend):
                 os.system("mv " + Cashe1 + "/" + fil + " " + EngineDir + "/bin/" + Plat + "/" + fil)
 
-                Comp_Com += Compiler.LinkTagMini(":" +  fil + " ")
-    
+                Comp_Com += Compiler.LinkTagMiniFinal(":" +  fil + " ")
 
 
-
-        
 
     for id in files:
         Comp_Com += id + " "
@@ -165,13 +175,26 @@ def Compile(f, ED, Plat, Debug):
                 Comp_Com += Build.ExternalThirdParty(dire + Var, EngineDir, Debug)
 
 
-    # Add Library command for each Third Party, basic hack for now(Clang Only)
-    if(Compiler.Name() == "Clang"):
-        if ClangThirdDepend != []:
-            NewDepend = ReturnNoDuplicateArrays(ClangThirdDepend)
-            for item in NewDepend:
-                Comp_Com += "-L" + EngineDir + "/ThirdParty/" + item + "/Implement -l" + item + " "
-        Comp_Com += " -lstdc++ "
+    # For Clang, loop each dependencies, store in array, remove duplicates, and add the -l
+    if Compiler.Name() == "Clang" and ExtraDepend is not None:
+        ArrayVar = []
+        for i in range(len(ExtraDepend)):
+            dire = os.path.dirname(f)
+            VarOld = ExtraDepend[i].replace("\n", "")
+            Var = dire + "/" + VarOld + "/" + VarOld + ".Build"
+            process_files(Var, ArrayVar, EngineDir)
+
+
+        ArrayVar2 = ReturnNoDuplicateArrays(ArrayVar)
+
+        for i in ArrayVar2:
+            Comp_Com += "-l" + i + " "
+
+        Comp_Com += " -lstdc++"
+
+
+    PrintDebug(Comp_Com, Debug)
+    print()
 
     os.system(Comp_Com + "\n")
 
