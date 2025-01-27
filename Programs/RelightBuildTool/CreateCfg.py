@@ -3,9 +3,9 @@ import os
 
 # Default shit
 
-cfgver = "RBT_Ver = [0, 2, 0]\n"
+cfgver = "RBT_Ver = [0, 2, 1]\n"
 
-Compiler = "Compiler = 'g++'\n"
+Compiler = "Compiler = 'Default'\n"
 
 ShowDebug = "ShowDebug = False\n"
 

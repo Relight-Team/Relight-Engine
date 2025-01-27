@@ -1,4 +1,5 @@
 import os
+import subprocess
 import Configuration as Cfg
 
 
@@ -10,10 +11,38 @@ class CompileError(Exception):
             self.message = message
 
 
+
+
+def Internal_Check_File_Exist(Array):
+    try:
+        # Run 'clang --version' to check if Clang is available
+        subprocess.run(Array, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return True
+    except subprocess.CalledProcessError:
+        # Clang is not installed or there's an error
+        return False
+
 # Set wrapper for Compiler/SDK
 
 ## EDIT HERE IF NEEDED FOR YOUR OWN COMPILER! ##
-if Cfg.Compiler == "g++":
+
+# Default
+if Cfg.Compiler == "Default":
+    if os.name == "posix":
+        if Internal_Check_File_Exist(['clang', '--version']):
+            import Compiler.CLANG.common as T
+        elif Internal_Check_File_Exist('g++' '--version'):
+            print("WARNING: clang is not installed or is setup improperly, clang is the recommended SDK for unix/posix OS, using g++ as a backup")
+            import Compiler.GPP.common as T
+        else:
+            raise CompileError("Exiting: both clang and g++ are either not installed or is setup improperly, we recommend installing clang on this system")
+    else:
+        print("TODO: Add support for other OS like windows and mac")
+# ==== #
+
+
+
+elif Cfg.Compiler == "g++":
     import Compiler.GPP.common as T
 elif Cfg.Compiler == "Clang":
     import Compiler.CLANG.common as T
