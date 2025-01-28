@@ -22,70 +22,23 @@ class Map
 
     // Read
 
-    int Size()
-    {
-        return Key.Size();
-    }
+    int Size();
 
-    bool Exist(KeyType Name)
-    {
-        if(Key.Contains(Name))
-        {
-            return true;
-        }
-        return false;
-    }
+    bool Exist(KeyType Name);
 
-    int Find(KeyType A)
-    {
-        int i;
-        Key.Find(A, i);
-        return i;
-    }
+    int Find(KeyType A);
 
-    KeyType First(int i)
-    {
-        return Key[i];
-    }
+    KeyType First(int i);
 
-    ValueType Second(int i)
-    {
-        return Value[i];
-    }
+    ValueType Second(int i);
 
     // Write
 
 
     // Set's a value, if it doesn't exist, add it
-    void SetAdd(KeyType K, ValueType V)
-    {
-        // Key found, replacing value with new value
-        if(Key.Contains(K))
-        {
-            int i;
-            Key.Find(K, i);
-            Value[i] = V;
-        }
+    void SetAdd(KeyType K, ValueType V);
 
-        // Key not found, adding key with value
-        else
-        {
-            Key.Add(K);
-            Value.Add(V);
-        }
-
-    }
-
-    void Remove(KeyType K)
-    {
-        if(Key.Contains(K))
-        {
-            int i;
-            Key.Find(K, i);
-            Key.RemoveAt(i);
-            Value.RemoveAt(i);
-        }
-    }
+    void Remove(KeyType K);
 
     // Operators
 
