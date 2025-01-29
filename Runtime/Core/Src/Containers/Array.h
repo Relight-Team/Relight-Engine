@@ -14,6 +14,7 @@
 
 CORE_API::LogCategory* Array_Error = new CORE_API::LogCategory("Array");
 
+
 template <typename T>
 
 
@@ -25,9 +26,20 @@ class Array
 
         // Initialize
 
-        void Init(T Repeat, int Size);
+        void Init(T Repeat, int Size)
+        {
+            InternalChangeSize(Size);
 
-        void Init(int Size);
+            for(int i = 0; i < Size; i++)
+            {
+                Arr[i] = Repeat;
+            }
+        }
+
+        void Init(int Size)
+        {
+            InternalChangeSize(Size);
+        }
 
         void Init(T Input[], int Size)
         {
@@ -181,7 +193,14 @@ class Array
 
         // == Write ==
 
-        void Add(T Input);
+        void Add(T Input)
+        {
+            int OldSize = CurrentSize;
+
+            InternalChangeSize(OldSize + 1);
+
+            Arr[OldSize] = Input;
+        }
 
         void Append(Array& Input, int Size)
         {
@@ -194,7 +213,10 @@ class Array
             }
         }
 
-        void SetNum(int NewSize);
+        void SetNum(int NewSize)
+        {
+            InternalChangeSize(NewSize);
+        }
 
         // Only adds the value if it doesn't exist in an array
         void AddUnique(T Input)
@@ -216,7 +238,16 @@ class Array
             }
         }
 
-        void Insert(T Input, int Index);
+        void Insert(T Input, int Index)
+        {
+            InternalChangeSize(CurrentSize + 1);
+
+            for(int i = CurrentSize; i > Index + 1; i--)
+            {
+                Arr[i] = Arr[i - 1];
+            }
+            Arr[Index] = Input;
+        }
 
         void RemoveAt(int Index)
         {
@@ -260,7 +291,10 @@ class Array
             }
         }
 
-        void Empty();
+        void Empty()
+        {
+            InternalChangeSize(0);
+        }
 
         // Destructor to free memory
     ~Array()
