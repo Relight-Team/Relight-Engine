@@ -12,8 +12,21 @@ CORE_API::LogCategory* SDL2 = new CORE_API::LogCategory("SDL2");
 class Window
 {
 public:
+    int CreateWindow(const char* Title)
+    {
+        if(SDL_Init(SDL_INIT_VIDEO) < 0)
+        {
+            LOG(*SDL2, Fatal, "Failed to initialize SDL library!!");
+            LOG(*SDL2, Fatal, SDL_GetError());
+            return -1;
+        }
 
-    int CreateWindow(const char* Title);
+        window = SDL_CreateWindow(Title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,680, 480, 0);
+
+
+        LOG(*SDL2, Log, "Window created!");
+        return 0;
+    }
 
     int DestroyWindow()
     {

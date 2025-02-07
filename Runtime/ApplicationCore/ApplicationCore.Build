@@ -6,6 +6,7 @@ Dependencies = ["Core"]
 
 EntryFile = "ApplicationCore.cpp"
 
+
 if UNIX:
     ThirdPartyLink = ["SDL2"]
 

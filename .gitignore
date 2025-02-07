@@ -11,7 +11,6 @@
 
 # Remove compiled directories
 
-
 bin/
 
 # Remove uneeded directories
@@ -30,3 +29,11 @@ Programs/RelightBuildTool/Configuration.py
 # remove python's cache code
 
 **__pycache__
+
+# == Project Files == #
+
+Make
+
+Makefile
+
+.mk
