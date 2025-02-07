@@ -37,3 +37,6 @@ Make
 Makefile
 
 .mk
+
+# For RelightBuildTool_neXt
+!Make*/
