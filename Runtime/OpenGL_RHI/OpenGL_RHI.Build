@@ -2,6 +2,8 @@ Name = "OpenGL_RHI"
 
 Description = "Adds Abstraction to OpenGL for RHI"
 
+Type = "Engine"
+
 Dependencies = ["Core", "ApplicationCore"]
 
 #Dependencies = ["Core", "RHI", "ApplicationCore"]

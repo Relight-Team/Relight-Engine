@@ -2,6 +2,8 @@ Name = "ApplicationCore"
 
 Description = "Core functions for starting and managing the game window"
 
+Type = "Engine"
+
 Dependencies = ["Core"]
 
 EntryFile = "ApplicationCore.cpp"

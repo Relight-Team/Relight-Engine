@@ -2,4 +2,6 @@ Name = "Engine"
 
 Description = "Systems that is required to manage a game"
 
+Type = "Engine"
+
 Dependencies = ["Core", "ApplicationCore"]

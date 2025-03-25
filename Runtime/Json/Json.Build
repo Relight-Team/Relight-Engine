@@ -2,5 +2,7 @@ Name = "Json"
 
 Description = "Manages Json files"
 
+Type = "Engine"
+
 Dependencies = ["Core"]
 

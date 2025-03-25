@@ -9,6 +9,10 @@
 
 .Internal/
 
+# Remove personal Configs
+
+Configs/BaseBuilder.cfg
+
 # Remove compiled directories
 
 bin/
@@ -18,6 +22,8 @@ bin/
 Programs/RelightBuildTool/.Cashe/
 
 Configs/Test.cfg
+
+Intermediate/
 
 # Remove compiled files
 
@@ -40,3 +46,9 @@ Makefile
 
 # For RelightBuildTool_neXt
 !Make*/
+
+# HIDE UNTIL READY TO BE RELEASED
+
+Programs/BACKUP
+
+Programs/RelightBuildTool

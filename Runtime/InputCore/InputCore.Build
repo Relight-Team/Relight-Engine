@@ -2,6 +2,8 @@ Name = "InputCore"
 
 Description = "Handles inputs from device"
 
+Type = "Engine"
+
 Dependencies = ["Core"]
 
 if UNIX:
