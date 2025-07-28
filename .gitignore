@@ -17,6 +17,8 @@ Configs/BaseBuilder.cfg
 
 bin/
 
+Intermediate/
+
 # Remove uneeded directories
 
 Programs/RelightBuildTool/.Cashe/
