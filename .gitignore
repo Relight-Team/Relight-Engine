@@ -31,7 +31,6 @@ Intermediate/
 
 Programs/RelightBuildTool/Configuration.py
 
-
 # == Python ==
 
 # remove python's cache code
@@ -43,6 +42,10 @@ Programs/RelightBuildTool/Configuration.py
 Make
 
 Makefile
+
+Makefile/
+
+CMakeFiles/
 
 .mk
 

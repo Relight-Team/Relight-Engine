@@ -4,7 +4,7 @@ Description = "Core functions for starting and managing the game window"
 
 Type = "Engine"
 
-Dependencies = ["Core"]
+Modules = ["Core"]
 
 EntryFile = "ApplicationCore.cpp"
 
