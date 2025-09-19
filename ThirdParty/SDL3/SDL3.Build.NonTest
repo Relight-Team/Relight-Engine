@@ -1,0 +1,31 @@
+import os
+
+Name = "SDL3"
+
+Description = "Window and Graphics manager, will be used for linux"
+
+# Set values
+SDL_Bin_Dir = os.path.join(ENGINE_BIN_THIRDPARTY_DIRECTORY, "SDL3")
+
+SDLBuildFile = os.path.abspath(FILEPATH)
+
+SDL_Source_Dir = os.path.join(os.path.dirname(SDLBuildFile), "Src")
+
+SDL_Inc_Dir = os.path.join(SDL_Bin_Dir, "include")
+
+SDL_Archive_Name = "libSDL3.a"
+
+# Run's command to build SDL3
+CommandToRun = []
+
+CommandToRun.append("cmake " + SDL_Source_Dir + " -B " + SDL_Bin_Dir + " -DCMAKE_INSTALL_PREFIX=" + SDL_Bin_Dir + " -DBUILD_SHARED_LIBS=OFF")
+
+CommandToRun.append("make -C " + SDL_Bin_Dir)
+
+CommandToRun.append("make -C " + SDL_Bin_Dir + " install")
+
+# Add Includes and archive
+SysIncludes = []
+SysIncludes.append(SDL_Inc_Dir)
+
+AdditionalLibs = [os.path.join(SDL_Bin_Dir, SDL_Archive_Name)]

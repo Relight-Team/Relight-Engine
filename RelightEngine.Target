@@ -1,0 +1,15 @@
+# Relight Engine Target
+
+# Build's the Runtime and Developer
+
+Name = "RelightEngine"
+
+IncludeLaunch = True
+
+CopyIncToIntermediate = True
+
+Precompiled = False
+
+Modules = [
+    "Core"
+]

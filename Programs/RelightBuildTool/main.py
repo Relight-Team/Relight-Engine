@@ -83,6 +83,13 @@ def GetArgs():
         help="The custom directory to search for target file (use if we have no project file and its not an engine target)",
     )
 
+    Parser.add_argument(
+        "-Cook",
+        type=bool,
+        metavar="[BOOL]",
+        help="If true, we will run RelightCookerTool on the project",
+    )
+
     # Parse all args into custom class so we can use it!
     ArgsTemp = Parser.parse_args()
 
