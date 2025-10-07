@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 
-#include "Config.h"
+#include "Etc/Config.h"
 
 void Config::GetString(std::string PClass, std::string Value, std::string& Store, std::string File)
 {

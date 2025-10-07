@@ -1,6 +1,6 @@
 # Owned by Relight Engine 2024
 
-
+# TODO: Redo all of this, it sucks!
 
 # == General ==
 
@@ -26,6 +26,8 @@ Programs/RelightBuildTool/.Cashe/
 Configs/Test.cfg
 
 Intermediate/
+
+Programs/RelightBuildTool/log.txt
 
 # Remove compiled files
 
