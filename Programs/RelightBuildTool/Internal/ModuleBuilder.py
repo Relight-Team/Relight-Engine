@@ -343,7 +343,7 @@ class ModuleBuilder:
                 os.makedirs(IncludeIntermediatePath, exist_ok=True)
 
             if not os.path.exists(os.path.join(IncludeIntermediatePath, RelPath)):
-                print(
+                Logger.Logger(3,
                     "cp "
                     + HeaderFileSource
                     + " "
