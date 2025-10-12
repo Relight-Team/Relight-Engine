@@ -53,9 +53,3 @@ CMakeFiles/
 
 # For RelightBuildTool_neXt
 !Make*/
-
-# HIDE UNTIL READY TO BE RELEASED
-
-Programs/BACKUP
-
-Programs/RelightBuildTool
