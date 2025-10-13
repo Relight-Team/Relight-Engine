@@ -36,9 +36,9 @@ namespace ENGINE_INTERNAL
                 return Color;
             }
 
-            string ConvertColor(string Color)
+            string ConvertColor(string InColor)
             {
-                return PrivConvertColor(Color);
+                return PrivConvertColor(InColor);
             }
 
             void Print()
@@ -53,21 +53,21 @@ namespace ENGINE_INTERNAL
 
             // Convert color name to POSIX color
 
-            string PrivConvertColor(string Color)
+            string PrivConvertColor(string InColor)
             {
-                if(Color == "White")
+                if(InColor == "White")
                 {
                     return "";
                 }
-                else if(Color == "Yellow")
+                else if(InColor == "Yellow")
                 {
                     return "\e[93m";
                 }
-                else if(Color == "Red")
+                else if(InColor == "Red")
                 {
                     return "\e[31m";
                 }
-                else if(Color == "Dark Red")
+                else if(InColor == "Dark Red")
                 {
                     return "\e[91m";
                 }
