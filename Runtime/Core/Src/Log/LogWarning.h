@@ -12,17 +12,9 @@ namespace ENGINE_INTERNAL
 
             // Constructor
 
-            LogWarning(string Name)
-            {
-                Title = Name;
-            }
+            LogWarning(string Name);
 
-            LogWarning(string Name, string Crayon)
-            {
-                Title = Name;
-
-                Color = Crayon;
-            }
+            LogWarning(string Name, string Crayon);
 
             // Get's
 
@@ -53,29 +45,7 @@ namespace ENGINE_INTERNAL
 
             // Convert color name to POSIX color
 
-            string PrivConvertColor(string InColor)
-            {
-                if(InColor == "White")
-                {
-                    return "";
-                }
-                else if(InColor == "Yellow")
-                {
-                    return "\e[93m";
-                }
-                else if(InColor == "Red")
-                {
-                    return "\e[31m";
-                }
-                else if(InColor == "Dark Red")
-                {
-                    return "\e[91m";
-                }
-                else
-                {
-                    return "";
-                }
-        }
+            string PrivConvertColor(string InColor);
     };
 }
 
