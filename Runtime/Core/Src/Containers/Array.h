@@ -10,7 +10,7 @@
 
 #include "Log/Log.h"
 
-//#include <iostream> // TODO: Replace this with Relight's alt
+#include <iostream> // TODO: Replace this with Relight's alt
 
 CORE_API::LogCategory* Array_Error = new CORE_API::LogCategory("Array");
 
@@ -69,7 +69,7 @@ class Array
         Array<T>& operator=(Array<T>& B)
         {
             this->Empty();
-            for(int i = 0; i < B.Num(); i++)
+            for(int i = 0; i < B.Count(); i++)
             {
                 this->Add(B[i]);
             }
@@ -78,20 +78,20 @@ class Array
 
         Array<T>& operator+=(Array<T>& B)
         {
-            this->Append(B, B.Num());
+            this->Append(B, B.Count());
             return *this;
         }
 
         // == Queries ==
 
         // Returns the number of elements
-        int Num()
+        int Count()
         {
             return CurrentSize;
         }
 
-        // Like Num(), but assumes the first element index is 0 instead of 1
-        int Size()
+        // Like Count(), but assumes the first element index is 0 instead of 1
+        int Length()
         {
             return CurrentSize - 1;
         }
@@ -253,7 +253,7 @@ class Array
         {
 
             int Cur = CurrentSize;
-            for(int i = Index; i < this->Num(); i++)
+            for(int i = Index; i < this->Length(); i++)
             {
                 Arr[i] = Arr[i + 1];
             }
