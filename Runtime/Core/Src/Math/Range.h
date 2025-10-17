@@ -47,12 +47,12 @@ namespace CORE_API
             {
                 if(UpperBound.IsNotOpen() && Second.LowerBound.IsNotOpen() && UpperBound.GetValue() == Second.LowerBound.GetValue())
                 {
-                    return UpperBound.IsInclusive() && Second.LowerBound.IsExclusive() || UpperBound.IsExclusive && Second.LowerBound.IsInclusive();
+                    return (UpperBound.IsInclusive() && Second.LowerBound.IsExclusive()) || (UpperBound.IsExclusive && Second.LowerBound.IsInclusive());
                 }
 
                 else if(Second.UpperBound.IsNotOpen() && LowerBound.IsNotOpen() && Second.UpperBound.GetValue() == LowerBound.GetValue())
                 {
-                    return Second.UpperBound.IsInclusive() && LowerBound.IsExclusive() || Second.UpperBound.IsExclusive && LowerBound.IsInclusive();
+                    return (Second.UpperBound.IsInclusive() && LowerBound.IsExclusive()) || (Second.UpperBound.IsExclusive && LowerBound.IsInclusive());
                 }
                 else
                 {
