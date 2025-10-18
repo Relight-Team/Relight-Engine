@@ -20,9 +20,9 @@ class Map
 
     // Read
 
-    int Size()
+    int Length()
     {
-        return Key.Size();
+        return Key.Length();
     }
 
     bool Exist(KeyType Name)
