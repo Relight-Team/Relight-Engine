@@ -1,4 +1,5 @@
 #pragma once
 
 #ifdef RE_PLATFORM_LINUX
-#include "Linux/"
+#include "Linux/LinuxPlatform.h"
+#endif

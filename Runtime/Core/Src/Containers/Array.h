@@ -12,7 +12,7 @@
 
 #include <iostream> // TODO: Replace this with Relight's alt
 
-CORE_API::LogCategory* Array_Error = new CORE_API::LogCategory("Array");
+extern CORE_API::LogCategory* Array_Error;
 
 
 template <typename T>
@@ -23,6 +23,28 @@ class Array
     public:
 
         Array() : Arr(nullptr), CurrentSize(0) {}
+
+        // Deep copy constructor
+        // prevents double pointer deletion bugs
+        Array(const Array& Other) : Arr(nullptr), CurrentSize(0)
+        {
+            if(Other.CurrentSize > 0)
+            {
+                // Overwrite Arr
+                Arr = new T[Other.CurrentSize];
+                for(int I = 0; I < Other.CurrentSize; I++)
+                {
+                    Arr[I] = Other.Arr[I];
+                }
+                CurrentSize = Other.CurrentSize;
+            }
+        }
+
+        Array(Array&& Other) noexcept : Arr (Other.Arr), CurrentSize(Other.CurrentSize)
+        {
+            Other.Arr = nullptr;
+            Other.CurrentSize = 0;
+        }
 
         // Initialize
 
@@ -51,7 +73,7 @@ class Array
 
         // == Operators ==
 
-        T& operator[](int i)
+        const T& operator[](int i) const
         {
             if(i < 0)
             {
@@ -66,12 +88,15 @@ class Array
             return Arr[i];
         }
 
-        Array<T>& operator=(Array<T>& B)
+        Array<T>& operator=(const Array<T>& B)
         {
-            this->Empty();
-            for(int i = 0; i < B.Count(); i++)
+            if(this != &B)
             {
-                this->Add(B[i]);
+                this->Empty();
+                for(int i = 0; i < B.Count(); i++)
+                {
+                    this->Add(B[i]);
+                }
             }
             return *this;
         }
@@ -82,16 +107,31 @@ class Array
             return *this;
         }
 
+        Array<T>& operator=(Array<T>&& Other) noexcept
+        {
+            if (this != &Other)
+            {
+                delete[] Arr;
+
+                Arr = Other.Arr;
+                CurrentSize = Other.CurrentSize;
+
+                Other.Arr = nullptr;
+                Other.CurrentSize = 0;
+            }
+            return *this;
+        }
+
         // == Queries ==
 
         // Returns the number of elements
-        int Count()
+        int Count() const
         {
             return CurrentSize;
         }
 
         // Like Count(), but assumes the first element index is 0 instead of 1
-        int Length()
+        int Length() const
         {
             return CurrentSize - 1;
         }
@@ -301,6 +341,7 @@ class Array
     {
         delete[] Arr;
         Arr = nullptr;
+        CurrentSize = 0;
     }
 
     private:
