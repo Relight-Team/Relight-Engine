@@ -69,11 +69,16 @@ class String
 
     void Append(const char* B);
 
+    bool StartsWith(const String& B, bool CaseSensitive = true);
+
     private:
 
     String() {}
 
     Array<UTF16> CharArr;
+
+    bool WithInternal(const UTF16 B, int Index, bool Case = true);
+    bool WithInternal(const char B, int Index, bool Case = true);
 };
 
 inline String operator+(String& A, const char* B)

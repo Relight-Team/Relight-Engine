@@ -87,3 +87,77 @@ void String::Append(const char* B)
     String StrB = B;
     CharArr.Append(StrB.CharArr, StrB.CharArr.Count());
 }
+
+bool String::StartsWith(const String& B, bool CaseSensitive)
+{
+    bool DoesStart = false;
+
+    // If B length is longer than String, then we know it's false
+    if(B.CharArr.Length() > CharArr.Length())
+    {
+        return false;
+    }
+
+    for(int I = 0; I <= B.CharArr.Length(); I++)
+    {
+        DoesStart = WithInternal(B.CharArr[I], I, CaseSensitive);
+
+        if(DoesStart == false)
+        {
+            return false;
+        }
+    }
+    return DoesStart;
+}
+
+bool String::WithInternal(const UTF16 B, int Index, bool Case)
+{
+    if(Case == true)
+    {
+        if(CharArr[Index] == B)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if((CharUtil::ToUpper(CharArr[Index]) == B) or (CharUtil::ToLower(CharArr[Index]) == B))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+bool String::WithInternal(const char B, int Index, bool Case)
+{
+    if(Case == true)
+    {
+        if(CharArr[Index] == B)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if((CharUtil::ToUpper(CharArr[Index]) == B) or (CharUtil::ToLower(CharArr[Index]) == B))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
