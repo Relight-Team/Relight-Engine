@@ -27,6 +27,18 @@ class String
         return Compare(B, true);
     }
 
+    String operator+(const String& Other) const
+    {
+        String Ret;
+        Ret.CharArr = CharArr;
+        for(int I = 0; I <= Other.Length(); I++)
+        {
+            Ret.CharArr.Add(Other.CharArr[I]);
+        }
+
+        return Ret;
+    }
+
     bool Compare(String B, bool CaseSensitive = true);
 
     // Converts a UTF16 character into a ASCII character in string. Mostly used for displaying characters in terminal
@@ -36,13 +48,13 @@ class String
     }
 
     // Length of array starting at 0
-    int Length()
+    int Length() const
     {
         return CharArr.Length();
     }
 
     // Get's the size of array starting at 1
-    int Size()
+    int Size() const
     {
         return CharArr.Length();
     }
@@ -53,5 +65,27 @@ class String
 
     private:
 
+    String() {}
+
     Array<UTF16> CharArr;
 };
+
+inline String operator+(String& A, const char* B)
+{
+    return A + String(B);
+}
+
+inline String operator+(const char* A, String& B)
+{
+    return String(A) + B;
+}
+
+inline String operator+(String& A, const UTF16* B)
+{
+    return A + String(B);
+}
+
+inline String operator+(const UTF16* A, String& B)
+{
+    return String(A) + B;
+}
