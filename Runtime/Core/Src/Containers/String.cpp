@@ -110,6 +110,32 @@ bool String::StartsWith(const String& B, bool CaseSensitive)
     return DoesStart;
 }
 
+bool String::EndsWith(const String& B, bool CaseSensitive)
+{
+    bool DoesStart = false;
+
+    // If B length is longer than String, then we know it's false
+    if(B.CharArr.Length() > CharArr.Length())
+    {
+        return false;
+    }
+
+    int BaseI = CharArr.Length();
+
+     for(int I = B.CharArr.Length(); I >= 0; I--)
+    {
+        DoesStart = WithInternal(B.CharArr[I], BaseI, CaseSensitive);
+
+        if(DoesStart == false)
+        {
+            return false;
+        }
+
+        BaseI--;
+    }
+    return DoesStart;
+}
+
 bool String::WithInternal(const UTF16 B, int Index, bool Case)
 {
     if(Case == true)

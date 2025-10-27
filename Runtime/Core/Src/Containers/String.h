@@ -71,6 +71,8 @@ class String
 
     bool StartsWith(const String& B, bool CaseSensitive = true);
 
+    bool EndsWith(const String& B, bool CaseSensitive = true);
+
     private:
 
     String() {}
