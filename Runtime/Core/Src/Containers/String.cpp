@@ -70,3 +70,20 @@ String String::ToUpper()
     String Ret = Temp;
     return Ret;
 }
+
+void String::Append(const String& B)
+{
+    CharArr.Append(B.CharArr, B.CharArr.Count());
+}
+
+void String::Append(const UTF16* B)
+{
+    String StrB = B;
+    CharArr.Append(StrB.CharArr, StrB.CharArr.Count());
+}
+
+void String::Append(const char* B)
+{
+    String StrB = B;
+    CharArr.Append(StrB.CharArr, StrB.CharArr.Count());
+}

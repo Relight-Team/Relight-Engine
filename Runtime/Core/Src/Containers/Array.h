@@ -242,7 +242,7 @@ class Array
             Arr[OldSize] = Input;
         }
 
-        void Append(Array& Input, int Size)
+        void Append(const Array& Input, int Size)
         {
 
             int OldSize = CurrentSize;

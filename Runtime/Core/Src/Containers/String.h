@@ -63,6 +63,12 @@ class String
 
     String ToLower();
 
+    void Append(const String& B);
+
+    void Append(const UTF16* B);
+
+    void Append(const char* B);
+
     private:
 
     String() {}
