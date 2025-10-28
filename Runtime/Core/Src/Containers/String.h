@@ -73,6 +73,8 @@ class String
 
     bool EndsWith(const String& B, bool CaseSensitive = true);
 
+    String Reverse();
+
     private:
 
     String() {}

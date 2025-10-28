@@ -187,3 +187,12 @@ bool String::WithInternal(const char B, int Index, bool Case)
         }
     }
 }
+
+String String::Reverse()
+{
+    String StrRet;
+
+    StrRet.CharArr = CharArr.Reverse();
+
+    return StrRet;
+}
