@@ -211,6 +211,17 @@ class Array
             return false;
         }
 
+        Array<T> Reverse()
+        {
+            Array<T> Ret;
+
+            for(int I = Length(); I >= 0 ; I--)
+            {
+                Ret.Add(Arr[I]);
+            }
+            return Ret;
+        }
+
         T Last()
         {
             return Arr[CurrentSize - 1];
