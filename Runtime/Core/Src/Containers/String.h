@@ -17,7 +17,7 @@ class String
 
     String(const Array<UTF16> InChars);
 
-    UTF16 operator[](int I)
+    UTF16 operator[](const int I) const
     {
         return CharArr[I];
     }
@@ -74,6 +74,12 @@ class String
     bool EndsWith(const String& B, bool CaseSensitive = true);
 
     String Reverse();
+
+    bool Contains(const UTF16& StrCheck);
+
+    bool Contains(const String& StrCheck);
+
+    bool Split(const String& Str, String& Left, String& Right, bool CaseSensitive = true);
 
     private:
 

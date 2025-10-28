@@ -196,3 +196,51 @@ String String::Reverse()
 
     return StrRet;
 }
+
+bool String::Contains(const UTF16& StrCheck)
+{
+    return CharArr.Contains(StrCheck);
+}
+
+bool String::Contains(const String& StrCheck)
+{
+
+    if(StrCheck.Length() > Length())
+    {
+        return false;
+    }
+
+    bool Ret = true;
+
+    for(int ArrIndex = 0; ArrIndex <= Length(); ArrIndex++)
+    {
+        // if the first character is the same as the string we are checking, then check if it matches
+        if(CharArr[ArrIndex] == StrCheck[0])
+        {
+            for(int CheckIndex = 0; CheckIndex <= StrCheck.Length(); CheckIndex++)
+            {
+                if(CharArr[ArrIndex + CheckIndex] != StrCheck[CheckIndex])
+                {
+                    Ret = false;
+                    break;
+                }
+                else
+                {
+                    Ret = true;
+                }
+            }
+
+            if(Ret == true)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+//bool String::Split(const String& Str, String& Left, String& Right, CaseSensitive)
+//{
+
+//}
