@@ -212,7 +212,7 @@ bool String::Contains(const String& StrCheck)
 
     bool Ret = true;
 
-    for(int ArrIndex = 0; ArrIndex <= Length(); ArrIndex++)
+    for(int ArrIndex = 0; ArrIndex < Length() ; ArrIndex++)
     {
         // if the first character is the same as the string we are checking, then check if it matches
         if(CharArr[ArrIndex] == StrCheck[0])

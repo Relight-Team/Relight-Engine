@@ -80,8 +80,10 @@ class Array
                 LOG(*Array_Error, Fatal, "index is lower than 0 when using [] operator. Index must be 0 or higher");
             }
 
-            if(i > CurrentSize)
+            if(i >= CurrentSize)
             {
+                std::cout << i << std::endl;
+                std::cout << CurrentSize << std::endl;
                 LOG(*Array_Error, Fatal, "index is higher than the actual array size");
             }
 
