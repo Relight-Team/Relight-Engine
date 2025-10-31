@@ -349,6 +349,65 @@ class Array
             InternalChangeSize(0);
         }
 
+        bool SplitIndex(int Index, Array<T>& Left, Array<T>& Right)
+        {
+            if(Index < 0 or Index > CurrentSize)
+            {
+                return false;
+            }
+
+            Left.Empty();
+            Right.Empty();
+
+            // Add left
+            for(int I = 0; I < Index; I++)
+            {
+                Left.Add(Arr[I]);
+            }
+
+            for(int I = Index + 1; I < CurrentSize; I++)
+            {
+                Right.Add(Arr[I]);
+            }
+
+            return true;
+        }
+
+        // Like SplitIndex, but keeps the Index value
+        bool SplitIndexInclusive(int Index, Array<T>& Left, Array<T>& Right)
+        {
+            if(Index < 0 or Index > CurrentSize)
+            {
+                return false;
+            }
+
+            Left.Empty();
+            Right.Empty();
+
+            // Add left
+            for(int I = 0; I < Index; I++)
+            {
+                Left.Add(Arr[I]);
+            }
+
+            for(int I = Index; I < CurrentSize; I++)
+            {
+                Right.Add(Arr[I]);
+            }
+
+            return true;
+        }
+
+//         bool Split(T& ItemToSplit, Array<T> Left, Array<T> Right, bool Last = false);
+//         bool Split(T& ItemToSplit, Array<T> Left, Array<T> Right, bool Last)
+//         {
+//             int
+//             if(Last == false)
+//             {
+//
+//             }
+//         }
+
         // Destructor to free memory
     ~Array()
     {
