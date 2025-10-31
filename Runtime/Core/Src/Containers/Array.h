@@ -188,7 +188,7 @@ class Array
                 return false;
             }
 
-            for(int i = CurrentSize - 1; i >= 0; i++)
+            for(int i = CurrentSize - 1; i >= 0; i--)
             {
                 if(Arr[i] == Input)
                 {
@@ -373,7 +373,7 @@ class Array
             return true;
         }
 
-        // Like SplitIndex, but keeps the Index value
+        // Like SplitIndex, but keeps the Index value, put's index value on Right
         bool SplitIndexInclusive(int Index, Array<T>& Left, Array<T>& Right)
         {
             if(Index < 0 or Index > CurrentSize)
@@ -398,15 +398,33 @@ class Array
             return true;
         }
 
-//         bool Split(T& ItemToSplit, Array<T> Left, Array<T> Right, bool Last = false);
-//         bool Split(T& ItemToSplit, Array<T> Left, Array<T> Right, bool Last)
-//         {
-//             int
-//             if(Last == false)
-//             {
-//
-//             }
-//         }
+        bool Split(const T& ItemToSplit, Array<T>& Left, Array<T>& Right, bool Last = false, bool Inclusive = false)
+        {
+            int Index;
+            bool NoErr;
+            if(Last == false)
+            {
+                NoErr = Find(ItemToSplit, Index);
+            }
+            else
+            {
+                NoErr = FindLast(ItemToSplit, Index);
+            }
+
+            if(NoErr == false)
+            {
+                return false;
+            }
+
+            if(Inclusive == false)
+            {
+                return SplitIndex(Index, Left, Right);
+            }
+            else
+            {
+                return SplitIndexInclusive(Index, Left, Right);
+            }
+        }
 
         // Destructor to free memory
     ~Array()
