@@ -13,6 +13,8 @@ class String
 
     String(const UTF16* InChars);
 
+    String(const UTF16& InChars);
+
     String(const char* InChars);
 
     String(const Array<UTF16> InChars);
@@ -63,6 +65,8 @@ class String
 
     String ToLower();
 
+    void Append(const UTF16& B);
+
     void Append(const String& B);
 
     void Append(const UTF16* B);
@@ -81,7 +85,7 @@ class String
 
     int Find(const String& StrCheck);
 
-    int Split(const String& Str, String& Left, String& Right, bool CaseSensitive = true);
+    bool Split(String& Str, String& Left, String& Right, bool CaseSensitive = true);
 
     private:
 

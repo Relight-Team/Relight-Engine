@@ -1,4 +1,5 @@
 #include "Containers/String.h"
+#include <iostream>
 
 String::String(const UTF16* InChars)
     {
@@ -8,6 +9,11 @@ String::String(const UTF16* InChars)
             CharArr.Add(*PntTxt);
             ++PntTxt;
         }
+    }
+
+String::String(const UTF16& InChars)
+    {
+        CharArr.Add(InChars);
     }
 
 String::String(const char* InChars)
@@ -69,6 +75,23 @@ String String::ToUpper()
     }
     String Ret = Temp;
     return Ret;
+}
+
+String String::ToLower()
+{
+    Array<UTF16> Temp;
+    for(int I = 0; I <= Length(); I++)
+    {
+        Temp.Add(CharUtil::ToLower(CharArr[I]));
+    }
+    String Ret = Temp;
+    return Ret;
+}
+
+void String::Append(const UTF16& B)
+{
+    String StrB = B;
+    CharArr.Append(StrB.CharArr, StrB.CharArr.Count());
 }
 
 void String::Append(const String& B)
@@ -239,49 +262,3 @@ bool String::Contains(const String& StrCheck)
 
     return false;
 }
-
-int String::Find(const String& StrCheck)
-{
-    int FindIndex = 0;
-    if(Contains(StrCheck))
-    {
-        if(StrCheck.Length() > Length())
-        {
-            return false;
-        }
-
-        bool Ret = true;
-
-        for(int ArrIndex = 0; ArrIndex < Length(); ArrIndex++)
-        {
-            // if the first character is the same as the string we are checking, then check if it matches
-            if(CharArr[ArrIndex] == StrCheck[0])
-            {
-                for(int CheckIndex = 0; CheckIndex <= StrCheck.Length(); CheckIndex++)
-                {
-                    if((ArrIndex + CheckIndex > CharArr.Length()) || (CharArr[ArrIndex + CheckIndex] != StrCheck[CheckIndex]))
-                    {
-                        Ret = false;
-                        break;
-                    }
-                    else
-                    {
-                        Ret = true;
-                        FindIndex = ArrIndex;
-                    }
-                }
-
-                if(Ret == true)
-                {
-                    return FindIndex;
-                }
-            }
-        }
-    }
-
-    return -1;
-}
-
-//bool String::Split(const String& Str, String& Left, String& Right, bool CaseSensitive)
-//{
-//}
