@@ -329,6 +329,12 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
 
 bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
 {
+    // Fix crash if Str is empty
+    if(Str == "")
+    {
+        return false;
+    }
+
     int Index = Find(Str, CaseSensitive);
 
     // if it's -1, then str is not in String
@@ -337,20 +343,10 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
         return false;
     }
 
-    // if Str is just single character, just split once
-    if(Str.Count() == 1)
+    // if Str is the exact same as String, return false
+    if((Str.Length() == CharArr.Length()) && Index == 0)
     {
-        Array<UTF16> RetLeft;
-        Array<UTF16> RetRight;
-
-        CharArr.Split(Index, RetLeft, RetRight);
-
-        String RetLeftStr(RetLeft);
-        String RetRightStr(RetRight);
-
-        Left = RetLeftStr;
-        Right = RetRightStr;
-        return true;
+        return false;
     }
 
     Array<UTF16> RetLeft;
@@ -366,8 +362,8 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
     Array<UTF16> TempLeft;
     Array<UTF16> RetRight;
 
-    std::cout << Str.Length() << std::endl;
-    FailCheck = RightTemp.SplitIndex(Str.Length(), TempLeft, RetRight);
+
+    FailCheck = RightTemp.SplitIndexInclusive(Str.Length(), TempLeft, RetRight);
 
     if(FailCheck == false)
     {
