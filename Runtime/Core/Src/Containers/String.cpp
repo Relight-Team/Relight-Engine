@@ -265,9 +265,8 @@ bool String::Contains(const String& StrCheck)
 
 int String::Find(const String& StrCheck, bool CaseSensitive)
 {
-    for(int Index = 0; Index < CharArr.Length(); Index++)
+    for(int Index = 0; Index <= CharArr.Length(); Index++)
     {
-
         bool IsCharMatch = false;
 
         // Check if first chars matches
@@ -294,7 +293,8 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
 
         // check if word exist on current index
         int StrCheckIndex = 0;
-        for(int Ind2 = Index + 1; Ind2 < StrCheck.Length(); Ind2++)
+
+        for(int Ind2 = Index; Ind2 <= CharArr.Length(); Ind2++)
         {
             if(CaseSensitive == false)
             {
@@ -305,20 +305,25 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
                 IsCharMatch = (StrCheck[StrCheckIndex] == CharArr[Ind2]);
             }
 
+            StrCheckIndex++;
+
+            // if IsCharMatch is false, then we know that the word at the index does not match
             if(IsCharMatch == false)
             {
                 break;
             }
 
-            StrCheckIndex++;
-        }
+            // if the index is above length, check if char matches
+            if(StrCheckIndex > StrCheck.Length())
+            {
+                if(IsCharMatch == true)
+                {
+                    return Index;
+                }
+            }
 
-        if(IsCharMatch == true)
-        {
-            return Index;
         }
     }
-
     return -1;
 }
 

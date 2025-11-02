@@ -82,8 +82,8 @@ class Array
 
             if(i >= CurrentSize)
             {
-                std::cout << i << std::endl;
-                std::cout << CurrentSize << std::endl;
+                std::cout << "Input: " << i << std::endl;
+                std::cout << "CurrentSize: " << CurrentSize << std::endl;
                 LOG(*Array_Error, Fatal, "index is higher than the actual array size");
             }
 
