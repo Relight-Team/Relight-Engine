@@ -262,3 +262,100 @@ bool String::Contains(const String& StrCheck)
 
     return false;
 }
+
+int String::Find(const String& StrCheck, bool CaseSensitive)
+{
+    for(int Index = 0; Index < CharArr.Length(); Index++)
+    {
+
+        bool IsCharMatch = false;
+
+        // Check if first chars matches
+        if(CaseSensitive == false)
+        {
+            IsCharMatch = ((CharUtil::ToLower(StrCheck[0]) == CharArr[Index]) || (CharUtil::ToUpper(StrCheck[0] == CharArr[Index])));
+        }
+        else
+        {
+            IsCharMatch = (StrCheck[0] == CharArr[Index]);
+        }
+
+        // If it does not match, continue to next index
+        if(IsCharMatch == false)
+        {
+            continue;
+        }
+
+        // If the index for the word we found in the StrCheck cannot fit into Stirng, then return -1
+        if(Index + StrCheck.Length() > CharArr.Length())
+        {
+            return -1;
+        }
+
+        // check if word exist on current index
+        int StrCheckIndex = 0;
+        for(int Ind2 = Index + 1; Ind2 < StrCheck.Length(); Ind2++)
+        {
+            if(CaseSensitive == false)
+            {
+                IsCharMatch = ((CharUtil::ToLower(StrCheck[StrCheckIndex]) == CharArr[Ind2]) || (CharUtil::ToUpper(StrCheck[StrCheckIndex]) == CharArr[Ind2]));
+            }
+            else
+            {
+                IsCharMatch = (StrCheck[StrCheckIndex] == CharArr[Ind2]);
+            }
+
+            if(IsCharMatch == false)
+            {
+                break;
+            }
+
+            StrCheckIndex++;
+        }
+
+        if(IsCharMatch == true)
+        {
+            return Index;
+        }
+    }
+
+    return -1;
+}
+
+bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
+{
+   if(Contains(Str) == false)
+   {
+        return false;
+   }
+
+   int Index = Find(Str);
+
+   Array<UTF16> RetLeft;
+   Array<UTF16> RightTemp;
+
+   bool FailCheck = CharArr.SplitIndex(Index, RetLeft, RightTemp);
+
+   if(FailCheck == false)
+   {
+        return false;
+   }
+
+   Array<UTF16> TempLeft;
+   Array<UTF16> RetRight;
+
+   FailCheck = RightTemp.SplitIndex(Index + Str.Length(), TempLeft, RetRight);
+
+   if(FailCheck == false)
+   {
+        return false;
+   }
+
+   String RetLeftStr(RetLeft);
+   String RetRightStr(RetRight);
+
+   Left = RetLeftStr;
+   Right = RetRightStr;
+
+   return true;
+}

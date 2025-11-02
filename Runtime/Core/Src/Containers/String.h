@@ -83,7 +83,7 @@ class String
 
     bool Contains(const String& StrCheck);
 
-    int Find(const String& StrCheck);
+    int Find(const String& StrCheck, bool CaseSensitive = true);
 
     bool Split(String& Str, String& Left, String& Right, bool CaseSensitive = true);
 
