@@ -50,15 +50,17 @@ class String
     }
 
     // Length of array starting at 0
+    // Example, "Hello" -> 4
     int Length() const
     {
         return CharArr.Length();
     }
 
     // Get's the size of array starting at 1
-    int Size() const
+    // Example, "Hello" -> 5
+    int Count() const
     {
-        return CharArr.Length();
+        return CharArr.Count();
     }
 
     String ToUpper();

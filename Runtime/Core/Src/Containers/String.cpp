@@ -329,38 +329,56 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
 
 bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
 {
-   if(Contains(Str) == false)
-   {
+    int Index = Find(Str, CaseSensitive);
+
+    // if it's -1, then str is not in String
+    if(Index == -1)
+    {
         return false;
-   }
+    }
 
-   int Index = Find(Str);
+    // if Str is just single character, just split once
+    if(Str.Count() == 1)
+    {
+        Array<UTF16> RetLeft;
+        Array<UTF16> RetRight;
 
-   Array<UTF16> RetLeft;
-   Array<UTF16> RightTemp;
+        CharArr.Split(Index, RetLeft, RetRight);
 
-   bool FailCheck = CharArr.SplitIndex(Index, RetLeft, RightTemp);
+        String RetLeftStr(RetLeft);
+        String RetRightStr(RetRight);
 
-   if(FailCheck == false)
-   {
+        Left = RetLeftStr;
+        Right = RetRightStr;
+        return true;
+    }
+
+    Array<UTF16> RetLeft;
+    Array<UTF16> RightTemp;
+
+    bool FailCheck = CharArr.SplitIndex(Index, RetLeft, RightTemp);
+
+    if(FailCheck == false)
+    {
         return false;
-   }
+    }
 
-   Array<UTF16> TempLeft;
-   Array<UTF16> RetRight;
+    Array<UTF16> TempLeft;
+    Array<UTF16> RetRight;
 
-   FailCheck = RightTemp.SplitIndex(Index + Str.Length(), TempLeft, RetRight);
+    std::cout << Str.Length() << std::endl;
+    FailCheck = RightTemp.SplitIndex(Str.Length(), TempLeft, RetRight);
 
-   if(FailCheck == false)
-   {
+    if(FailCheck == false)
+    {
         return false;
-   }
+    }
 
-   String RetLeftStr(RetLeft);
-   String RetRightStr(RetRight);
+    String RetLeftStr(RetLeft);
+    String RetRightStr(RetRight);
 
-   Left = RetLeftStr;
-   Right = RetRightStr;
+    Left = RetLeftStr;
+    Right = RetRightStr;
 
-   return true;
+    return true;
 }
