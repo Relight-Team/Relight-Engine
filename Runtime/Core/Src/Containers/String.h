@@ -89,6 +89,12 @@ class String
 
     bool Split(String& Str, String& Left, String& Right, bool CaseSensitive = true);
 
+    // TODO - Simple hack to fix issue with const, please merge this later
+    bool Split(const String& Str, String& Left, String& Right, bool CaseSensitive = true)
+    {
+        return Split(const_cast<String&>(Str), Left, Right, CaseSensitive);
+    }
+
     private:
 
     String() {}
