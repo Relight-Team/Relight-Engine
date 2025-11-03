@@ -104,7 +104,7 @@ class String
 
     void TrimEnd();
 
-    void TrimBoth()
+    void Trim()
     {
         TrimStart();
         TrimEnd();

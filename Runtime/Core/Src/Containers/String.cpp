@@ -397,3 +397,22 @@ void String::TrimStart()
         }
     }
 }
+
+void String::TrimEnd()
+{
+    bool bIsWhitespace = false;
+
+    while(Length() > 0)
+    {
+        bIsWhitespace = CharUtil::IsWhitespace(CharArr[Length()]);
+
+        if(bIsWhitespace == true)
+        {
+            CharArr.RemoveAt(Length());
+        }
+        else
+        {
+            break;
+        }
+    }
+}
