@@ -110,6 +110,22 @@ class String
         TrimEnd();
     }
 
+    void TrimStartChar(UTF16 Input)
+    {
+        if(CharArr[0] == Input)
+        {
+            CharArr.RemoveAt(0);
+        }
+    }
+
+    void TrimEndChar(UTF16 Input)
+    {
+        if(CharArr[CharArr.Length()] == Input)
+        {
+            CharArr.RemoveAt(CharArr.Length());
+        }
+    }
+
     void TrimQuotes();
 
     Array<UTF16> ToArr()
