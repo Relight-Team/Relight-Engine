@@ -416,3 +416,14 @@ void String::TrimEnd()
         }
     }
 }
+
+void String::TrimStartChar(String Input)
+{
+    if(StartsWith(Input))
+    {
+        for(int I = 0; I <= Input.Length(); I++)
+        {
+            CharArr.RemoveAt(0);
+        }
+    }
+}
