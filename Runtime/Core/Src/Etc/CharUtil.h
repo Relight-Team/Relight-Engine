@@ -1,4 +1,5 @@
 #pragma once
+#include <cwctype> // for iswspace
 struct CharUtil
 {
     // Return's the DEC of the char, ASCII characters only
@@ -72,6 +73,26 @@ struct CharUtil
     static bool IsASCII(CharType Character)
     {
         return Character <= 0x7F;
+    }
+
+    template <typename CharType>
+    static bool IsWhitespace(CharType Character)
+    {
+        if(IsASCII(Character))
+        {
+            if((Character == ' ') || (Character == '\n') || (Character == '\t') || (Character == '\v') || (Character == '\f') || (Character == '\r'))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return iswspace(Character);
+        }
     }
 
 };

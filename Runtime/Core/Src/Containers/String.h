@@ -95,6 +95,28 @@ class String
         return Split(const_cast<String&>(Str), Left, Right, CaseSensitive);
     }
 
+    void Empty()
+    {
+        CharArr.Empty();
+    }
+
+    void TrimStart();
+
+    void TrimEnd();
+
+    void TrimBoth()
+    {
+        TrimStart();
+        TrimEnd();
+    }
+
+    void TrimQuotes();
+
+    Array<UTF16> ToArr()
+    {
+        return CharArr;
+    }
+
     private:
 
     String() {}
