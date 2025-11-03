@@ -136,7 +136,11 @@ class String
 
     void TrimEndChar(String Input);
 
-    void TrimChar(String Input);
+    void TrimChar(String Input)
+    {
+        TrimStartChar(Input);
+        TrimEndChar(Input);
+    }
 
     void TrimQuotes();
 
