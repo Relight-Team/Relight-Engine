@@ -126,6 +126,18 @@ class String
         }
     }
 
+    void TrimChar(UTF16 Input)
+    {
+        TrimStartChar(Input);
+        TrimEndChar(Input);
+    }
+
+    void TrimStartChar(String Input);
+
+    void TrimEndChar(String Input);
+
+    void TrimChar(String Input);
+
     void TrimQuotes();
 
     Array<UTF16> ToArr()
