@@ -142,7 +142,10 @@ class String
         TrimEndChar(Input);
     }
 
-    void TrimQuotes();
+    void TrimQuotes()
+    {
+        TrimChar("\"");
+    }
 
     Array<UTF16> ToArr()
     {
