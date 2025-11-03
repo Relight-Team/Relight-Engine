@@ -378,3 +378,22 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
 
     return true;
 }
+
+void String::TrimStart()
+{
+    bool bIsWhitespace = false;
+
+    while(Length() >= 0)
+    {
+        bIsWhitespace = CharUtil::IsWhitespace(CharArr[0]);
+
+        if(bIsWhitespace == true)
+        {
+            CharArr.RemoveAt(0);
+        }
+        else
+        {
+            break;
+        }
+    }
+}
