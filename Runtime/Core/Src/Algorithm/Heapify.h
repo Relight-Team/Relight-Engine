@@ -27,3 +27,14 @@ void Heapify(ArrayType& Arr, int HeapSize, int Root)
         Heapify(Arr, HeapSize, Largest);
     }
 }
+template <typename ArrayType>
+void Heapify(ArrayType& Arr)
+{
+    int Size = Arr.Length();
+    int StartIndex = (Size / 2) - 1;
+
+    for(int I = StartIndex; I >= 0; I--)
+    {
+        Heapify(Arr, Size, I);
+    }
+}
