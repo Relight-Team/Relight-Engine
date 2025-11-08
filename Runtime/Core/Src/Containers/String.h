@@ -152,6 +152,11 @@ class String
         return CharArr;
     }
 
+    void Swap(int A, int B)
+    {
+        CharArr.Swap(A, B);
+    }
+
     private:
 
     String() {}

@@ -426,6 +426,18 @@ class Array
             }
         }
 
+        void Swap(int A, int B)
+        {
+            T ContentA = Arr[A];
+            T ContentB = Arr[B];
+
+            Insert(ContentB, A);
+            RemoveAt(A + 1);
+
+            Insert(ContentA, B);
+            RemoveAt(B + 1);
+        }
+
         // Destructor to free memory
     ~Array()
     {
