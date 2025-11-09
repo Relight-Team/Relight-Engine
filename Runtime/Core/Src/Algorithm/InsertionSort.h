@@ -1,14 +1,14 @@
 // Relight Engine Insertion Sort
 
 template <typename ArrayType>
-void InsertionSort(ArrayType& Arr, int Depth)
+void InsertionSort(ArrayType& Arr, int Min, int Max)
 {
-    for(int I = 1; I <= Depth; I++)
+    for(int I = Min + 1; I <= Max; I++)
     {
         auto ArrObject = Arr[I];
         int J = I - 1;
 
-        while(J >= 0 && Arr[J] > ArrObject)
+        while(J >= Min && Arr[J] > ArrObject)
         {
             Arr.Replace(Arr[J], J + 1);
             J -= 1;
