@@ -433,6 +433,11 @@ class Array
             Arr[B] = ContentA;
         }
 
+        void Replace(T Input, int Index)
+        {
+            Arr[Index] = Input;
+        }
+
         // Destructor to free memory
     ~Array()
     {

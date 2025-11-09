@@ -157,6 +157,11 @@ class String
         CharArr.Swap(A, B);
     }
 
+    void Replace(UTF16 Input, int Index)
+    {
+        CharArr.Replace(Input, Index);
+    }
+
     private:
 
     String() {}
