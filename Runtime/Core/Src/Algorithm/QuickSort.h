@@ -1,4 +1,6 @@
 // Relight Engine QuickSort and Partition
+#pragma once
+
 
 template <typename ArrayType>
 int Partition(ArrayType& Arr, int Min, int Max)

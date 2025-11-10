@@ -1,27 +1,45 @@
 #pragma once
 
-#include "Containers/Array.h"
-#include "Math/Math.h"
+#include "Algorithm/IntroSort.h"
+#include "Algorithm/HeapSort.h"
+#include "Algorithm/InsertionSort.h"
+#include "Algorithm/QuickSort.h"
 
 // Relight Engine Sorting System
 // A system where a list can be sorted
 
+enum class ArrayAlgo
+{
+    IntroSort,
+    HeapSort,
+    InsertionSort,
+    QuickSort
+};
 
 namespace Algo
 {
-    template <typename T>
+    template <typename ArrayType>
 
     // Sort an array using IntroSort
-    void Sort(&Array<T> Input)
+    void Sort(ArrayType& Input, ArrayAlgo Type = ArrayAlgo::IntroSort)
     {
+        switch(Type)
+        {
+            case ArrayAlgo::IntroSort:
+                IntroSort(Input);
+                break;
 
-    }
-}
+            case ArrayAlgo::HeapSort:
+                HeapSort(Input);
+                break;
 
-namespace Algo_Internal
-{
-    void Sort_Internal(&Array<T> Input, int DepthLimit)
-    {
+            case ArrayAlgo::InsertionSort:
+                InsertionSort(Input);
+                break;
 
+            case ArrayAlgo::QuickSort:
+                QuickSort(Input);
+                break;
+        }
     }
 }

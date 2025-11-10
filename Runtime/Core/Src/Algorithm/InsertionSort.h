@@ -1,4 +1,5 @@
 // Relight Engine Insertion Sort
+#pragma once
 
 template <typename ArrayType>
 void InsertionSort(ArrayType& Arr, int Min, int Max)
@@ -21,5 +22,5 @@ template <typename ArrayType>
 void InsertionSort(ArrayType& Arr)
 {
     int Length = Arr.Length();
-    InsertionSort(Arr, Length);
+    InsertionSort(Arr, 0, Length);
 }
