@@ -1,7 +1,7 @@
 #pragma once
 #include "Containers/Array.h"
 #include "Etc/CharUtil.h"
-#include "Platform.h"
+#include "PlatformCore.h"
 
 // String system
 
