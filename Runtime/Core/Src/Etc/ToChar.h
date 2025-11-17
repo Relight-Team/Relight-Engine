@@ -35,8 +35,6 @@ String ToString(int Input)
         CheckLoop = pow(10, Progress);
     }
 
-
-
     // Add negative
     if(Input < 0)
     {
@@ -44,4 +42,35 @@ String ToString(int Input)
     }
 
     return Ret.Reverse();
+}
+
+String ToString(float Input)
+{
+    String Ret = "";
+    int Whole = int((floor((Input))));
+    float Dec = abs(Input - Whole);
+
+    Ret.Append(ToString(Whole));
+
+    if(Dec > 0)
+    {
+        Ret.Append(".");
+
+        for(int I = 0; I < 5 && Dec != 0.0f; I++)
+        {
+
+            Dec *= 10;
+            int Digit = int(Dec);
+            UTF16 CharTemp = 48 + Digit;
+            Ret.Append(CharTemp);
+            Dec -= Digit;
+        }
+    }
+
+    return Ret;
+}
+
+String ToString(double Input)
+{
+    return ToString(float(Input));
 }
