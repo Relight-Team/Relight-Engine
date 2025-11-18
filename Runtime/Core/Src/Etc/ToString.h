@@ -73,3 +73,13 @@ String ToString(double Input)
 {
     return ToString(float(Input));
 }
+
+String ToString(bool Input)
+{
+    String Ret = "False";
+    if(Input == true)
+    {
+        Ret = "True";
+    }
+    return Ret;
+}
