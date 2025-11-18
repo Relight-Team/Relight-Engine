@@ -40,6 +40,18 @@ class Array
             }
         }
 
+        template <typename... Args>
+        Array(Args... InArgs) : Arr(nullptr), CurrentSize(0)
+        {
+            const int Size = sizeof...(InArgs);
+            InternalChangeSize(Size);
+            T Temp[] = {InArgs...};
+            for (int i = 0; i < Size; i++)
+            {
+                Arr[i] = (Temp[i]);
+            }
+        }
+
         Array(Array&& Other) noexcept : Arr (Other.Arr), CurrentSize(Other.CurrentSize)
         {
             Other.Arr = nullptr;
