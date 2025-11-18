@@ -11,6 +11,8 @@ class String
 {
     public:
 
+    String() {}
+
     String(const UTF16* InChars);
 
     String(const UTF16& InChars);
@@ -163,8 +165,6 @@ class String
     }
 
     private:
-
-    String() {}
 
     Array<UTF16> CharArr;
 

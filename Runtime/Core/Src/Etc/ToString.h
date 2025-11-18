@@ -83,3 +83,24 @@ String ToString(bool Input)
     }
     return Ret;
 }
+
+// Just here so String Arrays can be displayed
+String ToString(String Input)
+{
+    return Input;
+}
+
+template <typename ArrayInput>
+String ToString(Array<ArrayInput> Input)
+{
+    String Ret = "[";
+    for(int I = 0; I < Input.Length(); I++)
+    {
+        Ret.Append(ToString(Input[I]));
+        Ret.Append(", ");
+    }
+    Ret.Append(ToString(Input[Input.Length()]));
+    Ret.Append("]");
+
+    return Ret;
+}
