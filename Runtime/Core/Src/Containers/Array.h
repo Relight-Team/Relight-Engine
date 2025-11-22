@@ -10,8 +10,6 @@
 
 #include "Log/Log.h"
 
-#include <iostream> // TODO: Replace this with Relight's alt
-
 extern CORE_API::LogCategory* Array_Error;
 
 
@@ -94,8 +92,6 @@ class Array
 
             if(i >= CurrentSize)
             {
-                std::cout << "Input: " << i << std::endl;
-                std::cout << "CurrentSize: " << CurrentSize << std::endl;
                 LOG(*Array_Error, Fatal, "index is higher than the actual array size");
             }
 
@@ -148,18 +144,6 @@ class Array
         int Length() const
         {
             return CurrentSize - 1;
-        }
-
-        // for debugging only
-        void Print()
-        {
-            std::string tmp;
-            for(int i = 0; i < CurrentSize; i++)
-            {
-                std::cout << Arr[i];
-                std::cout << " | ";
-            }
-            std::cout << std::endl;
         }
 
 
