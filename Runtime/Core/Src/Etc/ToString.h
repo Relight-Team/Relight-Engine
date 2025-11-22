@@ -1,3 +1,4 @@
+#pragma once
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Platform.h"
@@ -43,6 +44,7 @@ String ToString(int Input)
     return Ret.Reverse();
 }
 
+// FIXME: print's incorrectly with negative values, please find a fix and fix it!
 String ToString(float Input)
 {
     String Ret = "";
@@ -88,6 +90,18 @@ String ToString(bool Input)
 String ToString(String Input)
 {
     return Input;
+}
+
+String ToString(const UTF16* Input)
+{
+    String Ret = Input;
+    return Ret;
+}
+
+template <size_t N>
+String ToString(const char (&Input)[N])
+{
+    return String(Input);
 }
 
 template <typename ArrayInput>
