@@ -7,15 +7,10 @@
 // This array class can be treated as either a static array or dynamic array
 
 #pragma once
-
 #include "Log/Log.h"
-
-extern CORE_API::LogCategory* Array_Error;
-
+#include "PlatformCore.h"
 
 template <typename T>
-
-
 class Array
 {
     public:
@@ -85,16 +80,8 @@ class Array
 
         const T& operator[](int i) const
         {
-            if(i < 0)
-            {
-                LOG(*Array_Error, Fatal, "index is lower than 0 when using [] operator. Index must be 0 or higher");
-            }
-
-            if(i >= CurrentSize)
-            {
-                LOG(*Array_Error, Fatal, "index is higher than the actual array size");
-            }
-
+            Assert(i < 0, "index is lower than 0 when using [] operator. Index must be 0 or higher", i);
+            Assert(i >= CurrentSize, "index is higher than the actual array size", i);
             return Arr[i];
         }
 
