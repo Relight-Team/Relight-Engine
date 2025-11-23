@@ -2,7 +2,7 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Platform.h"
-String ToString(int Input)
+inline String ToString(int Input)
 {
     String Ret = "";
 
@@ -45,7 +45,7 @@ String ToString(int Input)
 }
 
 // FIXME: print's incorrectly with negative values, please find a fix and fix it!
-String ToString(float Input)
+inline String ToString(float Input)
 {
     String Ret = "";
     int Whole = int((floor((Input))));
@@ -71,12 +71,12 @@ String ToString(float Input)
     return Ret;
 }
 
-String ToString(double Input)
+inline String ToString(double Input)
 {
     return ToString(float(Input));
 }
 
-String ToString(bool Input)
+inline String ToString(bool Input)
 {
     String Ret = "False";
     if(Input == true)
@@ -87,25 +87,25 @@ String ToString(bool Input)
 }
 
 // Just here so String Arrays can be displayed
-String ToString(String Input)
+inline String ToString(String Input)
 {
     return Input;
 }
 
-String ToString(const UTF16* Input)
+inline String ToString(const UTF16* Input)
 {
     String Ret = Input;
     return Ret;
 }
 
 template <size_t N>
-String ToString(const char (&Input)[N])
+inline String ToString(const char (&Input)[N])
 {
     return String(Input);
 }
 
 template <typename ArrayInput>
-String ToString(Array<ArrayInput> Input)
+inline String ToString(Array<ArrayInput> Input)
 {
     String Ret = "[";
     for(int I = 0; I < Input.Length(); I++)

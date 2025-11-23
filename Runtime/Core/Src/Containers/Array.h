@@ -7,7 +7,6 @@
 // This array class can be treated as either a static array or dynamic array
 
 #pragma once
-#include "Log/Log.h"
 #include "PlatformCore.h"
 
 template <typename T>

@@ -408,11 +408,11 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
 
     @staticmethod
     def ArgCPP():
-        return " -x c++ -std=c++14"
+        return " -x c++ -std=c++17"
 
     @staticmethod
     def ArgPCH():
-        return " -x c++-header -std=c++14"
+        return " -x c++-header -std=c++17"
 
     # Whether to use llvm-ar or ar
     # TODO: Temp solution, assumes it's system-wide, add support for non-system wide

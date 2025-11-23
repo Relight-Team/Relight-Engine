@@ -1,36 +1,32 @@
-#pragma once
-#include <iostream>
-#include <string>
-
 using namespace std;
-
+#pragma once
+#include "Containers/String.h"
 // LogCategory
-
-
-
 namespace CORE_API
 {
 
     class LogCategory
     {
         public:
-            LogCategory(string Name)
+            LogCategory() = default;
+
+            LogCategory(String Name)
             {
                 HName = Name;
             }
 
-            void SetName(string Name)
+            void SetName(String Name)
             {
                 HName = Name;
             }
 
-            std::string GetName()
+            String GetName()
             {
                 return HName;
             }
 
         private:
-            string HName;
+            String HName;
     };
 
 }

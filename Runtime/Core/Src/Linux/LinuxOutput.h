@@ -5,7 +5,7 @@
 #include "Etc/ToString.h"
 #include <iostream>
 
-void Print(const String& Input)
+inline void Print(const String& Input)
 {
     for(int I = 0; I <= Input.Length(); I++)
     {
@@ -13,7 +13,7 @@ void Print(const String& Input)
     }
 }
 
-void Print(const Array<UTF16>& Input)
+inline void Print(const Array<UTF16>& Input)
 {
     for(int I = 0; I <= Input.Length(); I++)
     {
@@ -21,30 +21,30 @@ void Print(const Array<UTF16>& Input)
     }
 }
 
-void Print(const UTF16& Input)
+inline void Print(const UTF16& Input)
 {
     std::cout << CharUtil::IntToChar(Input);
 }
 
-void Print(const char& Input)
+inline void Print(const char& Input)
 {
     std::cout << CharUtil::IntToChar(Input);
 }
 
-void Print(const UTF16* Input)
+inline void Print(const UTF16* Input)
 {
     String InputStr = Input;
     Print(InputStr);
 }
 
-void Print(const char* Input)
+inline void Print(const char* Input)
 {
     String InputStr = Input;
     Print(InputStr);
 }
 
 template <typename NonStringType>
-void Print(const NonStringType& Input)
+inline void Print(const NonStringType& Input)
 {
     String Temp = ToString(Input);
 

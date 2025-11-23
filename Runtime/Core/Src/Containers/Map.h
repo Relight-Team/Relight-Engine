@@ -9,8 +9,6 @@
 
 #include <iostream>
 
-CORE_API::LogCategory* Map_Error = new CORE_API::LogCategory("Map");
-
 template <typename KeyType, typename ValueType>
 
 class Map
