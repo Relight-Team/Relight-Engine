@@ -420,6 +420,11 @@ class Array
             Arr[Index] = Input;
         }
 
+        T* ReturnPointer()
+        {
+            return Arr;
+        }
+
         // Destructor to free memory
     ~Array()
     {

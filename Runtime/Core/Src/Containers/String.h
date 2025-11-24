@@ -164,6 +164,16 @@ class String
         CharArr.Replace(Input, Index);
     }
 
+    Array<char> ToArrayChar()
+    {
+        Array<char> Ret;
+        for(int i = 0; i <= CharArr.Length(); i++)
+        {
+            Ret.Add(ToChar(i));
+        }
+        return Ret;
+    }
+
     private:
 
     Array<UTF16> CharArr;
