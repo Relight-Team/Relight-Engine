@@ -1,12 +1,12 @@
 #pragma once
 #include "BasePlatform/BasePlatformOutput.h"
 #include "Containers/String.h"
-#include "LinuxPlatform.h"
+#include "Unix/UnixPlatform.h"
 #include "Etc/CharUtil.h"
 #include "Etc/ToString.h"
 #include <iostream>
 
-class LinuxPlatformOutput : public BasePlatformOutput
+class UnixPlatformOutput : public BasePlatformOutput
 {
 public:
     static inline void Print(const String& Input)

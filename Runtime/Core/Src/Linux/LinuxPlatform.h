@@ -1,8 +1,7 @@
 #pragma once
-#include "LinuxIncludes.h"
-#include "LinuxOutput.h"
-#include "LinuxTime.h"
-#include "LinuxFile.h"
 
-typedef LinuxPlatformOutput PlatformOutput;
-typedef LinuxPlatformFile PlatformFile;
+#include "Unix/UnixPlatform.h"
+
+#ifndef PLATFORM_DESKTOP
+    #define PLATFORM_DESKTOP 1
+#endif

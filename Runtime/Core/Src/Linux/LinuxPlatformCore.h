@@ -1,3 +1,3 @@
 #pragma once
-#include "LinuxErrorHandling.h"
-typedef char16_t UTF16;
+
+#include "Unix/UnixPlatformCore.h"

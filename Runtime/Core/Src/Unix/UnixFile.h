@@ -1,10 +1,10 @@
 #pragma once
 #include "BasePlatform/BasePlatformFile.h"
-#include "Linux/LinuxIncludes.h"
+#include "Unix/UnixIncludes.h"
 #include "Containers/String.h"
 #include "Containers/Array.h"
 
-class LinuxPlatformFile : public BasePlatformFile
+class UnixPlatformFile : public BasePlatformFile
 {
 public:
      static bool FileExists(String File);
