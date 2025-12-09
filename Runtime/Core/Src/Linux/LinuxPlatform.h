@@ -3,3 +3,6 @@
 #include "LinuxOutput.h"
 #include "LinuxTime.h"
 #include "LinuxFile.h"
+
+typedef LinuxPlatformOutput PlatformOutput;
+typedef LinuxPlatformFile PlatformFile;

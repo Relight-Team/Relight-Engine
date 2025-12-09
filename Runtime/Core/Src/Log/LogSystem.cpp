@@ -49,10 +49,10 @@ void LogSystem::PrintLatestToTerminal()
     CORE_API::LogCategory Category = CategoryList[CategoryList.Length()];
     String CategoryName = Category.GetName();
 
-    Print(Color);
-    Print("[" + CategoryName + "] ");
-    Print(GetLogTypeName(WarningList[WarningList.Length()]) + ": ");
-    Print(MessageList[MessageList.Length()]);
+    PlatformOutput::Print(Color);
+    PlatformOutput::Print("[" + CategoryName + "] ");
+    PlatformOutput::Print(GetLogTypeName(WarningList[WarningList.Length()]) + ": ");
+    PlatformOutput::Print(MessageList[MessageList.Length()]);
     GetWhitePOSIX(Color);
-    Println(Color);
+    PlatformOutput::Println(Color);
 }
