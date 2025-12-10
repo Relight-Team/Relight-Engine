@@ -3,6 +3,8 @@
 // Archive is an abstract base class allowing abstractions for data reading and writing
 // Examples of child class: Memory reader/writer, file reader/writer, etc
 
+#include "Platform.h"
+
 struct ArchiveState
 {
     public:
@@ -24,13 +26,13 @@ struct ArchiveState
     bool IsFatal = false; // Does Archive have fatal errors?
 
     friend class Archive;
-}
+};
 
-class Archive : private ArchiveState
+class Archive: private ArchiveState
 {
     public:
     void Serialize(void* Input, int Length)
     {
         memset(Input, 0, Length);
     }
-}
+};
