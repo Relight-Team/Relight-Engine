@@ -38,6 +38,6 @@ void QuickSort(ArrayType& Arr, int Min, int Max)
 template <typename ArrayType>
 void QuickSort(ArrayType& Arr)
 {
-    int Length = Arr.Length();
+    int Length = Arr.Indices();
     QuickSort(Arr, 0, Length);
 }

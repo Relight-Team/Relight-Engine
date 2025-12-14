@@ -11,7 +11,7 @@ class UnixPlatformOutput : public BasePlatformOutput
 public:
     static inline void Print(const String& Input)
     {
-        for(int I = 0; I <= Input.Length(); I++)
+        for(int I = 0; I <= Input.Indices(); I++)
         {
             std::cout << CharUtil::IntToChar(Input[I]);
         }
@@ -19,7 +19,7 @@ public:
 
     static inline void Print(const Array<UTF16>& Input)
     {
-        for(int I = 0; I <= Input.Length(); I++)
+        for(int I = 0; I <= Input.Indices(); I++)
         {
             std::cout << CharUtil::IntToChar(Input[I]);
         }

@@ -37,12 +37,12 @@ bool String::Compare(String B, bool CaseSensitive)
         bool IsEqual = true;
 
         // If size of both strings do not match, the return false
-        if(CharArr.Length() != B.Length())
+        if(CharArr.Indices() != B.Indices())
         {
             return false;
         }
 
-        for(int I = 0; I < B.Length(); I++)
+        for(int I = 0; I < B.Indices(); I++)
         {
             if(CaseSensitive == false && CharUtil::IsASCII(CharArr[I]))
             {
@@ -69,7 +69,7 @@ bool String::Compare(String B, bool CaseSensitive)
 String String::ToUpper()
 {
     Array<UTF16> Temp;
-    for(int I = 0; I <= Length(); I++)
+    for(int I = 0; I <= Indices(); I++)
     {
         Temp.Add(CharUtil::ToUpper(CharArr[I]));
     }
@@ -80,7 +80,7 @@ String String::ToUpper()
 String String::ToLower()
 {
     Array<UTF16> Temp;
-    for(int I = 0; I <= Length(); I++)
+    for(int I = 0; I <= Indices(); I++)
     {
         Temp.Add(CharUtil::ToLower(CharArr[I]));
     }
@@ -91,24 +91,24 @@ String String::ToLower()
 void String::Append(const UTF16& B)
 {
     String StrB = B;
-    CharArr.Append(StrB.CharArr, StrB.CharArr.Count());
+    CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
 }
 
 void String::Append(const String& B)
 {
-    CharArr.Append(B.CharArr, B.CharArr.Count());
+    CharArr.Append(B.CharArr, B.CharArr.Length());
 }
 
 void String::Append(const UTF16* B)
 {
     String StrB = B;
-    CharArr.Append(StrB.CharArr, StrB.CharArr.Count());
+    CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
 }
 
 void String::Append(const char* B)
 {
     String StrB = B;
-    CharArr.Append(StrB.CharArr, StrB.CharArr.Count());
+    CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
 }
 
 bool String::StartsWith(const String& B, bool CaseSensitive)
@@ -116,12 +116,12 @@ bool String::StartsWith(const String& B, bool CaseSensitive)
     bool DoesStart = false;
 
     // If B length is longer than String, then we know it's false
-    if(B.CharArr.Length() > CharArr.Length())
+    if(B.CharArr.Indices() > CharArr.Indices())
     {
         return false;
     }
 
-    for(int I = 0; I <= B.CharArr.Length(); I++)
+    for(int I = 0; I <= B.CharArr.Indices(); I++)
     {
         DoesStart = WithInternal(B.CharArr[I], I, CaseSensitive);
 
@@ -138,14 +138,14 @@ bool String::EndsWith(const String& B, bool CaseSensitive)
     bool DoesStart = false;
 
     // If B length is longer than String, then we know it's false
-    if(B.CharArr.Length() > CharArr.Length())
+    if(B.CharArr.Indices() > CharArr.Indices())
     {
         return false;
     }
 
-    int BaseI = CharArr.Length();
+    int BaseI = CharArr.Indices();
 
-     for(int I = B.CharArr.Length(); I >= 0; I--)
+     for(int I = B.CharArr.Indices(); I >= 0; I--)
     {
         DoesStart = WithInternal(B.CharArr[I], BaseI, CaseSensitive);
 
@@ -228,21 +228,21 @@ bool String::Contains(const UTF16& StrCheck)
 bool String::Contains(const String& StrCheck)
 {
 
-    if(StrCheck.Length() > Length())
+    if(StrCheck.Indices() > Indices())
     {
         return false;
     }
 
     bool Ret = true;
 
-    for(int ArrIndex = 0; ArrIndex < Length() ; ArrIndex++)
+    for(int ArrIndex = 0; ArrIndex < Indices() ; ArrIndex++)
     {
         // if the first character is the same as the string we are checking, then check if it matches
         if(CharArr[ArrIndex] == StrCheck[0])
         {
-            for(int CheckIndex = 0; CheckIndex <= StrCheck.Length(); CheckIndex++)
+            for(int CheckIndex = 0; CheckIndex <= StrCheck.Indices(); CheckIndex++)
             {
-                if((ArrIndex + CheckIndex > CharArr.Length()) || (CharArr[ArrIndex + CheckIndex] != StrCheck[CheckIndex]))
+                if((ArrIndex + CheckIndex > CharArr.Indices()) || (CharArr[ArrIndex + CheckIndex] != StrCheck[CheckIndex]))
                 {
                     Ret = false;
                     break;
@@ -265,7 +265,7 @@ bool String::Contains(const String& StrCheck)
 
 int String::Find(const String& StrCheck, bool CaseSensitive)
 {
-    for(int Index = 0; Index <= CharArr.Length(); Index++)
+    for(int Index = 0; Index <= CharArr.Indices(); Index++)
     {
         bool IsCharMatch = false;
 
@@ -286,7 +286,7 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
         }
 
         // If the index for the word we found in the StrCheck cannot fit into Stirng, then return -1
-        if(Index + StrCheck.Length() > CharArr.Length())
+        if(Index + StrCheck.Indices() > CharArr.Indices())
         {
             return -1;
         }
@@ -294,7 +294,7 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
         // check if word exist on current index
         int StrCheckIndex = 0;
 
-        for(int Ind2 = Index; Ind2 <= CharArr.Length(); Ind2++)
+        for(int Ind2 = Index; Ind2 <= CharArr.Indices(); Ind2++)
         {
             if(CaseSensitive == false)
             {
@@ -314,7 +314,7 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
             }
 
             // if the index is above length, check if char matches
-            if(StrCheckIndex > StrCheck.Length())
+            if(StrCheckIndex > StrCheck.Indices())
             {
                 if(IsCharMatch == true)
                 {
@@ -344,7 +344,7 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
     }
 
     // if Str is the exact same as String, return false
-    if((Str.Length() == CharArr.Length()) && Index == 0)
+    if((Str.Indices() == CharArr.Indices()) && Index == 0)
     {
         return false;
     }
@@ -363,7 +363,7 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
     Array<UTF16> RetRight;
 
 
-    FailCheck = RightTemp.SplitIndexInclusive(Str.Length(), TempLeft, RetRight);
+    FailCheck = RightTemp.SplitIndexInclusive(Str.Indices(), TempLeft, RetRight);
 
     if(FailCheck == false)
     {
@@ -383,7 +383,7 @@ void String::TrimStart()
 {
     bool bIsWhitespace = false;
 
-    while(Length() >= 0)
+    while(Indices() >= 0)
     {
         bIsWhitespace = CharUtil::IsWhitespace(CharArr[0]);
 
@@ -402,13 +402,13 @@ void String::TrimEnd()
 {
     bool bIsWhitespace = false;
 
-    while(Length() > 0)
+    while(Indices() > 0)
     {
-        bIsWhitespace = CharUtil::IsWhitespace(CharArr[Length()]);
+        bIsWhitespace = CharUtil::IsWhitespace(CharArr[Indices()]);
 
         if(bIsWhitespace == true)
         {
-            CharArr.RemoveAt(Length());
+            CharArr.RemoveAt(Indices());
         }
         else
         {
@@ -421,7 +421,7 @@ void String::TrimStartChar(String Input)
 {
     if(StartsWith(Input))
     {
-        for(int I = 0; I <= Input.Length(); I++)
+        for(int I = 0; I <= Input.Indices(); I++)
         {
             CharArr.RemoveAt(0);
         }
@@ -432,9 +432,9 @@ void String::TrimEndChar(String Input)
 {
     if(EndsWith(Input))
     {
-        for(int I = 0; I <= Input.Length() ; I++)
+        for(int I = 0; I <= Input.Indices() ; I++)
         {
-            CharArr.RemoveAt(Length());
+            CharArr.RemoveAt(Indices());
         }
     }
 }

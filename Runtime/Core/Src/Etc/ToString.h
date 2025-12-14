@@ -108,12 +108,12 @@ template <typename ArrayInput>
 inline String ToString(Array<ArrayInput> Input)
 {
     String Ret = "[";
-    for(int I = 0; I < Input.Length(); I++)
+    for(int I = 0; I < Input.Indices(); I++)
     {
         Ret.Append(ToString(Input[I]));
         Ret.Append(", ");
     }
-    Ret.Append(ToString(Input[Input.Length()]));
+    Ret.Append(ToString(Input[Input.Indices()]));
     Ret.Append("]");
 
     return Ret;

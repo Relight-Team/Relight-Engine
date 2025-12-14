@@ -30,7 +30,7 @@ void Heapify(ArrayType& Arr, int HeapSize, int Root)
 template <typename ArrayType>
 void Heapify(ArrayType& Arr)
 {
-    int Size = Arr.Length();
+    int Size = Arr.Indices();
     int StartIndex = (Size / 2) - 1;
 
     for(int I = StartIndex; I >= 0; I--)

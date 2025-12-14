@@ -35,7 +35,7 @@ class String
     {
         String Ret;
         Ret.CharArr = CharArr;
-        for(int I = 0; I <= Other.Length(); I++)
+        for(int I = 0; I <= Other.Indices(); I++)
         {
             Ret.CharArr.Add(Other.CharArr[I]);
         }
@@ -53,16 +53,16 @@ class String
 
     // Length of array starting at 0
     // Example, "Hello" -> 4
-    int Length() const
+    int Indices() const
     {
-        return CharArr.Length();
+        return CharArr.Indices();
     }
 
     // Get's the size of array starting at 1
     // Example, "Hello" -> 5
-    int Count() const
+    int Length() const
     {
-        return CharArr.Count();
+        return CharArr.Length();
     }
 
     String ToUpper();
@@ -122,9 +122,9 @@ class String
 
     void TrimEndChar(UTF16 Input)
     {
-        if(CharArr[CharArr.Length()] == Input)
+        if(CharArr[CharArr.Indices()] == Input)
         {
-            CharArr.RemoveAt(CharArr.Length());
+            CharArr.RemoveAt(CharArr.Indices());
         }
     }
 
@@ -167,7 +167,7 @@ class String
     Array<char> ToArrayChar()
     {
         Array<char> Ret;
-        for(int i = 0; i <= CharArr.Length(); i++)
+        for(int i = 0; i <= CharArr.Indices(); i++)
         {
             Ret.Add(ToChar(i));
         }

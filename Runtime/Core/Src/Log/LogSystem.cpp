@@ -19,7 +19,7 @@ void LogSystem::Add(CORE_API::LogCategory Cat, LogType Warn, String Msg)
 
 void LogSystem::GetColorPOSIX(String& ColorOutput)
 {
-    switch(WarningList[WarningList.Length()])
+    switch(WarningList[WarningList.Indices()])
     {
         case (LogType::Warning):
             ColorOutput = "\e[93m";
@@ -46,13 +46,13 @@ void LogSystem::PrintLatestToTerminal()
 
     String Color;
     GetColorPOSIX(Color);
-    CORE_API::LogCategory Category = CategoryList[CategoryList.Length()];
+    CORE_API::LogCategory Category = CategoryList[CategoryList.Indices()];
     String CategoryName = Category.GetName();
 
     PlatformOutput::Print(Color);
     PlatformOutput::Print("[" + CategoryName + "] ");
-    PlatformOutput::Print(GetLogTypeName(WarningList[WarningList.Length()]) + ": ");
-    PlatformOutput::Print(MessageList[MessageList.Length()]);
+    PlatformOutput::Print(GetLogTypeName(WarningList[WarningList.Indices()]) + ": ");
+    PlatformOutput::Print(MessageList[MessageList.Indices()]);
     GetWhitePOSIX(Color);
     PlatformOutput::Println(Color);
 }

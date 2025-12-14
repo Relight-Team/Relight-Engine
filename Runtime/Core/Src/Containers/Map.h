@@ -18,9 +18,9 @@ class Map
 
     // Read
 
-    int Length()
+    int Indices()
     {
-        return Key.Length();
+        return Key.Indices();
     }
 
     bool Exist(KeyType Name)

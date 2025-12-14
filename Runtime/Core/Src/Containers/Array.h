@@ -89,7 +89,7 @@ class Array
             if(this != &B)
             {
                 this->Empty();
-                for(int i = 0; i < B.Count(); i++)
+                for(int i = 0; i < B.Length(); i++)
                 {
                     this->Add(B[i]);
                 }
@@ -99,7 +99,7 @@ class Array
 
         Array<T>& operator+=(Array<T>& B)
         {
-            this->Append(B, B.Count());
+            this->Append(B, B.Length());
             return *this;
         }
 
@@ -121,13 +121,13 @@ class Array
         // == Queries ==
 
         // Returns the number of elements
-        int Count() const
+        int Length() const
         {
             return CurrentSize;
         }
 
-        // Like Count(), but assumes the first element index is 0 instead of 1
-        int Length() const
+        // Like Length(), but assumes the first element index is 0 instead of 1
+        int Indices() const
         {
             return CurrentSize - 1;
         }
@@ -199,7 +199,7 @@ class Array
         {
             Array<T> Ret;
 
-            for(int I = Length(); I >= 0 ; I--)
+            for(int I = Indices(); I >= 0 ; I--)
             {
                 Ret.Add(Arr[I]);
             }
@@ -288,7 +288,7 @@ class Array
         {
 
             int Cur = CurrentSize;
-            for(int i = Index; i < this->Length(); i++)
+            for(int i = Index; i < this->Indices(); i++)
             {
                 Arr[i] = Arr[i + 1];
             }
