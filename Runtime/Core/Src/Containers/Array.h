@@ -296,6 +296,13 @@ class Array
             InternalChangeSize(CurrentSize - 1);
         }
 
+        T Pop(int Index)
+        {
+            T Ret = Arr[Index];
+            RemoveAt(Index);
+            return Ret;
+        }
+
         bool RemoveSingle(T Input)
         {
 
