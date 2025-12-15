@@ -31,10 +31,17 @@ struct ArchiveState
 class Archive: private ArchiveState
 {
     public:
-    void Serialize(void* Input, int Length)
+    // Convert data into a readable format
+    virtual void Serialize(void* Input, int Length)
     {
         RMemory::Memset(Input, 0, Length);
     }
+
+    // Fource to finish writing buffered data to hard disk
+    virtual void Flush();
+
+    // Set the current offset of data storage
+    virtual void Seek(int Offset);
 
     bool DoesReturnCode()
     {
