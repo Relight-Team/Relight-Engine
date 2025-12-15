@@ -3,7 +3,7 @@
 // Archive is an abstract base class allowing abstractions for data reading and writing
 // Examples of child class: Memory reader/writer, file reader/writer, etc
 
-#include "Platform.h"
+#include "Hardware/RMemory.h"
 
 struct ArchiveState
 {
@@ -33,6 +33,56 @@ class Archive: private ArchiveState
     public:
     void Serialize(void* Input, int Length)
     {
-        memset(Input, 0, Length);
+        RMemory::Memset(Input, 0, Length);
+    }
+
+    bool DoesReturnCode()
+    {
+        return ContainCode;
+    }
+
+    bool DoesContainRMap()
+    {
+        return ContainRMap;
+    }
+
+    bool DoesIsSaveLoadGame()
+    {
+        return IsSaveLoadGame;
+    }
+
+    bool DoesIsCountingMem()
+    {
+        return IsCountingMem;
+    }
+
+    bool DoesIsLoading()
+    {
+        return IsLoading;
+    }
+
+    bool DoesIsSaving()
+    {
+        return IsSaving;
+    }
+
+    bool DoesIsTracking()
+    {
+        return IsTracking;
+    }
+
+    bool DoesIsLoadingPak()
+    {
+        return IsLoadingPak;
+    }
+
+    bool DoesIsError()
+    {
+        return IsError;
+    }
+
+    bool DoesIsFatal()
+    {
+        return IsFatal;
     }
 };
