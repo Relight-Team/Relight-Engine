@@ -1,9 +1,14 @@
+#pragma once
 #include "Serialization/Archive.h"
 
-
-class Archive: private ArchiveState
+// Proxy's are used as a wrapper around a normal archive to inject and override custom functions at runtime.
+class ArchiveProxy : public Archive
 {
     public:
+    ArchiveProxy(Archive& InArchive) : BaseArchive(InArchive)
+    {
+    }
+
     virtual void Serialize(void* Input, int Length)
     {
         BaseArchive.Serialize(Input, Length);

@@ -2,7 +2,7 @@
 
 // Archive is an abstract base class allowing abstractions for data reading and writing
 // Examples of child class: Memory reader/writer, file reader/writer, etc
-
+#pragma once
 #include "Hardware/RMemory.h"
 
 struct ArchiveState
@@ -31,6 +31,9 @@ struct ArchiveState
 class Archive: private ArchiveState
 {
     public:
+
+    virtual ~Archive() = default;
+
     // Convert data into a readable format
     virtual void Serialize(void* Input, int Length)
     {
@@ -38,10 +41,10 @@ class Archive: private ArchiveState
     }
 
     // Fource to finish writing buffered data to hard disk
-    virtual void Flush();
+    virtual void Flush() = 0;
 
     // Set the current offset of data storage
-    virtual void Seek(int Offset);
+    virtual void Seek(int Offset) = 0;
 
     bool DoesReturnCode()
     {

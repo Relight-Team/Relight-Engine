@@ -9,10 +9,7 @@ class UnixPlatformFile : public BasePlatformFile
 public:
      static bool FileExists(String File);
 
-     static bool ReadFile(String File, String& Output);
-
-    // Like ReadFile() but store each line in array
-     static bool ReadFileLines(String File, Array<String>& Output);
+     static bool ReadFile(String File, char** Output, size_t* OutputSize);
 
      static bool CreateFile(String File);
 
