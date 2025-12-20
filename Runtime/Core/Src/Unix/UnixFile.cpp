@@ -91,3 +91,44 @@ bool UnixPlatformFile::WriteFile(String File, Array<int> Contents)
     return true;
 
 }
+
+bool WriteFile(String File, char* Contents, size_t Size)
+{
+    Array<char> Temp1 = File.ToArrayChar();
+    Temp1.Add('\0');
+    const char* Temp2 = Temp1.ReturnPointer();
+    FILE* FilePointer = fopen(Temp2, "wb");
+
+    if(FilePointer == nullptr)
+    {
+        return false;
+    }
+
+    fwrite(Contents, 1, Size, FilePointer);
+
+    fclose(FilePointer);
+    return true;
+
+}
+
+bool UnixPlatformFile::CopyFile(String FileA, String FileB)
+{
+    char* FileAData;
+    size_t FileASize;
+
+    bool Check = UnixPlatformFile::ReadFile(FileA, &FileAData, &FileASize);
+
+    if(Check == false)
+    {
+        return false;
+    }
+
+    Check = ::WriteFile(FileB, FileAData, FileASize);
+
+    if(Check == false)
+    {
+        return false;
+    }
+
+    return true;
+}

@@ -66,6 +66,11 @@ public:
         return PlatformFile::WriteFile(File, RetB);
     }
 
+    static bool CopyFile(String A, String B)
+    {
+        return PlatformFile::CopyFile(A, B);
+    }
+
     private:
 
        // static String Filename;
