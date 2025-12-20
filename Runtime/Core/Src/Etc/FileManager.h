@@ -81,6 +81,11 @@ public:
         return PlatformFile::MoveFile(File, Directory);
     }
 
+    static bool DirectoryExists(String Directory)
+    {
+        return PlatformFile::DirectoryExists(Directory);
+    }
+
     private:
 
        // static String Filename;

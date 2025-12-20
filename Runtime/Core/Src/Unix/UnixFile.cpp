@@ -177,3 +177,19 @@ bool UnixPlatformFile::MoveFile(String File, String MoveDirectory)
 
     return true;
 }
+
+bool UnixPlatformFile::DirectoryExists(String Directory)
+{
+    Array<char> Temp1 = Directory.ToArrayChar();
+    Temp1.Add('\0');
+    const char* Temp2 = Temp1.ReturnPointer();
+
+    struct stat info;
+
+    if(stat(Temp2, &info) != 0)
+    {
+        return false;
+    }
+
+    return (info.st_mode & S_IFDIR) != 0;
+}

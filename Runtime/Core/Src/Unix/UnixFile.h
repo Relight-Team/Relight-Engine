@@ -21,7 +21,7 @@ public:
 
      static bool MoveFile(String File, String MoveDirectory);
 
-     static bool DirectoryExist(String Directory);
+     static bool DirectoryExists(String Directory);
 
      static bool CreateDirectory(String Directory);
 
