@@ -86,6 +86,11 @@ public:
         return PlatformFile::DirectoryExists(Directory);
     }
 
+    static bool CreateDirectory(String Directory)
+    {
+        return PlatformFile::CreateDirectory(Directory);
+    }
+
     private:
 
        // static String Filename;

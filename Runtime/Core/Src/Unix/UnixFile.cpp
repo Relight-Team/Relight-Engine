@@ -193,3 +193,24 @@ bool UnixPlatformFile::DirectoryExists(String Directory)
 
     return (info.st_mode & S_IFDIR) != 0;
 }
+
+bool UnixPlatformFile::CreateDirectory(String Directory)
+{
+    Array<char> Temp1 = Directory.ToArrayChar();
+    Temp1.Add('\0');
+    const char* Temp2 = Temp1.ReturnPointer();
+
+
+    if(mkdir(Temp2, 0755) == 0)
+    {
+        return true;
+    }
+    else if(errno == EEXIST)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
