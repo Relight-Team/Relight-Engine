@@ -132,3 +132,18 @@ bool UnixPlatformFile::CopyFile(String FileA, String FileB)
 
     return true;
 }
+
+bool UnixPlatformFile::DeleteFile(String File)
+{
+    Array<char> Temp1 = File.ToArrayChar();
+    Temp1.Add('\0');
+    const char* Temp2 = Temp1.ReturnPointer();
+
+    int Check = remove(Temp2);
+
+    if(Check != 0)
+    {
+        return false;
+    }
+    return true;
+}

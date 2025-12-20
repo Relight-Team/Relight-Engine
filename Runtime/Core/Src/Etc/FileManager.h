@@ -71,6 +71,11 @@ public:
         return PlatformFile::CopyFile(A, B);
     }
 
+    static bool DeleteFile(String File)
+    {
+        return PlatformFile::DeleteFile(File);
+    }
+
     private:
 
        // static String Filename;
