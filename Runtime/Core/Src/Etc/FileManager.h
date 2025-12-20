@@ -91,9 +91,41 @@ public:
         return PlatformFile::CreateDirectory(Directory);
     }
 
-    static bool ListFiles(String Directory, Array<String>& Output, Array<String>& Directories, String Ext = "NULL")
+    static bool ListFiles(String Directory, Array<String>& Files, Array<String>& Directories, String Ext = "NULL")
     {
-        return PlatformFile::ListFiles(Directory, Output, Directories, Ext);
+        return PlatformFile::ListFiles(Directory, Files, Directories, Ext);
+    }
+
+    // Includes subdirectories
+    static bool ListFilesRecersive(String Directory, Array<String>& Files, Array<String>& Directories, String Ext = "NULL")
+    {
+        Array<String> RetFiles;
+        Array<String> RetDirs;
+
+        PlatformFile::ListFiles(Directory, RetFiles, RetDirs, Ext);
+
+        for(int I = 0; I < RetDirs.Length(); I++)
+        {
+            // get base directory
+            String Dir = RetDirs[I];
+            Array<char> Temp = Dir.ToArrayChar();
+            Array<char> BaseDirArr;
+            Array<char> Bad; // TODO: Fix this so it can take nullptr
+            Temp.Split('/', Bad, BaseDirArr, true);
+
+            String BaseDir;
+            for(int J = 0; J < BaseDirArr.Length(); J++)
+            {
+                BaseDir.Append(BaseDirArr[J]);
+            }
+
+            FileManager::ListFilesRecersive(Directory + BaseDir + "/", Files, Directories, Ext);
+        }
+
+        Files.Append(RetFiles, RetFiles.Length());
+        Directories.Append(RetDirs, RetDirs.Length());
+
+        return true;
     }
 
     private:
