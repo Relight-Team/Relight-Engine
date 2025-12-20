@@ -70,3 +70,24 @@ bool UnixPlatformFile::CreateFile(String File)
     fclose(FilePointer);
     return true;
 }
+
+bool UnixPlatformFile::WriteFile(String File, Array<int> Contents)
+{
+    Array<char> Temp1 = File.ToArrayChar();
+    Temp1.Add('\0');
+    const char* Temp2 = Temp1.ReturnPointer();
+    FILE* FilePointer = fopen(Temp2, "wb");
+
+    if(FilePointer == nullptr)
+    {
+        return false;
+    }
+
+    size_t Size = Contents.Length();
+
+    fwrite(Contents.ReturnPointer(), sizeof(int), Size, FilePointer);
+
+    fclose(FilePointer);
+    return true;
+
+}

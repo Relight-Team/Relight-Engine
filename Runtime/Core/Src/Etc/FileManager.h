@@ -2,7 +2,8 @@
 #include "Containers/String.h"
 #include "Platform.h"
 #include "Serialization/FileReader.h"
-//#include "Serialization/FileWriter.h"
+#include "Containers/Array.h"
+#include "Etc/CharUtil.h"
 
 class FileManager
 {
@@ -39,6 +40,30 @@ public:
     static bool CreateFile(String File)
     {
         return PlatformFile::CreateFile(File);
+    }
+
+    static bool WriteFile(String File, Array<int> Contents)
+    {
+        return PlatformFile::WriteFile(File, Contents);
+    }
+
+    static bool WriteFile(String File, int* Contents)
+    {
+        Array<int> Ret = *Contents;
+        return PlatformFile::WriteFile(File, Ret);
+    }
+
+    static bool WriteFile(String File, String Contents)
+    {
+        Array<char> RetA = Contents.ToArrayChar();
+        Array<int> RetB;
+
+        for(int I = 0; I < RetA.Length(); I++)
+        {
+            RetB.Add(CharUtil::CharToInt(RetA[I]));
+        }
+
+        return PlatformFile::WriteFile(File, RetB);
     }
 
     private:

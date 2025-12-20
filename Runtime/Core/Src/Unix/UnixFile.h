@@ -13,7 +13,7 @@ public:
 
      static bool CreateFile(String File);
 
-     static bool WriteFile(String File, String Contents);
+     static bool WriteFile(String File, Array<int> Contents);
 
      static bool CopyFile(String FileA, String FileB);
 
