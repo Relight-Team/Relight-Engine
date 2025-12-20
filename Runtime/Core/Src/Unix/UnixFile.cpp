@@ -9,6 +9,7 @@
 bool UnixPlatformFile::FileExists(String File)
 {
     Array<char> Temp1 = File.ToArrayChar();
+    Temp1.Add('\0');
     const char* Temp2 = Temp1.ReturnPointer();
     return (access(Temp2, F_OK) == 0);
 }
@@ -17,6 +18,7 @@ bool UnixPlatformFile::ReadFile(String File, char** Output, size_t* OutputSize)
 {
     // Open binary file
     Array<char> Temp1 = File.ToArrayChar();
+    Temp1.Add('\0');
     const char* Temp2 = Temp1.ReturnPointer();
     FILE* Fiptr = fopen(Temp2, "rb");
 
@@ -50,5 +52,21 @@ bool UnixPlatformFile::ReadFile(String File, char** Output, size_t* OutputSize)
 
     *OutputSize = (size_t)Size;
     *Output = reinterpret_cast<char*>(Buffer);
+    return true;
+}
+
+bool UnixPlatformFile::CreateFile(String File)
+{
+    Array<char> Temp1 = File.ToArrayChar();
+    Temp1.Add('\0');
+    const char* Temp2 = Temp1.ReturnPointer();
+    FILE* FilePointer = fopen(Temp2, "w");
+
+    if(FilePointer == nullptr)
+    {
+        return false;
+    }
+
+    fclose(FilePointer);
     return true;
 }

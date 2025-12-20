@@ -36,6 +36,11 @@ public:
         return true;
     }
 
+    static bool CreateFile(String File)
+    {
+        return PlatformFile::CreateFile(File);
+    }
+
     private:
 
        // static String Filename;
