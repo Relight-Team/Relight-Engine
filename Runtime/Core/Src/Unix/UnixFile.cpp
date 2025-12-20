@@ -147,3 +147,33 @@ bool UnixPlatformFile::DeleteFile(String File)
     }
     return true;
 }
+
+bool UnixPlatformFile::MoveFile(String File, String MoveDirectory)
+{
+    Array<char> Temp = File.ToArrayChar();
+    Array<char> FileNameArr;
+    Array<char> Bad; // TODO: Fix this so it can take nullptr
+    Temp.Split('/', Bad, FileNameArr, true);
+    String FileName;
+
+    for(int I = 0; I < FileNameArr.Length(); I++)
+    {
+        FileName.Append(FileNameArr[I]);
+    }
+
+    bool Check = UnixPlatformFile::CopyFile(File, MoveDirectory + FileName);
+
+    if(Check == false)
+    {
+        return false;
+    }
+
+    Check = UnixPlatformFile::DeleteFile(File);
+
+    if(Check == false)
+    {
+        return false;
+    }
+
+    return true;
+}

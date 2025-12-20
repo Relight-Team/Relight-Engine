@@ -76,6 +76,11 @@ public:
         return PlatformFile::DeleteFile(File);
     }
 
+    static bool MoveFile(String File, String Directory)
+    {
+        return PlatformFile::MoveFile(File, Directory);
+    }
+
     private:
 
        // static String Filename;
