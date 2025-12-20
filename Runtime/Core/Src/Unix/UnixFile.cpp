@@ -214,3 +214,49 @@ bool UnixPlatformFile::CreateDirectory(String Directory)
         return false;
     }
 }
+
+bool UnixPlatformFile::ListFiles(String Directory, Array<String>& Files, Array<String>& Directories, String Ext)
+{
+    Array<char> Temp1 = Directory.ToArrayChar();
+    Temp1.Add('\0');
+    const char* Temp2 = Temp1.ReturnPointer();
+
+    DIR *Dir = opendir(Temp2);
+
+    if(!Dir)
+    {
+        return false;
+    }
+
+    struct dirent *entry;
+    while ((entry = readdir(Dir)) != NULL)
+    {
+        // Skip . and ..
+        if (entry->d_name[0] == '.' && (entry->d_name[1] == '\0' || (entry->d_name[1] == '.' && entry->d_name[2] == '\0')))
+        {
+            continue;
+        }
+
+        // If Ext is defined, then skip files that doesn't have the extension
+        if(Ext != "NULL")
+        {
+            String EndWithCheck = entry->d_name;
+            if(!EndWithCheck.EndsWith("." + Ext) && !UnixPlatformFile::DirectoryExists(Directory + entry->d_name))
+            {
+                continue;
+            }
+        }
+
+        if(UnixPlatformFile::DirectoryExists(Directory + entry->d_name))
+        {
+            Directories.Add(Directory + entry->d_name);
+        }
+        else
+        {
+            Files.Add(Directory + entry->d_name);
+        }
+    }
+
+    closedir(Dir);
+    return true;
+}

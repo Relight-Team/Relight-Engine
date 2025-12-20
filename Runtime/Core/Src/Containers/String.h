@@ -31,6 +31,11 @@ class String
         return Compare(B, true);
     }
 
+    bool operator!=(String B)
+    {
+        return !Compare(B, true);
+    }
+
     String operator+(const String& Other) const
     {
         String Ret;

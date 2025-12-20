@@ -91,6 +91,11 @@ public:
         return PlatformFile::CreateDirectory(Directory);
     }
 
+    static bool ListFiles(String Directory, Array<String>& Output, Array<String>& Directories, String Ext = "NULL")
+    {
+        return PlatformFile::ListFiles(Directory, Output, Directories, Ext);
+    }
+
     private:
 
        // static String Filename;

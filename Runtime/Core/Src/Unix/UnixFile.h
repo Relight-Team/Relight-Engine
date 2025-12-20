@@ -25,5 +25,5 @@ public:
 
      static bool CreateDirectory(String Directory);
 
-     static const char* ToConstChar(String Input);
+     static bool ListFiles(String Directory, Array<String>& Output, Array<String>& Directories, String Ext = "NULL");
 };

@@ -3,5 +3,6 @@
 #include <math.h>
 #include <cstdlib>
 #include <unistd.h>
+#include <dirent.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
