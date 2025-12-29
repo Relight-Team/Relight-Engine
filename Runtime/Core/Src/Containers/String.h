@@ -82,6 +82,11 @@ class String
 
     void Append(const char* B);
 
+    void Add(const UTF16& B)
+    {
+        Append(B);
+    }
+
     bool StartsWith(const String& B, bool CaseSensitive = true);
 
     bool EndsWith(const String& B, bool CaseSensitive = true);
