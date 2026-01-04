@@ -4,41 +4,24 @@
 #include "Platform.h"
 inline String ToString(int Input)
 {
-    String Ret = "";
-
-    int Progress = 0;
-
-    int CheckLoop = -1;
-
-    while(CheckLoop < abs(Input))
+    if(Input == 0)
     {
-
-        int PowValue;
-
-        if(Progress == 0)
-        {
-            PowValue = 1;
-        }
-        else
-        {
-            PowValue = pow(10, Progress);
-        }
-
-        int Num = abs((Input / PowValue) % 10);
-
-        UTF16 CharTemp = 48 + Num;
-
-        Ret.Append(CharTemp);
-
-        Progress++;
-
-        CheckLoop = pow(10, Progress);
+        return "0";
     }
 
-    // Add negative
-    if(Input < 0)
+    String Ret;
+    int Value = abs(Input);
+
+    while (Value > 0)
     {
-        Ret.Append("-");
+        int Digit = Value % 10;
+        Ret.Append(static_cast<char16_t>('0' + Digit));
+        Value /= 10;
+    }
+
+    if (Input < 0)
+    {
+        Ret.Append('-');
     }
 
     return Ret.Reverse();
@@ -107,6 +90,12 @@ inline String ToString(const char (&Input)[N])
 template <typename ArrayInput>
 inline String ToString(Array<ArrayInput> Input)
 {
+    // Fallback if array is empty
+    if(Input.Length() == 0)
+    {
+        return "[]";
+    }
+
     String Ret = "[";
     for(int I = 0; I < Input.Indices(); I++)
     {
