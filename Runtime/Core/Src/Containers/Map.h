@@ -35,7 +35,12 @@ class Map
     int Find(KeyType A)
     {
         int i;
-        Key.Find(A, i);
+        bool Err = Key.Find(A, i);
+
+        if(Err == false)
+        {
+            return -1;
+        }
         return i;
     }
 
@@ -60,7 +65,7 @@ class Map
         {
             int i;
             Key.Find(K, i);
-            Value[i] = V;
+            Value.Replace(V, i);
         }
 
         // Key not found, adding key with value
@@ -83,18 +88,32 @@ class Map
         }
     }
 
+    Array<KeyType> GetKeys()
+    {
+        return Key;
+    }
+
+    Array<ValueType> GetValues()
+    {
+        return Value;
+    }
+
     // Operators
 
-    ValueType& operator[](KeyType K)
+    ValueType& operator[](const KeyType& K)
     {
+        int i;
         if(Key.Contains(K))
         {
-            int i;
             Key.Find(K, i);
-
-            return Value[i];
         }
-        return Value[0]; //TODO: Placeholder, this could cause errors, please find a ray for it to return something better
+        else
+        {
+            Key.Add(K);
+            Value.Add(ValueType()); // default-constructed ValueType
+            i = Value.Indices() - 1;
+        }
+        return Value[i];
     }
     private:
 
