@@ -42,7 +42,7 @@ bool String::Compare(String B, bool CaseSensitive)
             return false;
         }
 
-        for(int I = 0; I < B.Indices(); I++)
+        for(int I = 0; I <= B.Indices(); I++)
         {
             if(CaseSensitive == false && CharUtil::IsASCII(CharArr[I]))
             {
@@ -228,21 +228,21 @@ bool String::Contains(const UTF16& StrCheck)
 bool String::Contains(const String& StrCheck)
 {
 
-    if(StrCheck.Indices() > Indices())
+    if(StrCheck.Length() > Length())
     {
         return false;
     }
 
     bool Ret = true;
 
-    for(int ArrIndex = 0; ArrIndex < Indices() ; ArrIndex++)
+    for(int ArrIndex = 0; ArrIndex < Length(); ArrIndex++)
     {
         // if the first character is the same as the string we are checking, then check if it matches
         if(CharArr[ArrIndex] == StrCheck[0])
         {
-            for(int CheckIndex = 0; CheckIndex <= StrCheck.Indices(); CheckIndex++)
+            for(int CheckIndex = 0; CheckIndex < StrCheck.Length(); CheckIndex++)
             {
-                if((ArrIndex + CheckIndex > CharArr.Indices()) || (CharArr[ArrIndex + CheckIndex] != StrCheck[CheckIndex]))
+                if((ArrIndex + CheckIndex > CharArr.Length()) || (CharArr[ArrIndex + CheckIndex] != StrCheck[CheckIndex]))
                 {
                     Ret = false;
                     break;
