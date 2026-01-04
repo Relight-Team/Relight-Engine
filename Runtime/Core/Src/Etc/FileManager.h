@@ -47,9 +47,10 @@ public:
         return PlatformFile::WriteFile(File, Contents);
     }
 
-    static bool WriteFile(String File, int* Contents)
+    static bool WriteFile(String File, int* Contents, int Size)
     {
-        Array<int> Ret = *Contents;
+        Array<int> Ret;
+        Ret.Init(Contents, Size);
         return PlatformFile::WriteFile(File, Ret);
     }
 
