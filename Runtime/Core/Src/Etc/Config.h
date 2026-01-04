@@ -1,114 +1,227 @@
 #pragma once
-#include <iostream>
-#include <vector>
+#include "Etc/ConfigManager.h"
+#include "Containers/String.h"
+#include "Serialization/FileReader.h"
+#include "Etc/FileManager.h"
+#include "Etc/Path.h"
+#include "Etc/CharUtil.h"
+#include "Etc/FromString.h"
+
+ConfigManager GlobalConfig;
 
 
-// Note, params for getting values in configs
-// ------------------------------------------------
-// PClass: the config class the value is stored in
-// Value: the value name from the class to get
-// Store: The value to store the config
-// File: The file location that stores the configs
-
-class Config
+// FIXME: Rewrite ConfigSection to make it in order
+struct Config
 {
+    // Add file to Global Config
+    static void AddFile(String LocalFilePath, String ForceFullPath = "")
+    {
+        String Directory;
 
-    public:
-
-        // Get values
-
-        static void GetString(std::string PClass, std::string Value, std::string& Store, std::string File);
-
-
-        static void GetInt(std::string PClass, std::string Value, int& Store, std::string File);
-
-
-        static void GetDouble(std::string PClass, std::string Value, double& Store, std::string File);
-
-
-        static void GetBool(std::string PClass, std::string Value, bool& Store, std::string File);
-
-    private:
-
-        static bool ContainsInternal(std::string Line, std::string Context);
-
-        static std::vector<std::string> ReadInternal(const std::string ConfigFile);
-
-        static int FindTextIndex(std::string ConfigFile, std::string Context);
-
-        static std::string AddBrackets(std::string Text);
-
-        static bool StringToBool(std::string Text);
-
-        static std::vector<std::string> ReturnClassText(std::string PClass, const std::string File)
+        if(ForceFullPath != "")
         {
+            Directory = ForceFullPath;
+        }
+        // Get Saved config, else get main config
+        else
+        {
+            String SaveConfigDir;
+            String ConfigDir;
 
-            std::vector<std::string> Tmp = ReadInternal(File);
+            Path::SavedConfigDir(SaveConfigDir);
+            Path::ConfigDir(ConfigDir);
 
-            // Find index of PClass
-
-            int i = FindTextIndex(File, AddBrackets(PClass));
-
-
-            // Fix bug to not detect itself
-            i += 1;
-
-            std::vector<std::string> Ret;
-
-            // Loop each vector and store it in Ret, until brackets are found
-
-            while(i < Tmp.size() && !(ContainsInternal(Tmp[i], "[")))
+            if(FileManager::FileExists(SaveConfigDir + "/" + LocalFilePath))
             {
-                Ret.push_back(Tmp[i]);
-                i++;
+                Directory = SaveConfigDir;
+            }
+            else
+            {
+                Directory = ConfigDir;
+            }
+        }
+
+
+        FileReader Container;
+
+        FileManager::ReadFile(Directory + "/" + LocalFilePath, Container);
+
+        String Contents = Container.ToString();
+
+        GlobalConfig.Serialize(LocalFilePath, Contents);
+    }
+
+    static bool GetString(String Section, String Variable, String& Output, String File)
+    {
+        ConfigLine Ret;
+        bool Check = InternalGetValue(Section, Variable, Ret, File);
+        if(Check == false)
+        {
+            return false;
+        }
+
+        Output = Ret.Value;
+        return true;
+    }
+
+    static bool GetInt(String Section, String Variable, int& Output, String File)
+    {
+        ConfigLine Ret;
+        bool Check = InternalGetValue(Section, Variable, Ret, File);
+        if(Check == false)
+        {
+            return false;
+        }
+        String StrOutput = Ret.Value;
+
+        Output = FromString::Int(StrOutput);
+        return true;
+    }
+
+    static bool GetDouble(String Section, String Variable, double& Output, String File)
+    {
+        ConfigLine Ret;
+        bool Check = InternalGetValue(Section, Variable, Ret, File);
+        if(Check == false)
+        {
+            return false;
+        }
+
+        String StrOutput = Ret.Value;
+
+        Output = FromString::Double(StrOutput);
+        return true;
+    }
+
+    static bool GetFloat(String Section, String Variable, float& Output, String File)
+    {
+        ConfigLine Ret;
+        bool Check = InternalGetValue(Section, Variable, Ret, File);
+        if(Check == false)
+        {
+            return false;
+        }
+
+        String StrOutput = Ret.Value;
+
+        Output = FromString::Float(StrOutput);
+        return true;
+    }
+
+    static bool GetBool(String Section, String Variable, bool& Output, String File)
+    {
+
+        ConfigLine Ret;
+
+        bool Check = InternalGetValue(Section, Variable, Ret, File);
+
+        if(Check == false)
+        {
+            return false;
+        }
+
+        String StrOutput = Ret.Value;
+
+        Output = FromString::Bool(StrOutput);
+
+        return true;
+    }
+
+    static bool GetArray(String Section, String Variable, Array<String>& Output, String File)
+    {
+        ConfigFile CFile;
+        ConfigSection CSection;
+
+        bool Check = GlobalConfig.Get(File, CFile);
+
+        if(Check == false)
+        {
+            return false;
+        }
+
+        Check = CFile.Get(Section, CSection);
+
+        if(Check == false)
+        {
+            return false;
+        }
+
+        Array<ConfigLine> Configs;
+
+        CSection.ReturnArray(Configs);
+
+        int I = 0;
+
+        while(I < Configs.Length())
+        {
+            ConfigLine CLine = Configs[I];
+
+            if(CLine.Key == "+" + Variable)
+            {
+                Output.AddUnique(CLine.Value);
             }
 
-
-            return Ret;
-        }
-
-        static std::string ReturnValueText(std::vector<std::string> Vet, std::string Value)
-        {
-            for(int i = 0; i < Vet.size(); i++)
+            else if(CLine.Key == "-" + Variable)
             {
-                if(ContainsInternal(Vet[i], Value))
-                {
-                    return Vet[i];
-                }
+                Output.Remove(CLine.Value);
             }
 
-            return "";
+            else if(CLine.Key == "!" + Variable)
+            {
+                Array<String> Ret;
+                Output = Ret;
+            }
+
+            else if(CLine.Key == "." + Variable)
+            {
+                Output.Add(CLine.Value);
+            }
+
+            else if(CLine.Key == Variable)
+            {
+                Array<String> Ret;
+                Ret.Add(CLine.Value);
+                Output = Ret;
+            }
+
+            I++;
         }
 
+        return true;
+    }
 
-        static std::string ReturnVar(std::string Value)
+private:
+
+    static bool InternalGetValue(String Section, String Variable, ConfigLine& Output, String File)
+    {
+        ConfigFile CFile;
+        ConfigSection CSection;
+
+        bool Check = GlobalConfig.Get(File, CFile);
+
+        if(Check == false)
         {
-        int i = 0;
+            return false;
+        }
 
-        // iterate until i is at '='
+        Check = CFile.Get(Section, CSection);
 
-        while(Value[i] != '=')
+        if(Check == false)
         {
-            i++;
+            return false;
         }
+        Check = CSection.Get(Variable, Output);
 
-        // If nothing is after i, return nothing
-
-        if(i == Value.size())
+        if(Check == false)
         {
-            return "";
+            return false;
         }
+        return true;
+    }
 
-        // store var and return it
-
-        std::string Ret;
-
-        for(int a = i + 1; a < Value.size(); a++)
-        {
-            Ret += Value[a];
-        }
-
-        return Ret;
-        }
+    static int GetActualNumber(UTF16 Str)
+    {
+        return Str - u'0';
+    }
 
 };
