@@ -8,6 +8,7 @@
 
 #pragma once
 #include "PlatformCore.h"
+#include <initializer_list>
 
 template <typename T>
 class Array
@@ -32,17 +33,29 @@ class Array
             }
         }
 
-        template <typename... Args>
-        Array(Args... InArgs) : Arr(nullptr), CurrentSize(0)
-        {
-            const int Size = sizeof...(InArgs);
-            InternalChangeSize(Size);
-            T Temp[] = {InArgs...};
-            for (int i = 0; i < Size; i++)
-            {
-                Arr[i] = (Temp[i]);
-            }
-        }
+//         template <typename... Args>
+//         Array(Args... InArgs) : Arr(nullptr), CurrentSize(0)
+//         {
+//             const int Size = sizeof...(InArgs);
+//             InternalChangeSize(Size);
+//             T Temp[] = {InArgs...};
+//             for (int i = 0; i < Size; i++)
+//             {
+//                 Arr[i] = (Temp[i]);
+//             }
+//         }
+
+
+Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
+{
+    InternalChangeSize(static_cast<int>(Init.size()));
+
+    int i = 0;
+    for (const T& Elem : Init)
+    {
+        Arr[i++] = Elem;
+    }
+}
 
         Array(Array&& Other) noexcept : Arr (Other.Arr), CurrentSize(Other.CurrentSize)
         {
@@ -78,6 +91,13 @@ class Array
         // == Operators ==
 
         const T& operator[](int i) const
+        {
+            Assert(i < 0, "index is lower than 0 when using [] operator. Index must be 0 or higher", i);
+            Assert(i >= CurrentSize, "index is higher than the actual array size", i);
+            return Arr[i];
+        }
+
+        T& operator[](int i)
         {
             Assert(i < 0, "index is lower than 0 when using [] operator. Index must be 0 or higher", i);
             Assert(i >= CurrentSize, "index is higher than the actual array size", i);
