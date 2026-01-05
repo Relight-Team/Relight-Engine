@@ -112,10 +112,10 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
             Logger.Logger(5, "ERROR: LINUX_ROOT environment variable is not set!")
 
         self.DumpSymsPath = os.path.join(
-            Dir_Manager.Engine_Directory, "bin", "Linux", "DumpSyms"
+            Dir_Manager.Engine_Directory, "bin", "DumpSyms", "Linux", "x86", "Final", "DumpSyms"
         )
         self.BreakpadEncoderPath = os.path.join(
-            Dir_Manager.Engine_Directory, "bin", "Linux", "BreakpadEncoder"
+            Dir_Manager.Engine_Directory, "bin", "CrashpadEncoder", "Linux", "x86", "Final", "CrashpadEncoder"
         )
 
         if (self.BasePath is not None or self.BasePath != "") and (
@@ -200,8 +200,14 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
             self.Version[tmp] = int(VersionArrayString[tmp])
             tmp += 1
 
+    # Get .debug and run Encoder
     def GetEncodeCommand(self, LinkEnv, OutputFile):
         # FIXME: Add Windows Support!
+
+        # if Crashpad encoder or dump syms tools don't exist, exit early
+        if not os.path.isfile(self.DumpSymsPath) or not os.path.isfile(self.BreakpadEncoderPath):
+            Logger.Logger(4, "DumpSyms and/or Crashpadencoder tool could not be found, skipping encoder...")
+            return ""
 
         OutputFileFullLoc = os.path.abspath(OutputFile)  # Get full file path
 
@@ -925,7 +931,7 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
             f.write("#!/bin/sh\n")
             f.write("set -o errexit\n")
             f.write(Com + "\n")
-            # f.write(self.GetEncodeCommand(LinkEnv, Output)) # FIXME: Readd this once we add Breakpad!
+            f.write(self.GetEncodeCommand(LinkEnv, Output)) # FIXME: Readd this once we add Breakpad!
 
         Action.CommandPath = "/bin/sh"
         Action.Arguments = LinkFile
