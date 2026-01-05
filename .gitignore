@@ -51,5 +51,11 @@ CMakeFiles/
 
 .mk
 
+# remove compiled/intermediate files
+
+.o
+
+.log
+
 # For RelightBuildTool_neXt
 !Make*/
