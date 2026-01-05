@@ -215,19 +215,20 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
             0
         ]  # Removes the extension
 
+        Base = os.path.basename(OutputFileWithoutExt)
         EncodeSymbolFile = os.path.join(
-            LinkEnv.OutputDir, OutputFileWithoutExt + ".sym"
+            LinkEnv.OutputDir, Base + ".sym"
         )
 
         SymbolFile = os.path.join(LinkEnv.LocalShadowDir, OutputFile + ".pysm")
 
         StripFile = os.path.join(LinkEnv.LocalShadowDir, OutputFile + "_nodebug")
 
-        DebugFile = os.path.join(LinkEnv.OutputDir, OutputFileWithoutExt + ".debug")
+        DebugFile = os.path.join(LinkEnv.OutputDir, Base + ".debug")
 
         # If SavePYSM is true, then we will store the symbol file in the output directory instead of the shadow directory
         if self.SavePYSM is True:
-            SymbolFile = os.path.join(LinkEnv.OutputDir, OutputFileWithoutExt + ".pysm")
+            SymbolFile = os.path.join(LinkEnv.OutputDir, Base + ".pysm")
 
         # Compile dump_syms
         Ret = (
