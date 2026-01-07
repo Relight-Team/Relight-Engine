@@ -221,12 +221,15 @@ class TargetBuilder:
         # Check Project directory
         if self.Target._Project is not None:
             ProjectDirSource = os.path.join(
-                os.path.dirname(self.Target._Project), "Src"
+                os.path.dirname(self.Target._Project)
             )
             # Temp = os.path.dirname(self.Target._Project)
+        elif self.StartingTarget.TargetDir is not None:
+            ProjectDirSource = os.path.join(os.path.dirname(self.StartingTarget.TargetDir))
         else:
             ProjectDirSource = Directory_Manager.Engine_Directory
 
+        print(ProjectDirSource)
         ModuleFile = self.SearchThroughDir(ProjectDirSource, Name)
 
         if ModuleFile is None:
