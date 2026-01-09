@@ -5,6 +5,7 @@
 // Math
 #include "Math/Range.h"
 #include "Math/RangeBound.h"
+#include "Math/Vector.h"
 
 // Log
 #include "Log/Log.h"

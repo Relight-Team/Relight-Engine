@@ -1,0 +1,9 @@
+Name = "RObject"
+
+Description = "Implementation of RObjects, the base class for all Relight Engine's Objects"
+
+Type = "Engine"
+
+IsEngineModule = True
+
+Modules = ["Core"]
