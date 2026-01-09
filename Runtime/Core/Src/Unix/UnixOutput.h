@@ -50,7 +50,7 @@ public:
     template <typename NonStringType>
     static inline void Print(const NonStringType& Input)
     {
-        String Temp = ToString(Input);
+        String Temp = CORE_API::ToString(Input);
 
         Print(Temp);
     }
@@ -59,7 +59,7 @@ public:
     static void Println(const StringType& Input)
     {
         String Temp = "\n";
-        String TempInput = ToString(Input);
+        String TempInput = CORE_API::ToString(Input);
         Print(TempInput + Temp);
     }
 };

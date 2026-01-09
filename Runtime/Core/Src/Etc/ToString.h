@@ -2,6 +2,9 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Platform.h"
+
+namespace CORE_API
+{
 inline String ToString(int Input)
 {
     if(Input == 0)
@@ -106,4 +109,5 @@ inline String ToString(Array<ArrayInput> Input)
     Ret.Append("]");
 
     return Ret;
+}
 }
