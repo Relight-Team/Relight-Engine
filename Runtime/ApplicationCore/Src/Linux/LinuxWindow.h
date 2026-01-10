@@ -1,12 +1,11 @@
+#pragma once
+
 #include "Core.h"
 
-#include "LinuxMisc.h"
+#include "LinuxAppMisc.h"
 
-#include "SDL.h"
-
-#include <iostream>
-
-CORE_API::LogCategory* SDL2 = new CORE_API::LogCategory("SDL2");
+#include "SDL3/SDL.h"
+#include "Linux/SDL_LOG.h"
 
 
 class Window
@@ -22,7 +21,7 @@ public:
         //Quit SDL subsystems
         SDL_Quit();
 
-        LOG(*SDL2, Log, "SDL quit");
+        LOG(SDL3Log, Log, "SDL quit");
 
         return 0;
     }

@@ -6,10 +6,6 @@ Type = "Engine"
 
 Modules = ["Core"]
 
-EntryFile = "ApplicationCore.cpp"
 
-
-if UNIX:
-    ThirdPartyLink = ["SDL2"]
-
-    ThirdPartyDependencies = ["SDL2"]
+if PLATFORM_GROUP == "UNIX":
+    ThirdParty = ["SDL3"]

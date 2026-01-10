@@ -1,5 +1,6 @@
+#pragma once
 #include "Core.h"
 
 #include "LinuxWindow.h"
 
-#include "LinuxMisc.h"
+#include "LinuxAppMisc.h"

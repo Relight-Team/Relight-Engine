@@ -8,7 +8,7 @@
 #include <string>
 
 // Invert's a bool (if bool is true, change it to false, and vice-versa)
-void InvertBool(bool& Input)
+inline void InvertBool(bool& Input)
 {
     if(Input == true)
     {
@@ -31,7 +31,7 @@ int VarientToInt(P Varient)
 }
 
 
-bool StringContainsChar(std::string Str, char Ch)
+inline bool StringContainsChar(std::string Str, char Ch)
 {
     for(int i = 0; i < Str.size(); i++)
     {
