@@ -7,7 +7,7 @@
 #include "Etc/CharUtil.h"
 #include "Etc/FromString.h"
 
-extern ConfigManager GlobalConfig;
+inline ConfigManager GlobalConfig;
 
 
 // FIXME: Rewrite ConfigSection to make it in order
