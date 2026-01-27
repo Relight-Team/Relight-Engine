@@ -916,7 +916,7 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
         return ExternalLibs
 
     # TODO: Add windows support!
-    def _STEP1LinkShellFiles(self, LinkEnv, Output, Com, Action):
+    def CreateLinkScriptFile(self, LinkEnv, Output, Com, Action):
         LinkName = "link-" + os.path.basename(Output) + ".sh"
 
         LinkFile = os.path.join(LinkEnv.LocalShadowDir, LinkName)
@@ -1108,7 +1108,7 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
         # Com = Com.replace("}", "}'")
         # Com = Com.replace("$'{", "'${")
 
-        self._STEP1LinkShellFiles(LinkEnv, Output, Com, NewAction)
+        self.CreateLinkScriptFile(LinkEnv, Output, Com, NewAction)
 
         OutputActionList.append(NewAction)
 

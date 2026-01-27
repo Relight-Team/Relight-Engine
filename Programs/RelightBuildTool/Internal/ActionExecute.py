@@ -3,6 +3,7 @@ import threading
 import os
 import time
 from pathlib import Path
+import sys
 
 from Internal import Logger
 
@@ -10,14 +11,10 @@ from Internal import Logger
 # This handles the different types of execution of the list of actions
 class RBTThread:
 
-    ExitCode = 0
-
-    Action = None
-
-    Finished = False
-
     def __init__(self, InAction):
+        self.ExitCode = 0
         self.Action = InAction
+        self.Finished = False
 
     # These 2 functions will allow the program to print the output that should be printed from the command line
     def _ReadOutput(self, pipe):
@@ -32,6 +29,9 @@ class RBTThread:
 
     # The function that will be run by the thread, this will execute the process based on the action
     def FunctionToRun(self):
+
+        if self.Action.Arguments == "" and self.Action.CommandPath == "":
+            raise ValueError("ACTION ARGUMENTS AND COMMAND PATH IS EMPTY")
 
         # Start program
         try:
@@ -103,6 +103,13 @@ class LinearExecuter(ExecuteBase):
 
         Progress = 0
 
+        # Start all threads first
+        for i in ActionList:
+            if i not in ActionThreadDict:
+                TD = RBTThread(i)
+                TD.Start()
+                ActionThreadDict[i] = TD
+
         Loop = True
 
         # Loop until we are done
@@ -110,6 +117,16 @@ class LinearExecuter(ExecuteBase):
 
             ExeAction = 0  # All actions that we are currently executing
             NonExeAction = 0  # All actions that isn't executed
+
+            # Update the progress
+            for Action, Thread in ActionThreadDict.items():
+                if Thread is None or not Thread.Finished:
+                    NonExeAction += 1
+            Progress = len(ActionList) - NonExeAction
+            #Logger.Logger(3, "Progress: " + str(Progress))
+            sys.stdout.write(f"\rAction Progress: {Progress}/{len(ActionList)}\r")
+            sys.stdout.flush()
+            time.sleep(0.5)
 
             # we will update ExeAction and NonExeAction every loop instance
             for Action in ActionList:
@@ -123,12 +140,8 @@ class LinearExecuter(ExecuteBase):
                 else:
                     InpThread = ActionThreadDict.get(Action)
                     if InpThread is not None and InpThread.Finished is False:
-                        ExeAction += 1
+                        #ExeAction += 1 # FIXME: THIS IS PROBLEMATIC!
                         NonExeAction += 1
-
-            # Update the progress
-            Progress = len(ActionList) + 1 - NonExeAction
-            Logger.Logger(3, "Progress: " + str(Progress))
 
             # If we have no more actions that isn't executed, then we can stop
             if NonExeAction == 0:
@@ -187,11 +200,11 @@ class LinearExecuter(ExecuteBase):
 
                                 # Force to run once at a time
 
-                                while not TD.Finished:
-                                    time.sleep(0.1)
+                                #while not TD.Finished:
+                                #    time.sleep(0.1)
 
                             except Exception:
-                                pass
+                                print("FAILED")
 
                             ActionThreadDict[i] = (
                                 TD  # Store Action with the value of the thread into the dictoonary
