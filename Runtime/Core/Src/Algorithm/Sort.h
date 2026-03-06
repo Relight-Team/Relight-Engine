@@ -4,6 +4,7 @@
 #include "Algorithm/HeapSort.h"
 #include "Algorithm/InsertionSort.h"
 #include "Algorithm/QuickSort.h"
+#include "PlatformCore.h"
 
 // Relight Engine Sorting System
 // A system where a list can be sorted

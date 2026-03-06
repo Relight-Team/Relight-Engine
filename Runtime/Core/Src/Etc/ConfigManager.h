@@ -1,4 +1,5 @@
 #pragma once
+#include "PlatformCore.h"
 #include "Containers/Map.h"
 #include "Containers/Array.h"
 #include "Containers/String.h"
@@ -23,7 +24,7 @@ class ConfigManager
 
     bool Get(String File, ConfigFile& Output)
         {
-            int I = Files.Find(File);
+            int32 I = Files.Find(File);
             if(I == -1)
             {
                 LOG(LogCore, LogType::Warning, "Config File '" + File + "' is missing");

@@ -3,6 +3,7 @@
 // Archive is an abstract base class allowing abstractions for data reading and writing
 // Examples of child class: Memory reader/writer, file reader/writer, etc
 #pragma once
+#include "PlatformCore.h"
 #include "Hardware/RMemory.h"
 
 class RObject;
@@ -37,7 +38,7 @@ class Archive: private ArchiveState
     virtual ~Archive() = default;
 
     // Convert data into a readable format
-    virtual void Serialize(void* Input, int Length)
+    virtual void Serialize(void* Input, uint32 Length)
     {
         RMemory::Memset(Input, 0, Length);
     }
@@ -46,7 +47,7 @@ class Archive: private ArchiveState
     virtual void Flush() = 0;
 
     // Set the current offset of data storage
-    virtual void Seek(int Offset) = 0;
+    virtual void Seek(int32 Offset) = 0;
 
     bool DoesReturnCode()
     {

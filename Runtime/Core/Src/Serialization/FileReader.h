@@ -1,5 +1,6 @@
 #pragma once
 #include "Platform.h"
+#include "PlatformCore.h"
 #include "Serialization/ArchiveProxy.h"
 #include "Serialization/Archive.h"
 #include "Containers/String.h"
@@ -10,7 +11,7 @@ class FileReader : public Archive
 {
 public:
     // Store File data in class
-    void Serialize(void* Input, int Length) override
+    void Serialize(void* Input, uint32 Length) override
     {
         InnerFile = static_cast<const char*>(Input);
 
@@ -21,7 +22,7 @@ public:
     {
     }
 
-    void Seek(int Offset) override
+    void Seek(int32 Offset) override
     {
     }
 
@@ -30,7 +31,7 @@ public:
         return Size;
     }
 
-    const char operator[](int I) const
+    const char operator[](int32 I) const
     {
         return InnerFile[I];
     }
@@ -39,7 +40,7 @@ public:
     {
         String Ret;
 
-        for(int I = 0; I < GetSize(); I++)
+        for(int32 I = 0; I < GetSize(); I++)
         {
             Ret.Append(CharUtil::IntToChar(InnerFile[I]));
         }

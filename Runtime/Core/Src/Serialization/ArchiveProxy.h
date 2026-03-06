@@ -9,7 +9,7 @@ class ArchiveProxy : public Archive
     {
     }
 
-    virtual void Serialize(void* Input, int Length)
+    virtual void Serialize(void* Input, uint32 Length)
     {
         BaseArchive.Serialize(Input, Length);
     }
@@ -19,7 +19,7 @@ class ArchiveProxy : public Archive
         BaseArchive.Flush();
     }
 
-    virtual void Seek(int Offset)
+    virtual void Seek(int32 Offset)
     {
         BaseArchive.Seek(Offset);
     }

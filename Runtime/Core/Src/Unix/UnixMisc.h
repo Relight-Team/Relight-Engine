@@ -2,6 +2,7 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "BasePlatform/BasePlatformMisc.h"
+#include "PlatformCore.h"
 
 class UnixPlatformMisc : public BasePlatformMisc
 {
@@ -24,13 +25,13 @@ class UnixPlatformMisc : public BasePlatformMisc
             // Convert it to Array
             Array<char> RetArr;
 
-            for(int I = 0; I < Size; I++)
+            for(int32 I = 0; I < Size; I++)
             {
                 RetArr.Add(Path[I]);
             }
 
             // Split it
-            int LastInd;
+            int32 LastInd;
 
             bool Check = RetArr.FindLast('/', LastInd);
 
@@ -41,7 +42,7 @@ class UnixPlatformMisc : public BasePlatformMisc
 
             // Convert back to String
             String Ret;
-            for(int I = 0; I < LastInd; I++)
+            for(int32 I = 0; I < LastInd; I++)
             {
                 Ret.Append(RetArr[I]);
             }

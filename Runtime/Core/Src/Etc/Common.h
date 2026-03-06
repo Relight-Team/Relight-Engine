@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <string>
+#include "PlatformCore.h"
 
 // Invert's a bool (if bool is true, change it to false, and vice-versa)
 inline void InvertBool(bool& Input)
@@ -25,7 +26,7 @@ inline void InvertBool(bool& Input)
 
 // template used so any varient
 template <typename P>
-int VarientToInt(P Varient)
+int32 VarientToInt(P Varient)
 {
     return std::get<int>(Varient);
 }
@@ -33,7 +34,7 @@ int VarientToInt(P Varient)
 
 inline bool StringContainsChar(std::string Str, char Ch)
 {
-    for(int i = 0; i < Str.size(); i++)
+    for(int32 i = 0; i < Str.size(); i++)
     {
         if(Str[i] == Ch)
         {

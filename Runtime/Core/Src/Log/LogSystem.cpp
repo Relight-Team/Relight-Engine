@@ -4,6 +4,7 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Log/LogCategory.h"
+#include "PlatformCore.h"
 
 void LogSystem::Add(CORE_API::LogCategory Cat, LogType Warn, String Msg)
 {

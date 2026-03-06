@@ -1,13 +1,14 @@
 // Relight Engine Insertion Sort
 #pragma once
+#include "PlatformCore.h"
 
 template <typename ArrayType>
-void InsertionSort(ArrayType& Arr, int Min, int Max)
+void InsertionSort(ArrayType& Arr, int32 Min, int32 Max)
 {
-    for(int I = Min + 1; I <= Max; I++)
+    for(int32 I = Min + 1; I <= Max; I++)
     {
         auto ArrObject = Arr[I];
-        int J = I - 1;
+        int32 J = I - 1;
 
         while(J >= Min && Arr[J] > ArrObject)
         {
@@ -21,6 +22,6 @@ void InsertionSort(ArrayType& Arr, int Min, int Max)
 template <typename ArrayType>
 void InsertionSort(ArrayType& Arr)
 {
-    int Length = Arr.Indices();
+    int32 Length = Arr.Indices();
     InsertionSort(Arr, 0, Length);
 }

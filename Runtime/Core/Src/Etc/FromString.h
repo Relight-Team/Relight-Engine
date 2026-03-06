@@ -1,16 +1,17 @@
 #pragma once
 #include "Containers/String.h"
+#include "PlatformCore.h"
 
 // Convert String contents to values
 
 struct FromString
 {
-    static int Int(String& Input)
+    static int32 Int(String& Input)
     {
-        int IntRet = 0;
-        int StartingIndex = 0;
+        int32 IntRet = 0;
+        int32 StartingIndex = 0;
 
-        int Times = 1;
+        int32 Times = 1;
 
         // If negative number, skip the negative symbol
         if(Input[0] == '-')
@@ -19,9 +20,9 @@ struct FromString
             Times = -1;
         }
 
-        for(int I = StartingIndex; I < Input.Length(); I++)
+        for(int32 I = StartingIndex; I < Input.Length(); I++)
         {
-            int Digit = GetActualNumber(Input[I]);
+            int32 Digit = GetActualNumber(Input[I]);
             IntRet = IntRet * 10 + Digit;
         }
 
@@ -31,9 +32,9 @@ struct FromString
     static double Double(String& Input)
     {
         double DoubleRet = 0;
-        int StartingIndex = 0;
+        int32 StartingIndex = 0;
 
-        int Times = 1;
+        int32 Times = 1;
 
         // If negative number, skip the negative symbol
 
@@ -46,14 +47,14 @@ struct FromString
         bool IsDecimal = false;
         double DecimalPlace = 0.1;
 
-        for(int I = StartingIndex; I < Input.Length(); I++)
+        for(int32 I = StartingIndex; I < Input.Length(); I++)
         {
             if(Input[I] == '.')
             {
                 IsDecimal = true;
                 continue;
             }
-            int Digit = GetActualNumber(Input[I]);
+            int32 Digit = GetActualNumber(Input[I]);
 
             if(!IsDecimal)
             {
@@ -72,9 +73,9 @@ struct FromString
     static float Float(String& Input)
     {
         float DoubleRet = 0;
-        int StartingIndex = 0;
+        int32 StartingIndex = 0;
 
-        int Times = 1;
+        int32 Times = 1;
 
         // If negative number, skip the negative symbol
 
@@ -87,14 +88,14 @@ struct FromString
         bool IsDecimal = false;
         float DecimalPlace = 0.1f;
 
-        for(int I = StartingIndex; I < Input.Length(); I++)
+        for(int32 I = StartingIndex; I < Input.Length(); I++)
         {
             if(Input[I] == '.')
             {
                 IsDecimal = true;
                 continue;
             }
-            int Digit = GetActualNumber(Input[I]);
+            int32 Digit = GetActualNumber(Input[I]);
 
             if(!IsDecimal)
             {
@@ -124,7 +125,7 @@ struct FromString
 
     private:
 
-        static int GetActualNumber(UTF16 Str)
+        static int32 GetActualNumber(UTF16 Str)
         {
             return Str - u'0';
         }

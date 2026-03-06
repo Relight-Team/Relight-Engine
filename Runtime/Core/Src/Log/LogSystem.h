@@ -5,6 +5,7 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Log/LogCategory.h"
+#include "PlatformCore.h"
 
 enum LogType
 {

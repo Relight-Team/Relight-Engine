@@ -1,4 +1,5 @@
 #pragma once
+#include "PlatformCore.h"
 #include "Containers/Map.h"
 #include "Containers/Array.h"
 #include "Containers/String.h"
@@ -20,7 +21,7 @@ class ConfigSection
 
             Array<String> Ret = Parse(SectionContents);
 
-            for(int I = 0; I < Ret.Length(); I++)
+            for(int32 I = 0; I < Ret.Length(); I++)
             {
                 String Temp = Ret[I];
 
@@ -39,8 +40,8 @@ class ConfigSection
 
         bool Get(String Value, ConfigLine& Output)
         {
-            int I = -1;
-            for(int J = 0; J < Vars.Length(); J++)
+            int32 I = -1;
+            for(int32 J = 0; J < Vars.Length(); J++)
             {
                 if(Vars[J].Key == Value)
                 {
@@ -60,7 +61,7 @@ class ConfigSection
             }
         }
 
-        void GetIndex(int I, ConfigLine& Output)
+        void GetIndex(int32 I, ConfigLine& Output)
         {
             Output = Vars[I];
         }
@@ -76,7 +77,7 @@ class ConfigSection
         // Returns an array of each line in contents, trimmed
         Array<String> Parse(String SectionContents)
         {
-            int Index = 0;
+            int32 Index = 0;
 
             Array<String> Ret;
 

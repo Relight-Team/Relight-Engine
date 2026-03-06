@@ -7,6 +7,8 @@
 
 #include "Containers/Array.h"
 
+#include "PlatformCore.h"
+
 #include <iostream>
 
 template <typename KeyType, typename ValueType>
@@ -18,7 +20,7 @@ class Map
 
     // Read
 
-    int Indices()
+    int32 Indices()
     {
         return Key.Indices();
     }
@@ -32,9 +34,9 @@ class Map
         return false;
     }
 
-    int Find(KeyType A)
+    int32 Find(KeyType A)
     {
-        int i;
+        int32 i;
         bool Err = Key.Find(A, i);
 
         if(Err == false)
@@ -44,12 +46,12 @@ class Map
         return i;
     }
 
-    KeyType First(int i)
+    KeyType First(int32 i)
     {
         return Key[i];
     }
 
-    ValueType Second(int i)
+    ValueType Second(int32 i)
     {
         return Value[i];
     }
@@ -63,7 +65,7 @@ class Map
         // Key found, replacing value with new value
         if(Key.Contains(K))
         {
-            int i;
+            int32 i;
             Key.Find(K, i);
             Value.Replace(V, i);
         }
@@ -81,7 +83,7 @@ class Map
     {
         if(Key.Contains(K))
         {
-            int i;
+            int32 i;
             Key.Find(K, i);
             Key.RemoveAt(i);
             Value.RemoveAt(i);
@@ -102,7 +104,7 @@ class Map
 
     ValueType& operator[](const KeyType& K)
     {
-        int i;
+        int32 i;
         if(Key.Contains(K))
         {
             Key.Find(K, i);
@@ -121,5 +123,5 @@ class Map
 
         Array<ValueType> Value;
 
-        int SizeVal = 0;
+        int32 SizeVal = 0;
 };

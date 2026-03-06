@@ -1,4 +1,5 @@
 #pragma once
+#include "PlatformCore.h"
 #include "Containers/Map.h"
 #include "Containers/Array.h"
 #include "Containers/String.h"
@@ -15,7 +16,7 @@ class ConfigFile
             String Section;
 
 
-            int Index = 0;
+            int32 Index = 0;
 
             // For every character in file
             while(Index < FileContents.Length())
@@ -73,7 +74,7 @@ class ConfigFile
 
         bool Get(String SectionName, ConfigSection& Output)
         {
-            int I = Sections.Find(SectionName);
+            int32 I = Sections.Find(SectionName);
             if(I == -1)
             {
                 LOG(LogCore, LogType::Warning, "Config Section '" + SectionName + "' is missing");

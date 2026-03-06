@@ -6,6 +6,7 @@
 #include "Etc/Path.h"
 #include "Etc/CharUtil.h"
 #include "Etc/FromString.h"
+#include "PlatformCore.h"
 
 inline ConfigManager GlobalConfig;
 
@@ -150,7 +151,7 @@ struct Config
 
         CSection.ReturnArray(Configs);
 
-        int I = 0;
+        int32 I = 0;
 
         while(I < Configs.Length())
         {
@@ -219,7 +220,7 @@ private:
         return true;
     }
 
-    static int GetActualNumber(UTF16 Str)
+    static int32 GetActualNumber(UTF16 Str)
     {
         return Str - u'0';
     }

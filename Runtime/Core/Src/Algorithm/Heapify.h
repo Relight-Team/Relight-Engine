@@ -1,13 +1,15 @@
+#pragma once
+#include "PlatformCore.h"
 // Relight Engine's heapify function
 
 template <typename ArrayType>
-void Heapify(ArrayType& Arr, int HeapSize, int Root)
+void Heapify(ArrayType& Arr, int32 HeapSize, int32 Root)
 {
 
 
-    int Largest = Root;
-    int Left = 2 * Root + 1;
-    int Right = 2 * Root + 2;
+    int32 Largest = Root;
+    int32 Left = 2 * Root + 1;
+    int32 Right = 2 * Root + 2;
 
     // If left is larger than root
     if(Left < HeapSize && Arr[Left] > Arr[Largest])
@@ -30,10 +32,10 @@ void Heapify(ArrayType& Arr, int HeapSize, int Root)
 template <typename ArrayType>
 void Heapify(ArrayType& Arr)
 {
-    int Size = Arr.Indices();
-    int StartIndex = (Size / 2) - 1;
+    int32 Size = Arr.Indices();
+    int32 StartIndex = (Size / 2) - 1;
 
-    for(int I = StartIndex; I >= 0; I--)
+    for(int32 I = StartIndex; I >= 0; I--)
     {
         Heapify(Arr, Size, I);
     }

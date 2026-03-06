@@ -4,6 +4,7 @@
 #include "Serialization/FileReader.h"
 #include "Containers/Array.h"
 #include "Etc/CharUtil.h"
+#include "PlatformCore.h"
 
 class FileManager
 {
@@ -47,7 +48,7 @@ public:
         return PlatformFile::WriteFile(File, Contents);
     }
 
-    static bool WriteFile(String File, int* Contents, int Size)
+    static bool WriteFile(String File, int* Contents, int32 Size)
     {
         Array<int> Ret;
         Ret.Init(Contents, Size);
@@ -59,7 +60,7 @@ public:
         Array<char> RetA = Contents.ToArrayChar();
         Array<int> RetB;
 
-        for(int I = 0; I < RetA.Length(); I++)
+        for(int32 I = 0; I < RetA.Length(); I++)
         {
             RetB.Add(CharUtil::CharToInt(RetA[I]));
         }
@@ -105,7 +106,7 @@ public:
 
         PlatformFile::ListFiles(Directory, RetFiles, RetDirs, Ext);
 
-        for(int I = 0; I < RetDirs.Length(); I++)
+        for(int32 I = 0; I < RetDirs.Length(); I++)
         {
             // get base directory
             String Dir = RetDirs[I];
@@ -115,7 +116,7 @@ public:
             Temp.Split('/', Bad, BaseDirArr, true);
 
             String BaseDir;
-            for(int J = 0; J < BaseDirArr.Length(); J++)
+            for(int32 J = 0; J < BaseDirArr.Length(); J++)
             {
                 BaseDir.Append(BaseDirArr[J]);
             }

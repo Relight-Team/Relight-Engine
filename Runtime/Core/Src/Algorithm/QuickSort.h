@@ -1,14 +1,14 @@
 // Relight Engine QuickSort and Partition
 #pragma once
-
+#include "PlatformCore.h"
 
 template <typename ArrayType>
-int Partition(ArrayType& Arr, int Min, int Max)
+int32 Partition(ArrayType& Arr, int32 Min, int32 Max)
 {
-    int Piv = Arr[Max];
-    int I = Min - 1;
+    int32 Piv = Arr[Max];
+    int32 I = Min - 1;
 
-    for(int J = Min; J <= Max - 1; J++)
+    for(int32 J = Min; J <= Max - 1; J++)
     {
         if(Arr[J] <= Piv)
         {
@@ -22,14 +22,14 @@ int Partition(ArrayType& Arr, int Min, int Max)
 }
 
 template <typename ArrayType>
-void QuickSort(ArrayType& Arr, int Min, int Max)
+void QuickSort(ArrayType& Arr, int32 Min, int32 Max)
 {
     if (Min >= Max)
     {
         return;
     }
 
-    int Part = Partition(Arr, Min, Max);
+    int32 Part = Partition(Arr, Min, Max);
 
     QuickSort(Arr, Min, Part - 1);
     QuickSort(Arr, Part + 1, Max);
@@ -38,6 +38,6 @@ void QuickSort(ArrayType& Arr, int Min, int Max)
 template <typename ArrayType>
 void QuickSort(ArrayType& Arr)
 {
-    int Length = Arr.Indices();
+    int32 Length = Arr.Indices();
     QuickSort(Arr, 0, Length);
 }

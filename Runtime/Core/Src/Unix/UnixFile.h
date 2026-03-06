@@ -3,6 +3,7 @@
 #include "Unix/UnixIncludes.h"
 #include "Containers/String.h"
 #include "Containers/Array.h"
+#include "PlatformCore.h"
 
 class UnixPlatformFile : public BasePlatformFile
 {

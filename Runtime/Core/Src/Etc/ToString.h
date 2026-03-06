@@ -2,10 +2,11 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Platform.h"
+#include "PlatformCore.h"
 
 namespace CORE_API
 {
-inline String ToString(int Input)
+inline String ToString(int32 Input)
 {
     if(Input == 0)
     {
@@ -13,11 +14,11 @@ inline String ToString(int Input)
     }
 
     String Ret;
-    int Value = abs(Input);
+    int32 Value = abs(Input);
 
     while (Value > 0)
     {
-        int Digit = Value % 10;
+        int32 Digit = Value % 10;
         Ret.Append(static_cast<char16_t>('0' + Digit));
         Value /= 10;
     }
@@ -34,7 +35,7 @@ inline String ToString(int Input)
 inline String ToString(float Input)
 {
     String Ret = "";
-    int Whole = int((floor((Input))));
+    int32 Whole = int((floor((Input))));
     float Dec = abs(Input - Whole);
 
     Ret.Append(ToString(Whole));
@@ -43,11 +44,11 @@ inline String ToString(float Input)
     {
         Ret.Append(".");
 
-        for(int I = 0; I < 5 && Dec != 0.0f; I++)
+        for(int32 I = 0; I < 5 && Dec != 0.0f; I++)
         {
 
             Dec *= 10;
-            int Digit = int(Dec);
+            int32 Digit = int(Dec);
             UTF16 CharTemp = 48 + Digit;
             Ret.Append(CharTemp);
             Dec -= Digit;
@@ -100,7 +101,7 @@ inline String ToString(Array<ArrayInput> Input)
     }
 
     String Ret = "[";
-    for(int I = 0; I < Input.Indices(); I++)
+    for(int32 I = 0; I < Input.Indices(); I++)
     {
         Ret.Append(ToString(Input[I]));
         Ret.Append(", ");

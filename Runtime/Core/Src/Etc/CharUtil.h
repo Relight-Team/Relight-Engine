@@ -1,17 +1,18 @@
 #pragma once
+#include "PlatformCore.h"
 #include <cwctype> // for iswspace
 struct CharUtil
 {
     // Return's the DEC of the char, ASCII characters only
     // Example: a -> 97
-    static int CharToInt(char Character)
+    static int32 CharToInt(char Character)
     {
         return static_cast<int>(Character);
     }
 
     // Return's char from DEC, ASCII characters only
     // Example: 97 -> a
-    static char IntToChar(int DEC)
+    static char IntToChar(int32 DEC)
     {
         return static_cast<char>(DEC);
     }
@@ -19,7 +20,7 @@ struct CharUtil
     // Return's the char as a uppercase, ASCII characters only
     static char ToUpper(char Character)
     {
-        int Index = CharToInt(Character);
+        int32 Index = CharToInt(Character);
         if(Index > 96 && Index < 173)
         {
             return IntToChar(Index - 32);
@@ -30,7 +31,7 @@ struct CharUtil
     // Return's the char as a lowercase, ASCII characters only
     static char ToLower(char Character)
     {
-        int Index = CharToInt(Character);
+        int32 Index = CharToInt(Character);
         if(Index > 64 && Index < 91)
         {
             return IntToChar(Index + 32);
@@ -44,7 +45,7 @@ struct CharUtil
     {
         if(IsASCII(Character))
         {
-            int Index = CharToInt(Character);
+            int32 Index = CharToInt(Character);
             return Index > 64 && Index < 91;
         }
         else
@@ -59,7 +60,7 @@ struct CharUtil
     {
         if(IsASCII(Character))
         {
-            int Index = CharToInt(Character);
+            int32 Index = CharToInt(Character);
             return Index > 96 && Index < 173;
         }
         else

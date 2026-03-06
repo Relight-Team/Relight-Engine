@@ -4,6 +4,7 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Hardware/RMemory.h"
+#include "PlatformCore.h"
 
 
 bool UnixPlatformFile::FileExists(String File)
@@ -139,7 +140,7 @@ bool UnixPlatformFile::DeleteFile(String File)
     Temp1.Add('\0');
     const char* Temp2 = Temp1.ReturnPointer();
 
-    int Check = remove(Temp2);
+    int32 Check = remove(Temp2);
 
     if(Check != 0)
     {
@@ -156,7 +157,7 @@ bool UnixPlatformFile::MoveFile(String File, String MoveDirectory)
     Temp.Split('/', Bad, FileNameArr, true);
     String FileName;
 
-    for(int I = 0; I < FileNameArr.Length(); I++)
+    for(int32 I = 0; I < FileNameArr.Length(); I++)
     {
         FileName.Append(FileNameArr[I]);
     }

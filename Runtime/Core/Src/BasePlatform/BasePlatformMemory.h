@@ -1,4 +1,5 @@
 #pragma once
+#include "PlatformCore.h"
 class BasePlatformMemory
 {
 public:
@@ -10,7 +11,7 @@ public:
 
     static void Start();
 
-    static void ExecWhenOOM(int Size, int Ali);
+    static void ExecWhenOOM(int32 Size, int32 Ali);
 
     static void BinnedAlloc(size_t Size);
 };

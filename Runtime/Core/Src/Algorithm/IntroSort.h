@@ -7,12 +7,13 @@
 #include "Algorithm/HeapSort.h"
 #include "Algorithm/InsertionSort.h"
 #include "Algorithm/QuickSort.h"
+#include "PlatformCore.h"
 #include <iostream>
 
 template <typename ArrayType>
-void IntroSort(ArrayType& Arr, int Min, int Max, int Depth)
+void IntroSort(ArrayType& Arr, int32 Min, int32 Max, int32 Depth)
 {
-    int Length = Max - Min + 1;
+    int32 Length = Max - Min + 1;
 
     // If the Length of array is 16 or less, then use insertionSort
     if(Length <= 16)
@@ -30,7 +31,7 @@ void IntroSort(ArrayType& Arr, int Min, int Max, int Depth)
     // If Length of array is more than 16 and the depth isn't 0, use Partition and rerun Introsort
     if(Min < Max)
     {
-        int Part = Partition(Arr, Min, Max);
+        int32 Part = Partition(Arr, Min, Max);
         IntroSort(Arr, Min, Part - 1, Depth - 1);
         IntroSort(Arr, Part + 1, Max, Depth - 1);
     }
@@ -39,9 +40,9 @@ void IntroSort(ArrayType& Arr, int Min, int Max, int Depth)
 template <typename ArrayType>
 void IntroSort(ArrayType& Arr)
 {
-    int Max = Arr.Indices();
+    int32 Max = Arr.Indices();
 
-    int Depth = 2 * floor(log(Arr.Indices()));
+    int32 Depth = 2 * floor(log(Arr.Indices()));
 
     IntroSort(Arr, 0, Max, Depth);
 }

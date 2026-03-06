@@ -21,7 +21,7 @@ class String
 
     String(const Array<UTF16> InChars);
 
-    UTF16 operator[](const int I) const
+    UTF16 operator[](const int32 I) const
     {
         return CharArr[I];
     }
@@ -40,7 +40,7 @@ class String
     {
         String Ret;
         Ret.CharArr = CharArr;
-        for(int I = 0; I <= Other.Indices(); I++)
+        for(int32 I = 0; I <= Other.Indices(); I++)
         {
             Ret.CharArr.Add(Other.CharArr[I]);
         }
@@ -51,21 +51,21 @@ class String
     bool Compare(String B, bool CaseSensitive = true);
 
     // Converts a UTF16 character into a ASCII character in string. Mostly used for displaying characters in terminal
-    char ToChar(int I)
+    char ToChar(int32 I)
     {
         return CharUtil::IntToChar(CharArr[I]);
     }
 
     // Length of array starting at 0
     // Example, "Hello" -> 4
-    int Indices() const
+    int32 Indices() const
     {
         return CharArr.Indices();
     }
 
     // Get's the size of array starting at 1
     // Example, "Hello" -> 5
-    int Length() const
+    int32 Length() const
     {
         return CharArr.Length();
     }
@@ -97,7 +97,7 @@ class String
 
     bool Contains(const String& StrCheck);
 
-    int Find(const String& StrCheck, bool CaseSensitive = true);
+    int32 Find(const String& StrCheck, bool CaseSensitive = true);
 
     bool Split(String& Str, String& Left, String& Right, bool CaseSensitive = true);
 
@@ -164,12 +164,12 @@ class String
         return CharArr;
     }
 
-    void Swap(int A, int B)
+    void Swap(int32 A, int32 B)
     {
         CharArr.Swap(A, B);
     }
 
-    void Replace(UTF16 Input, int Index)
+    void Replace(UTF16 Input, int32 Index)
     {
         CharArr.Replace(Input, Index);
     }
@@ -177,7 +177,7 @@ class String
     Array<char> ToArrayChar()
     {
         Array<char> Ret;
-        for(int i = 0; i <= CharArr.Indices(); i++)
+        for(int32 i = 0; i <= CharArr.Indices(); i++)
         {
             Ret.Add(ToChar(i));
         }
@@ -188,8 +188,8 @@ class String
 
     Array<UTF16> CharArr;
 
-    bool WithInternal(const UTF16 B, int Index, bool Case = true);
-    bool WithInternal(const char B, int Index, bool Case = true);
+    bool WithInternal(const UTF16 B, int32 Index, bool Case = true);
+    bool WithInternal(const char B, int32 Index, bool Case = true);
 };
 
 inline String operator+(String& A, const char* B)

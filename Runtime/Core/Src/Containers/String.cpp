@@ -1,4 +1,5 @@
 #include "Containers/String.h"
+#include "PlatformCore.h"
 #include <iostream>
 
 String::String(const UTF16* InChars)
@@ -42,7 +43,7 @@ bool String::Compare(String B, bool CaseSensitive)
             return false;
         }
 
-        for(int I = 0; I <= B.Indices(); I++)
+        for(int32 I = 0; I <= B.Indices(); I++)
         {
             if(CaseSensitive == false && CharUtil::IsASCII(CharArr[I]))
             {
@@ -69,7 +70,7 @@ bool String::Compare(String B, bool CaseSensitive)
 String String::ToUpper()
 {
     Array<UTF16> Temp;
-    for(int I = 0; I <= Indices(); I++)
+    for(int32 I = 0; I <= Indices(); I++)
     {
         Temp.Add(CharUtil::ToUpper(CharArr[I]));
     }
@@ -80,7 +81,7 @@ String String::ToUpper()
 String String::ToLower()
 {
     Array<UTF16> Temp;
-    for(int I = 0; I <= Indices(); I++)
+    for(int32 I = 0; I <= Indices(); I++)
     {
         Temp.Add(CharUtil::ToLower(CharArr[I]));
     }
@@ -121,7 +122,7 @@ bool String::StartsWith(const String& B, bool CaseSensitive)
         return false;
     }
 
-    for(int I = 0; I <= B.CharArr.Indices(); I++)
+    for(int32 I = 0; I <= B.CharArr.Indices(); I++)
     {
         DoesStart = WithInternal(B.CharArr[I], I, CaseSensitive);
 
@@ -143,9 +144,9 @@ bool String::EndsWith(const String& B, bool CaseSensitive)
         return false;
     }
 
-    int BaseI = CharArr.Indices();
+    int32 BaseI = CharArr.Indices();
 
-     for(int I = B.CharArr.Indices(); I >= 0; I--)
+     for(int32 I = B.CharArr.Indices(); I >= 0; I--)
     {
         DoesStart = WithInternal(B.CharArr[I], BaseI, CaseSensitive);
 
@@ -159,7 +160,7 @@ bool String::EndsWith(const String& B, bool CaseSensitive)
     return DoesStart;
 }
 
-bool String::WithInternal(const UTF16 B, int Index, bool Case)
+bool String::WithInternal(const UTF16 B, int32 Index, bool Case)
 {
     if(Case == true)
     {
@@ -185,7 +186,7 @@ bool String::WithInternal(const UTF16 B, int Index, bool Case)
     }
 }
 
-bool String::WithInternal(const char B, int Index, bool Case)
+bool String::WithInternal(const char B, int32 Index, bool Case)
 {
     if(Case == true)
     {
@@ -235,12 +236,12 @@ bool String::Contains(const String& StrCheck)
 
     bool Ret = true;
 
-    for(int ArrIndex = 0; ArrIndex < Length(); ArrIndex++)
+    for(int32 ArrIndex = 0; ArrIndex < Length(); ArrIndex++)
     {
         // if the first character is the same as the string we are checking, then check if it matches
         if(CharArr[ArrIndex] == StrCheck[0])
         {
-            for(int CheckIndex = 0; CheckIndex < StrCheck.Length(); CheckIndex++)
+            for(int32 CheckIndex = 0; CheckIndex < StrCheck.Length(); CheckIndex++)
             {
                 if((ArrIndex + CheckIndex > CharArr.Length()) || (CharArr[ArrIndex + CheckIndex] != StrCheck[CheckIndex]))
                 {
@@ -263,9 +264,9 @@ bool String::Contains(const String& StrCheck)
     return false;
 }
 
-int String::Find(const String& StrCheck, bool CaseSensitive)
+int32 String::Find(const String& StrCheck, bool CaseSensitive)
 {
-    for(int Index = 0; Index <= CharArr.Indices(); Index++)
+    for(int32 Index = 0; Index <= CharArr.Indices(); Index++)
     {
         bool IsCharMatch = false;
 
@@ -292,9 +293,9 @@ int String::Find(const String& StrCheck, bool CaseSensitive)
         }
 
         // check if word exist on current index
-        int StrCheckIndex = 0;
+        int32 StrCheckIndex = 0;
 
-        for(int Ind2 = Index; Ind2 <= CharArr.Indices(); Ind2++)
+        for(int32 Ind2 = Index; Ind2 <= CharArr.Indices(); Ind2++)
         {
             if(CaseSensitive == false)
             {
@@ -335,7 +336,7 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
         return false;
     }
 
-    int Index = Find(Str, CaseSensitive);
+    int32 Index = Find(Str, CaseSensitive);
 
     // if it's -1, then str is not in String
     if(Index == -1)
@@ -421,7 +422,7 @@ void String::TrimStartChar(String Input)
 {
     if(StartsWith(Input))
     {
-        for(int I = 0; I <= Input.Indices(); I++)
+        for(int32 I = 0; I <= Input.Indices(); I++)
         {
             CharArr.RemoveAt(0);
         }
@@ -432,7 +433,7 @@ void String::TrimEndChar(String Input)
 {
     if(EndsWith(Input))
     {
-        for(int I = 0; I <= Input.Indices() ; I++)
+        for(int32 I = 0; I <= Input.Indices() ; I++)
         {
             CharArr.RemoveAt(Indices());
         }
