@@ -1,6 +1,8 @@
+#pragma once
 #include "Containers/String.h"
 #include "Etc/CharUtil.h"
 #include "Etc/ToString.h"
+#include "PlatformCore.h"
 
 class BasePlatformOutput
 {
