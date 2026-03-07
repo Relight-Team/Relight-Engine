@@ -25,7 +25,7 @@ class Array
             {
                 // Overwrite Arr
                 Arr = new T[Other.CurrentSize];
-                for(int I = 0; I < Other.CurrentSize; I++)
+                for(uint32 I = 0; I < Other.CurrentSize; I++)
                 {
                     Arr[I] = Other.Arr[I];
                 }
@@ -36,10 +36,10 @@ class Array
 //         template <typename... Args>
 //         Array(Args... InArgs) : Arr(nullptr), CurrentSize(0)
 //         {
-//             const int Size = sizeof...(InArgs);
+//             const int32 Size = sizeof...(InArgs);
 //             InternalChangeSize(Size);
 //             T Temp[] = {InArgs...};
-//             for (int i = 0; i < Size; i++)
+//             for (int32 i = 0; i < Size; i++)
 //             {
 //                 Arr[i] = (Temp[i]);
 //             }
@@ -48,9 +48,9 @@ class Array
 
 Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 {
-    InternalChangeSize(static_cast<int>(Init.size()));
+    InternalChangeSize(static_cast<int32>(Init.size()));
 
-    int i = 0;
+    int32 i = 0;
     for (const T& Elem : Init)
     {
         Arr[i++] = Elem;
@@ -65,24 +65,19 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
         // Initialize
 
-        void Init(T Repeat, int Size)
+        void Init(T Repeat, int32 Size)
         {
             InternalChangeSize(Size);
 
-            for(int i = 0; i < Size; i++)
+            for(int32 i = 0; i < Size; i++)
             {
                 Arr[i] = Repeat;
             }
         }
 
-        void Init(int Size)
+        void Init(T Input[], int32 Size)
         {
-            InternalChangeSize(Size);
-        }
-
-        void Init(T Input[], int Size)
-        {
-            for (int i = 0; i < Size; i++)
+            for (int32 i = 0; i < Size; i++)
             {
                 this->Add(Input[i]);
             }
@@ -90,14 +85,14 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
         // == Operators ==
 
-        const T& operator[](int i) const
+        const T& operator[](int32 i) const
         {
             Assert(i < 0, "index is lower than 0 when using [] operator. Index must be 0 or higher", i);
             Assert(i >= CurrentSize, "index is higher than the actual array size", i);
             return Arr[i];
         }
 
-        T& operator[](int i)
+        T& operator[](int32 i)
         {
             Assert(i < 0, "index is lower than 0 when using [] operator. Index must be 0 or higher", i);
             Assert(i >= CurrentSize, "index is higher than the actual array size", i);
@@ -109,7 +104,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             if(this != &B)
             {
                 this->Empty();
-                for(int i = 0; i < B.Length(); i++)
+                for(int32 i = 0; i < B.Length(); i++)
                 {
                     this->Add(B[i]);
                 }
@@ -141,13 +136,13 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
         // == Queries ==
 
         // Returns the number of elements
-        int Length() const
+        int32 Length() const
         {
             return CurrentSize;
         }
 
         // Like Length(), but assumes the first element index is 0 instead of 1
-        int Indices() const
+        int32 Indices() const
         {
             return CurrentSize - 1;
         }
@@ -155,7 +150,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
         bool Contains(T Input)
         {
-            for(int i = 0; i < CurrentSize; i++)
+            for(int32 i = 0; i < CurrentSize; i++)
             {
                 if(Arr[i] == Input)
                 {
@@ -172,7 +167,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
                 return false;
             }
 
-            for(int i = 0; i < CurrentSize; i++)
+            for(int32 i = 0; i < CurrentSize; i++)
             {
                 if(Arr[i] == Input)
                 {
@@ -190,7 +185,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
                 return false;
             }
 
-            for(int i = CurrentSize - 1; i >= 0; i--)
+            for(int32 i = CurrentSize - 1; i >= 0; i--)
             {
                 if(Arr[i] == Input)
                 {
@@ -201,12 +196,12 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             return false;
         }
 
-        int GetTypeSize()
+        int32 GetTypeSize()
         {
             return sizeof(T);
         }
 
-        bool IsValidIndex(int Index)
+        bool IsValidIndex(int32 Index)
         {
             if(Index >= 0 && Index <= CurrentSize)
             {
@@ -219,7 +214,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
         {
             Array<T> Ret;
 
-            for(int I = Indices(); I >= 0 ; I--)
+            for(int32 I = Indices(); I >= 0 ; I--)
             {
                 Ret.Add(Arr[I]);
             }
@@ -231,7 +226,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             return Arr[CurrentSize - 1];
         }
 
-        T Last(int a)
+        T Last(int32 a)
         {
             return Arr[CurrentSize - 1 - a];
         }
@@ -241,7 +236,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             return Arr[0];
         }
 
-        T Top(int a)
+        T Top(int32 a)
         {
             return Arr[0 + a];
         }
@@ -250,27 +245,22 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
         void Add(T Input)
         {
-            int OldSize = CurrentSize;
+            int32 OldSize = CurrentSize;
 
             InternalChangeSize(OldSize + 1);
 
             Arr[OldSize] = Input;
         }
 
-        void Append(const Array& Input, int Size)
+        void Append(const Array& Input, int32 Size)
         {
 
-            int OldSize = CurrentSize;
+            int32 OldSize = CurrentSize;
 
-            for(int i = 0; i < Size; i++)
+            for(int32 i = 0; i < Size; i++)
             {
                 this->Add(Input[i]);
             }
-        }
-
-        void SetNum(int NewSize)
-        {
-            InternalChangeSize(NewSize);
         }
 
         // Only adds the value if it doesn't exist in an array
@@ -279,7 +269,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
             bool AlreadyExist = false;
 
-            for(int i = 0; i < CurrentSize; i++)
+            for(int32 i = 0; i < CurrentSize; i++)
             {
                 if(Arr[i] == Input)
                 {
@@ -293,22 +283,22 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             }
         }
 
-        void Insert(T Input, int Index)
+        void Insert(T Input, int32 Index)
         {
             InternalChangeSize(CurrentSize + 1);
 
-            for(int i = CurrentSize; i > Index + 1; i--)
+            for(int32 i = CurrentSize; i > Index + 1; i--)
             {
                 Arr[i] = Arr[i - 1];
             }
             Arr[Index] = Input;
         }
 
-        void RemoveAt(int Index)
+        void RemoveAt(int32 Index)
         {
 
-            int Cur = CurrentSize;
-            for(int i = Index; i < this->Indices(); i++)
+            int32 Cur = CurrentSize;
+            for(int32 i = Index; i < this->Indices(); i++)
             {
                 Arr[i] = Arr[i + 1];
             }
@@ -316,19 +306,24 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             InternalChangeSize(CurrentSize - 1);
         }
 
-        T Pop(int Index)
+        T Pop(int32 Index)
         {
             T Ret = Arr[Index];
             RemoveAt(Index);
             return Ret;
         }
 
+        T Pop()
+        {
+            return Pop(Indices());
+        }
+
         bool RemoveSingle(T Input)
         {
 
-            int StoreIndex;
+            int32 StoreIndex;
 
-            for(int i = 0; i < CurrentSize; i++)
+            for(int32 i = 0; i < CurrentSize; i++)
             {
                 if(Arr[i] == Input)
                 {
@@ -342,9 +337,9 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
         void Remove(T Input)
         {
 
-            int StoreIndex;
+            int32 StoreIndex;
 
-            for(int i = 0; i < CurrentSize; i++)
+            for(int32 i = 0; i < CurrentSize; i++)
             {
                 if(Arr[i] == Input)
                 {
@@ -358,7 +353,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             InternalChangeSize(0);
         }
 
-        bool SplitIndex(int Index, Array<T>& Left, Array<T>& Right)
+        bool SplitIndex(int32 Index, Array<T>& Left, Array<T>& Right)
         {
             if(Index < 0 or Index > CurrentSize)
             {
@@ -369,12 +364,12 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             Right.Empty();
 
             // Add left
-            for(int I = 0; I < Index; I++)
+            for(int32 I = 0; I < Index; I++)
             {
                 Left.Add(Arr[I]);
             }
 
-            for(int I = Index + 1; I < CurrentSize; I++)
+            for(int32 I = Index + 1; I < CurrentSize; I++)
             {
                 Right.Add(Arr[I]);
             }
@@ -383,7 +378,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
         }
 
         // Like SplitIndex, but keeps the Index value, put's index value on Right
-        bool SplitIndexInclusive(int Index, Array<T>& Left, Array<T>& Right)
+        bool SplitIndexInclusive(int32 Index, Array<T>& Left, Array<T>& Right)
         {
             if(Index < 0 or Index > CurrentSize)
             {
@@ -394,12 +389,12 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             Right.Empty();
 
             // Add left
-            for(int I = 0; I < Index; I++)
+            for(int32 I = 0; I < Index; I++)
             {
                 Left.Add(Arr[I]);
             }
 
-            for(int I = Index; I < CurrentSize; I++)
+            for(int32 I = Index; I < CurrentSize; I++)
             {
                 Right.Add(Arr[I]);
             }
@@ -409,7 +404,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
         bool Split(const T& ItemToSplit, Array<T>& Left, Array<T>& Right, bool Last = false, bool Inclusive = false)
         {
-            int Index;
+            int32 Index;
             bool NoErr;
             if(Last == false)
             {
@@ -435,14 +430,14 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             }
         }
 
-        void Swap(int A, int B)
+        void Swap(int32 A, int32 B)
         {
             T ContentA = Arr[A];
             Arr[A] = Arr[B];
             Arr[B] = ContentA;
         }
 
-        void Replace(T Input, int Index)
+        void Replace(T Input, int32 Index)
         {
             Arr[Index] = Input;
         }
@@ -466,19 +461,19 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
 
     // Reminder, this assumes the first element is 1, this is very annoying, but some functions requires it
-    int CurrentSize;
+    int32 CurrentSize;
 
-    void InternalChangeSize(int Size)
+    void InternalChangeSize(int32 Size)
     {
 
         T* NewArr = new T[Size];
 
 
-        int CopySize = (Size < CurrentSize) ? Size : CurrentSize;
+        int32 CopySize = (Size < CurrentSize) ? Size : CurrentSize;
 
             if (Arr != nullptr)
             {
-                for(int i = 0; i < CopySize; i++)
+                for(int32 i = 0; i < CopySize; i++)
                 {
                     NewArr[i] = Arr[i];
                 }
