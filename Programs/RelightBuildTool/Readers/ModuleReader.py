@@ -27,7 +27,7 @@ class Module:
     # All directories we will include
     Includes = []
 
-    # includes that act like system (might be used by some 3rd party
+    # includes that act like system (might be used by some 3rd party)
     SysIncludes = []
 
     # Defines for this specific module
