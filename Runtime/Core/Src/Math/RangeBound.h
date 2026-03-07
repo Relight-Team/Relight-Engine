@@ -8,7 +8,7 @@ namespace CORE_API
     namespace Math
     {
         #pragma once
-        enum RangeBoundType
+        enum class RangeBoundType
         {
             Inclusive,
             Exclusive,
