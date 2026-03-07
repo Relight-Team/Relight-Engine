@@ -5,6 +5,10 @@
 #include "Algorithm/Sort.h"
 #include "Etc/FromString.h"
 #include "Etc/ToString.h"
+#include "CoreGlobal.h"
+
+// Math
+#include "Math/MathUtil.h"
 
 // Log
 #include "Log/Log.h"
