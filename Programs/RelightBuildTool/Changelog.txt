@@ -1,7 +1,5 @@
-1.1
+1.2
 ===
-- Fixed critical bug preventing the link script from running if your project/engine have over 10 actions
-- Fixed progress so it actually updates in real time
-- Renamed 'Progress' to 'Action Progress' to understand the process easier
-- Renamed function in Linux Toolchain to a new name that accurately details what it does
-- other bug fixes
+- Fixed critical bug where if there's no intermediate data, it will fail unless you run RBT again
+- Fixed issue so now intermediate modules can be seperated between Engine intermediate and Project intermediate
+- Other random bug fixes

@@ -49,8 +49,13 @@ class RBTThread:
                 )
 
                 # Run ReadOutput and ReadError
-                self._ReadOutput(RunningProgram.stdout)
-                self._ReadError(RunningProgram.stderr)
+                stdout, stderr = RunningProgram.communicate()
+
+                if stdout:
+                    print(stdout)
+
+                if stderr:
+                    print(stderr)
             except Exception:
                 pass
 
@@ -104,13 +109,17 @@ class LinearExecuter(ExecuteBase):
         Progress = 0
 
         # Start all threads first
-        for i in ActionList:
-            if i not in ActionThreadDict:
-                TD = RBTThread(i)
-                TD.Start()
-                ActionThreadDict[i] = TD
+        #for i in ActionList:
+            #if i not in ActionThreadDict:
+                #TD = RBTThread(i)
+                #TD.Start()
+                #ActionThreadDict[i] = TD
 
         Loop = True
+
+        TotalActions = len(ActionList)
+
+        ActionsExecuted = 0
 
         # Loop until we are done
         while Loop:
@@ -128,6 +137,9 @@ class LinearExecuter(ExecuteBase):
             sys.stdout.flush()
             time.sleep(0.5)
 
+            if ActionsExecuted >= TotalActions:
+                break
+
             # we will update ExeAction and NonExeAction every loop instance
             for Action in ActionList:
                 InpThread = None
@@ -142,10 +154,6 @@ class LinearExecuter(ExecuteBase):
                     if InpThread is not None and InpThread.Finished is False:
                         #ExeAction += 1 # FIXME: THIS IS PROBLEMATIC!
                         NonExeAction += 1
-
-            # If we have no more actions that isn't executed, then we can stop
-            if NonExeAction == 0:
-                Loop = False
 
             for i in ActionList:
 
@@ -200,8 +208,8 @@ class LinearExecuter(ExecuteBase):
 
                                 # Force to run once at a time
 
-                                #while not TD.Finished:
-                                #    time.sleep(0.1)
+                                while not TD.Finished:
+                                   time.sleep(0.1)
 
                             except Exception:
                                 print("FAILED")
@@ -211,6 +219,10 @@ class LinearExecuter(ExecuteBase):
                             )
 
                             ExeAction += 1  # add 1 to Executing Actions
+                            ActionsExecuted += 1
+
+
+
 
         Ret = True
 

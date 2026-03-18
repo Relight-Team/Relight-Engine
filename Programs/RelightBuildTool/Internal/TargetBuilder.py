@@ -225,7 +225,7 @@ class TargetBuilder:
             )
             # Temp = os.path.dirname(self.Target._Project)
         elif self.StartingTarget.TargetDir is not None:
-            ProjectDirSource = os.path.join(os.path.dirname(self.StartingTarget.TargetDir))
+            ProjectDirSource = os.path.join(self.StartingTarget.TargetDir)
         else:
             ProjectDirSource = Directory_Manager.Engine_Directory
 

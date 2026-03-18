@@ -919,7 +919,7 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
     def CreateLinkScriptFile(self, LinkEnv, Output, Com, Action):
         LinkName = "link-" + os.path.basename(Output) + ".sh"
 
-        LinkFile = os.path.join(LinkEnv.LocalShadowDir, LinkName)
+        LinkFile = os.path.join(LinkEnv.IntermediateDir, LinkName)
 
         Logger.Logger(2, "Creating ShadowDir: " + LinkEnv.LocalShadowDir)
 
