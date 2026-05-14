@@ -11,6 +11,7 @@ from BaseSDK import Platform
 class LinuxFactory(PlatformFactory.FactorySDK):
 
     # Return's the target platform for this factory
+    # <Return> Name of platform
     def TargetPlatform(self):
         return "Linux"
 

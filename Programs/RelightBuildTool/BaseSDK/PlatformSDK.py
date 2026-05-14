@@ -32,10 +32,12 @@ class PlatformSDK:
     _HostOS = platform.system()
 
     # Return's if the SDK support AutoSDK (AutoSDK is when the SDK can handle switching between different SDK during compilation runtime)
+    # <Return> true if SDK support AutoSDK
     def SupportAutoSDK(self):
         return False
 
     # Set and Return's if AutoSDK is supported
+    # <Return> true if AutoSDK is supported
     def AutoSDKEnabled(self):
         EnvRoot = os.environ.get(self.RootEnvironment)
 
@@ -45,6 +47,7 @@ class PlatformSDK:
         return self._AutoSDKSystem
 
     # Whether or not the SDK is safe, as some SDK will break manual install
+    # <Return> true if SDK is safe
     def AutoSDKSafe(self):
         if not self.IsAutoSDKDestructive() and not self.HasAnyManualInstall():
             return True
@@ -52,18 +55,22 @@ class PlatformSDK:
             return False
 
     # Return's the SDK that is required by the platform
+    # <Return> the SDK That is required as a string
     def GetRequiredSDKString(self):
         return ""
 
     # The version of the script
+    # <Return> Script version
     def GetRequiredScriptVersion():
         return "1.0"
 
     # Returns the target platform name
+    # <Return> the target platform name
     def GetTargetPlatformName(self):
         return ""
 
     # Return's the path to the SDK for the platform
+    # <Return> path to the autoSDK directory
     def PathToPlatformAutoSDK(self):
         Path = ""
         EnvRoot = os.environ.get(self.RootEnvironment)
@@ -73,6 +80,7 @@ class PlatformSDK:
         return Path
 
     # Return's the path to the SDK for the host platform
+    # <Return> The directory of the AutoSDK
     def HostPlatformAutoSDKDir(self):
         EnvRoot = os.environ.get(self.RootEnvironment)
 
@@ -82,10 +90,13 @@ class PlatformSDK:
             return EnvRoot + "/Host" + self._HostOS
 
     # Returns the SDK platform name + Setup Environment
+    # <Return> the sdk platform name and setup environment combined
     def PlatAutoSDKSetupEnvVar(self):
         return self.GetTargetPlatformName() + self.SetupEnviornment
 
     # Return the installed SDK Version if the Type is AutoSDK
+    # <PlatformSDKRoot> The root directory of the SDK
+    # <Return> SDK version, empty if unsuccessful
     def GetCurrentlyInstalledSDK(self, PlatformSDKRoot):
         if os.path.isdir(PlatformSDKRoot):
             Path = os.path.join(PlatformSDKRoot, self.InstalledSDKString)
@@ -103,6 +114,8 @@ class PlatformSDK:
         return ""
 
     # Return the latest run script version
+    # <PlatformSDKRoot> The root directory of the SDK
+    # <Return> Script version, empty if unsuccessful
     def GetLastRunScriptVersion(self, PlatformSDKRoot):
         if os.path.isdir(PlatformSDKRoot):
             Path = PlatformSDKRoot + "/" + self.LastScriptVersion
@@ -118,6 +131,8 @@ class PlatformSDK:
         return ""
 
     # Writes the installed file, return's true if successful
+    # <InstallSDK> The contents to write
+    # <Return> true if successful
     def SetCurrentlyInstalledSDK(self, InstallSDK):
         Path = self.PathToPlatformAutoSDK()
 
@@ -162,6 +177,8 @@ class PlatformSDK:
                 file.write("ManualSDK")
 
     # Write's and replaces Version File, return's true if successful
+    # <InLastScriptVersion> Content to write
+    # <Return> true if successful
     def SetLastRunScriptVersion(self, InLastScriptVersion):
         GetPath = self.PathToPlatformAutoSDK()
 
@@ -179,6 +196,8 @@ class PlatformSDK:
         return False
 
     # Return's command file name based on Hook Type
+    # <HookType> The type of hook, can be "Installer" or "Uninstaller"
+    # <Return> the file name of the script to run, supports bash and batch script names
     def GetHookExeName(self, HookType):
         if self._HostOS == "Windows":
             if HookType == "Uninstaller":
@@ -192,6 +211,11 @@ class PlatformSDK:
                 return "Setup.sh"
 
     # Run the AutoSDK Hooks
+    # <SDKRoot> Root Directory of the SDK
+    # <VersionString> The version as a string
+    # <HookType> The type of hook, can be "Installer" or "Uninstaller"
+    # <CanBeNonExistent> Optional value where it's okay if VersionString is empty
+    # <Return> True if successful
     def RunAutoSDKHooks(self, SDKRoot, VersionString, HookType, CanBeNonExistent=True):
         if self.AutoSDKSafe() is False:
             return False
@@ -212,6 +236,7 @@ class PlatformSDK:
         return True
 
     # Setup the AutoSDK Environment, return's Valid or Invalid
+    # <Return> "Valid" if successful, "Invalid" otherwise
     def SetupEnvAutoSDK(self):
         PlatSDKRoot = self.PathToPlatformAutoSDK()
 
@@ -222,6 +247,8 @@ class PlatformSDK:
         return "Valid"
 
     # Setup AutoSDK Environment, return's true if succeeded
+    # <SDKRoot> Root SDK directory
+    # <Return> true if successful
     def SetupEnvAutoSDKFull(self, SDKRoot):
         EnvVarFile = SDKRoot + "/" + self.EnvironmentVar
 
@@ -337,6 +364,7 @@ class PlatformSDK:
                 # os.remove(SDKFilename)
 
     # Returns "Valid" if we have the Required SDK Installed, "Invalid" otherwise
+    # <Return> "valid" if successful, "Invalid" otherwise
     def HasRequiredAutoSDKInstalled(self):
         if self.SupportAutoSDK() and self.AutoSDKEnabled():
             AutoSDKRoot = self.PathToPlatformAutoSDK()
@@ -368,13 +396,15 @@ class PlatformSDK:
 
         return "Invalid"
 
-    # Returns true if AutoSDK had been setup
+    # Returns true if AutoSDK has been setup
+    # <Return> true if AutoSDK has been setup
     def HasSetupAutoSDK(self):
         if self._LocalSetupAutoSDK is True or self.HasParentProcessAutoSDK() is True:
             return True
         return False
 
     # Return's true if we have the parent process SDK
+    # <Return> true if we have the parent process SDK
     def HasParentProcessAutoSDK(self):
         SetupVarName = self.PlatAutoSDKSetupEnvVar()
         AutoSDKSetup = os.getenv(SetupVarName)
@@ -383,7 +413,8 @@ class PlatformSDK:
             return True
         return False
 
-    # Return's true if we have the required manual SDK
+    # Return's Valid if we have the required manual SDK
+    # <Return> "Valid" if successful, "Invalid" otherwise
     def HasRequiredManualSDK(self):
 
         if self.HasSetupAutoSDK() is True:
@@ -413,38 +444,26 @@ class PlatformSDK:
 
     # Setup the autoSDK
     def SetupAutoSDK(self):
-        if (
-            self.AutoSDKSafe() is True
-            and self.SupportAutoSDK() is True
-            and self.AutoSDKEnabled() is True
-        ):
+        if self.AutoSDKSafe() is True and self.SupportAutoSDK() is True and self.AutoSDKEnabled() is True:
             if self.HasRequiredAutoSDKInstalled == "Invalid":
                 self._SDKStatusTrack = -1
                 AutoSDKRoot = self.PathToPlatformAutoSDK()
                 CurrentSDKString = self.GetCurrentlyInstalledSDK(AutoSDKRoot)
 
-                if not self.RunAutoSDKHooks(
-                    AutoSDKRoot, CurrentSDKString, "Uninstaller"
-                ):
+                if not self.RunAutoSDKHooks(AutoSDKRoot, CurrentSDKString, "Uninstaller"):
                     self.InvalidateInstalledAutoSDK()
                     return None
 
                 self.InvalidateInstalledAutoSDK()
 
-                if not self.RunAutoSDKHooks(
-                    AutoSDKRoot, CurrentSDKString, "Installer", False
-                ):
-                    self.RunAutoSDKHooks(
-                        AutoSDKRoot, CurrentSDKString, "Uninstaller", False
-                    )
+                if not self.RunAutoSDKHooks(AutoSDKRoot, CurrentSDKString, "Installer", False):
+                    self.RunAutoSDKHooks(AutoSDKRoot, CurrentSDKString, "Uninstaller", False)
                     return None
 
                 EnvVarF = AutoSDKRoot + "/" + self.EnvironmentVar
 
                 if not os.path.exists(EnvVarF):
-                    self.RunAutoSDKHooks(
-                        AutoSDKRoot, CurrentSDKString, "Uninstaller", False
-                    )
+                    self.RunAutoSDKHooks(AutoSDKRoot, CurrentSDKString, "Uninstaller", False)
                     return None
 
                 self.SetCurrentlyInstalledSDK(self.GetRequiredSDKString())
@@ -484,15 +503,11 @@ class PlatformSDK:
             if self.HasRequiredManualSDK() == "Valid":
                 aHasRequiredManualSDK = True
 
-            if self.AutoSDKSafe() and (
-                self.PreferAutoSDK() or not aHasRequiredManualSDK
-            ):
+            if self.AutoSDKSafe() and (self.PreferAutoSDK() or not aHasRequiredManualSDK):
                 self.SetupAutoSDK()
                 SetSDK = True
 
-            if aHasRequiredManualSDK is True and (
-                self.HasRequiredAutoSDKInstalled() != "Valid"
-            ):
+            if aHasRequiredManualSDK is True and (self.HasRequiredAutoSDKInstalled() != "Valid"):
                 self.SetupManualSDK()
                 SetSDK = True
 

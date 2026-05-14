@@ -1,4 +1,3 @@
-from enum import Enum
 import sys
 import os
 
@@ -10,24 +9,11 @@ from BaseSDK import Platform
 
 from Readers import TargetReader
 
-
-class Options:
-
-    SkipBuild = False  # If we should skip the build, used for testing
-
-    NoMessages = False  # If true, do not print anything
-
-    Precompile = False  # If true, we will use precompiled binary for engine modules
-
-    def __init__(self):
-        pass
-
-
 # The main function we are going to execute in this mode
+# <Args> The argument object from main.py
 def Main(Args):
 
     # Convert Args to StartingTarget
-
     StartingTarget = TargetReader.StartingTarget(Args.GetAndParse("Platform"))
 
     # TODO: Add Project Reader support to read targets listed in that, for now we will always use -Target= argument
@@ -51,28 +37,41 @@ def Main(Args):
     StartingTargetList = []
     StartingTargetList.append(StartingTarget)
 
-    Option = Options()
+    SkipBuild = Args.GetAndParse("SkipBuild")
+    NoMessages = Args.GetAndParse("NoMessages")
+    PreCompile = Args.GetAndParse("PreCompile")
 
     Logger.Logger(3, "Registering platforms...")
 
+    # Register the platform, let's RBT know it exist
     Platform.Platform.RegPlatform(Args, False)
 
-    BuildProcess(StartingTargetList, None, Option)
+    # Start build process
+    BuildProcess(StartingTargetList, SkipBuild, NoMessages, PreCompile)
 
     Logger.Logger(3, "Build Completed!")
 
 
 # Build's the list of target
-def BuildProcess(StartingTargetList, WorkingSet, InOptions):
+# <StartingTargetList> The list of all starting target
+# <SkipBuild> If we should skip the build process, used for testing
+# <NoMessages> If true, do not print anything
+# <PreCompile> If true, we will use precompiled binary for engine modules
+def BuildProcess(StartingTargetList, SkipBuild, NoMessages, PreCompile):
 
-    if InOptions.SkipBuild is False:
+    # If we are skipping build, don't build it
+    if SkipBuild == None or SkipBuild == False:
 
+        # Lists of actions we need to execute
         ExecuteActionsTarget = []
 
-        # Have a list to convert all targets into actions
+        # For each beginning target
         for Item in StartingTargetList:
-            FileBuild = CreateAndRunTargetBuilder(InOptions, Item, WorkingSet)
-            TargetAction = GetActionFromTarget(Item, InOptions, FileBuild)
+
+            FileBuild = CreateAndRunTargetBuilder(PreCompile, Item)
+
+            TargetAction = GetActionFromTarget(Item, FileBuild)
+
             ExecuteActionsTarget.append(TargetAction)
 
         # If there's only one target, add it to the action to execute, otherwise we will combine them into one list of actions
@@ -89,28 +88,29 @@ def BuildProcess(StartingTargetList, WorkingSet, InOptions):
         # Ensures that each item has the same config
         for Item in StartingTargetList:
             BuildPlatform = Platform.Platform.GetBuildPlatform(Item.Platform)
-            # TODO: Sync XGE, Distcc, and SNDBS from BuildPlatform to InOptions, should only be set true/false if all of them are that value
 
-        if len(ExecuteActions) == 0 and InOptions.NoMessages is True:
+        # If we have no actions to execute and we are allowed to send messages, let user know
+        if len(ExecuteActions) == 0 and (NoMessages != None or NoMessages == True):
             Logger.Logger(3, "All targets are up to date")
 
         else:
             # Execute Actions
-            ActionListManager.Execute(InOptions, ExecuteActions)
+            ActionListManager.Execute(ExecuteActions)
 
 
 # Create's a TargetBuilder and build's it
-def CreateAndRunTargetBuilder(InOptions, StartingTarget, WorkingSet):
+# <Precompile> true if we are using precompiled binary
+# <StartingTarget> The starting target to Compile
+# <Return> The Filebuilder class
+def CreateAndRunTargetBuilder(Precompile, StartingTarget):
 
     Logger.Logger(1, "Creating TargetBuilder...")
 
-    Builder = TargetBuilder.TargetBuilder.Create(
-        StartingTarget, InOptions.Precompile
-    )  # This will create TargetRules as well
+    Builder = TargetBuilder.TargetBuilder.Create(StartingTarget, Precompile)  # This will create TargetRules as well
 
     Logger.Logger(1, "Building TargetBuilder...")
 
-    return Builder.Build(InOptions, WorkingSet, True)
+    return Builder.Build()
 
 
 # Create's a Relight Header file
@@ -124,7 +124,10 @@ def MergeActionList(TargetList, ActionList):
 
 
 # Get all actions to execute
-def GetActionFromTarget(StartingTarget, BuildConfig, FileBuild):
+# <StartingTarget> The starting target to use
+# <FileBuild> The FileBuilder class
+# <Return> List of actions to execute
+def GetActionFromTarget(StartingTarget, FileBuild):
 
     Logger.Logger(1, "Getting Actions from target...")
 
@@ -140,36 +143,49 @@ def GetActionFromTarget(StartingTarget, BuildConfig, FileBuild):
     # TODO: add CppDependencies support
 
     Logger.Logger(1, "Linking all Precondition actions...")
-    ActionsToExecute = ActionListManager.GetActionToExecute(
-        FileBuild.ActionList, PreconditionActions, None, False
-    )  # TODO: This is a temp
+    ActionsToExecute = ActionListManager.GetActionToExecute(FileBuild.ActionList, PreconditionActions, False)  # TODO: This is a temp
 
     return ActionsToExecute
 
 
 # This will get all precondition from actions
+# <StartingTarget> The starting target to use (Used for SingleFileToCompile, so unused for now)
+# <FileBuild> The FileBuilder Class
+# <Return> List of all precondition actions
 def GetPreconditionActions(StartingTarget, FileBuild):
     Ret = []
 
     # TODO: Add SingleFileToCompile support!
 
+    # Get the precondition actions
     GetPreconditionActionsFromActions(FileBuild.ActionList, Ret)
 
     return Ret
 
 
-# Function that helps GetPreconditionActions    print("asdfadfadf " + StartingTarget.Name)
+# Get Precondition action from list of actions
+# <ActionList> The list of actions to get precondition actions from
+# <OutputList> List of all precondition actions, will be appended
 def GetPreconditionActionsFromActions(ActionList, OutputList):
-    Ret = []
 
+    # For each action, get precondition actions
     for Action in ActionList:
         GetPreconditionActionsFromSingleAction(Action, OutputList)
 
 
-# Function that helps GetPreconditionActions
+# Recursively Get Precondition actions from action
+# <Action> The action to check
+# <OutputList> List of Precondition actions, will be appended
 def GetPreconditionActionsFromSingleAction(Action, OutputList):
+
+    # Only run if actions isn't already in list
     if Action not in OutputList:
+
+        # Append parent action
         OutputList.append(Action)
 
+        # If Action.PreconditionActions exists, use it, otherwise use empty list
         for Precondition in getattr(Action, "PreconditionActions", []):
+
+            # Run this function with the precondition
             GetPreconditionActionsFromSingleAction(Precondition, OutputList)

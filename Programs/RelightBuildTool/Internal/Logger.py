@@ -11,6 +11,11 @@ import os
 # 3 - logs basic info of what stage of process we are on
 # 4 - Warns if there's issue, will continue running (cannot be disabled)
 # 5 - Fatal error, will close the program (cannot be disabled)
+
+# <Level> The level to use
+# <Str> What to print
+# <NoMessages> If true, then we will not print the message to the terminal
+# <NoLog> If true, then we will not log the terminal contents to log.txt
 def Logger(Level, Str, NoMessages=None, NoLog=None):
 
     if not hasattr(Logger, "_Messages"):
@@ -90,9 +95,11 @@ def Logger(Level, Str, NoMessages=None, NoLog=None):
     Ret += Str + Style.RESET_ALL
     RetLog += Str
 
+    # Print content
     print()
     print(Ret)
 
+    # Write content to file if we are allowed to
     if Logger._Logging == False:
         F = open("log.txt", "a")
         F.write(RetLog + "\n\n")

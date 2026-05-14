@@ -27,6 +27,7 @@ BuildType = None
 
 
 # TODO - Add project support, assuming we are just typing in target
+# <Args> The argument to use
 def Main(Args):
 
     global GlobalArgs, SkipDialog, DeleteAllFiles, VerifySus, DeleteAllPlatforms, DeleteAllBuildType, SourceDir, Arch, Platform, BuildType, DeleteAllArch
@@ -46,35 +47,24 @@ def Main(Args):
 
     # If project and target not set, we cannot run
     if Project == None and Target == None:
-        Logger.Logger(
-            5,
-            "Project and Target not set, please set Project, if not, at least set Target",
-        )
+        Logger.Logger(5, "Project and Target not set, please set Project, if not, at least set Target")
 
     # Skip dialog if set
     if ShouldIgnoreConfirm is True:
-        Logger.Logger(
-            4,
-            "You are running No Confirmation Mode, this is dangerous as we will not ask to verify directories to delete, type 'Continue' if you wish to continue with this risk",
-        )
+        Logger.Logger(4, "You are running No Confirmation Mode, this is dangerous as we will not ask to verify directories to delete, type 'Continue' if you wish to continue with this risk")
         Continue = input("")
         if Continue.lower() == "continue":
             SkipDialog = True
 
     # Verify Sus directories if set
     if InVerifySus is True:
-        Logger.Logger(
-            4,
-            "You are running Verify Suspicious directory mode, instead of quitting upon issue, we will ask you if we should continue, are you sure you want to continue, if so, type 'Continue'",
-        )
+        Logger.Logger(4, "You are running Verify Suspicious directory mode, instead of quitting upon issue, we will ask you if we should continue, are you sure you want to continue, if so, type 'Continue'")
         Continue = input("")
         if Continue.lower() == "continue":
             VerifySus = True
 
     if Platform == None:
-        ConfirmMessage(
-            "Platform not set, do you wish to delete all platform data?", True
-        )
+        ConfirmMessage("Platform not set, do you wish to delete all platform data?", True)
         DeleteAllPlatforms = True
 
     if Arch == None:
@@ -82,9 +72,7 @@ def Main(Args):
         DeleteAllArch = True
 
     if BuildType == None:
-        ConfirmMessage(
-            "BuildType not set, do you wish to delete all BuildType data?", True
-        )
+        ConfirmMessage("BuildType not set, do you wish to delete all BuildType data?", True)
         DeleteAllBuildType = True
 
     if Project is None:
@@ -101,6 +89,8 @@ def Main(Args):
 
 
 # Collects and returns an array of subdirectory names from directory
+# <SubDir> The subdirectory
+# <Return> List of full directories in SubDir
 def GetNamesFromDir(SubDir):
 
     Ret = []
@@ -120,6 +110,8 @@ def GetNamesFromDir(SubDir):
 
 
 # Clean everything, ignore if we skip it in command line
+# <TargetDir> The target directory
+# <Target> The target file
 def CleanTarget(TargetDir, Target):
     Platforms = []
     Arches = []
@@ -160,6 +152,11 @@ def CleanTarget(TargetDir, Target):
 
 
 # Cleans binary directory
+# <TargetDir> Target Directory
+# <Target> Target File
+# <ArchList> List of arches to clean
+# <PlatList> List of Platforms to clean
+# <BuildTypeList> List of BuildTypes to clean
 def CleanBin(TargetDir, Target, ArchList, PlatList, BuildTypeList):
 
     print("deleting binary files")
@@ -173,9 +170,7 @@ def CleanBin(TargetDir, Target, ArchList, PlatList, BuildTypeList):
     for Platform in PlatList:
         for Arch in ArchList:
             for BuildType in BuildTypeList:
-                DirToClear = os.path.join(
-                    TargetDir, "bin", Target, Platform, Arch, BuildType
-                )
+                DirToClear = os.path.join(TargetDir, "bin", Target, Platform, Arch, BuildType)
                 CheckForSusPaths(DirToClear, Target)
 
                 # If directory doesn't exist, we can skip it
@@ -192,14 +187,9 @@ def CleanBin(TargetDir, Target, ArchList, PlatList, BuildTypeList):
                     for File in Files:
 
                         if DeleteAllFiles is None:
-                            Rootn, Ext = os.path.splitext(
-                                File
-                            )  # This is to check special condition on linux where the binary doesn't have extension
+                            Rootn, Ext = os.path.splitext(File)  # This is to check special condition on linux where the binary doesn't have extension
 
-                            if (
-                                any(File.endswith(Item) for Item in ValidExtensions)
-                                or Ext == ""
-                            ):
+                            if (any(File.endswith(Item) for Item in ValidExtensions) or Ext == ""):
                                 os.remove(os.path.join(Root, File))
 
                         # If DeleteAllFiles is true, then we will always delete every file in this directory
@@ -211,6 +201,11 @@ def CleanBin(TargetDir, Target, ArchList, PlatList, BuildTypeList):
 
 
 # Cleans intermediate directory
+# <TargetDir> Target Directory
+# <Target> Target File
+# <ArchList> List of arches to clean
+# <PlatList> List of Platforms to clean
+# <BuildTypeList> List of BuildTypes to clean
 def CleanIntermediate(Target, TargetDir, ArchList, PlatList, BuildTypeList):
 
     print("deleting Intermediate files")
@@ -220,15 +215,7 @@ def CleanIntermediate(Target, TargetDir, ArchList, PlatList, BuildTypeList):
     for Platform in PlatList:
         for Arch in ArchList:
             for BuildType in BuildTypeList:
-                DirToClear = os.path.join(
-                    TargetDir,
-                    "Intermediate",
-                    "Build",
-                    Platform,
-                    Arch,
-                    Target,
-                    BuildType,
-                )
+                DirToClear = os.path.join(TargetDir, "Intermediate", "Build", Platform, Arch, Target, BuildType)
                 CheckForSusPaths(DirToClear, Target)
 
                 # If directory doesn't exist, we can skip it
@@ -253,12 +240,15 @@ def CleanIntermediate(Target, TargetDir, ArchList, PlatList, BuildTypeList):
                             if os.path.exists(os.path.join(Root, File)):
                                 os.remove(os.path.join(Root, File))
 
-            DeleteEmptyDirs(
-                os.path.join(TargetDir, "Intermediate", "Build", Platform, Arch, Target)
-            )
+            DeleteEmptyDirs(os.path.join(TargetDir, "Intermediate", "Build", Platform, Arch, Target))
 
 
 # Cleans all cook content
+# <TargetDir> Target Directory
+# <Target> Target File
+# <ArchList> List of arches to clean
+# <PlatList> List of Platforms to clean
+# <BuildTypeList> List of BuildTypes to clean
 # TODO - Doesn't clean all cook content yet
 def CleanCook(Target, TargetDir, ArchList, PlatList, BuildTypeList):
 
@@ -269,41 +259,23 @@ def CleanCook(Target, TargetDir, ArchList, PlatList, BuildTypeList):
     for Platform in PlatList:
         for Arch in ArchList:
             for BuildType in BuildTypeList:
-                DirToClearConfig = os.path.join(
-                    TargetDir, "bin", Target, Platform, Arch, BuildType, "Config"
-                )
-                DirToClearContent = os.path.join(
-                    TargetDir, "bin", Target, Platform, Arch, BuildType, "Content"
-                )
-                DirToClearShaders = os.path.join(
-                    TargetDir, "bin", Target, Platform, Arch, BuildType, "Shaders"
-                )
+                DirToClearConfig = os.path.join(, "bin", Target, Platform, Arch, BuildType, "Config")
+                DirToClearContent = os.path.join(TargetDir, "bin", Target, Platform, Arch, BuildType, "Content")
+                DirToClearShaders = os.path.join(TargetDir, "bin", Target, Platform, Arch, BuildType, "Shaders")
+
                 CheckForSusPaths(DirToClearConfig, Target)
                 CheckForSusPaths(DirToClearContent, Target)
                 CheckForSusPaths(DirToClearShaders, Target)
 
                 # If directory doesn't exist, we can skip it
                 if not os.path.isdir(DirToClearConfig):
-                    Logger.Logger(
-                        3,
-                        "Directory "
-                        + DirToClearConfig
-                        + " is already cleaned, skipping...",
-                    )
+                    Logger.Logger(3, "Directory " + DirToClearConfig + " is already cleaned, skipping...")
+
                 if not os.path.isdir(DirToClearContent):
-                    Logger.Logger(
-                        3,
-                        "Directory "
-                        + DirToClearContent
-                        + " is already cleaned, skipping...",
-                    )
+                    Logger.Logger(3, "Directory " + DirToClearContent + " is already cleaned, skipping...")
+
                 if not os.path.isdir(DirToClearShaders):
-                    Logger.Logger(
-                        3,
-                        "Directory "
-                        + DirToClearShaders
-                        + " is already cleaned, skipping...",
-                    )
+                    Logger.Logger(3, "Directory " + DirToClearShaders + " is already cleaned, skipping...")
 
                 ConfirmMessage("Do you wish to delete [" + str(DirToClearConfig) + "]")
                 ConfirmMessage("Do you wish to delete [" + str(DirToClearContent) + "]")
@@ -314,14 +286,9 @@ def CleanCook(Target, TargetDir, ArchList, PlatList, BuildTypeList):
                     for File in Files:
 
                         if DeleteAllFiles is None:
-                            Rootn, Ext = os.path.splitext(
-                                File
-                            )  # This is to check special condition on linux where the binary doesn't have extension
+                            Rootn, Ext = os.path.splitext(File)  # This is to check special condition on linux where the binary doesn't have extension
 
-                            if (
-                                any(File.endswith(Item) for Item in ValidExtensions)
-                                or Ext == ""
-                            ):
+                            if (any(File.endswith(Item) for Item in ValidExtensions) or Ext == ""):
                                 os.remove(os.path.join(Root, File))
 
                         # If DeleteAllFiles is true, then we will always delete every file in this directory
@@ -334,14 +301,9 @@ def CleanCook(Target, TargetDir, ArchList, PlatList, BuildTypeList):
                     for File in Files:
 
                         if DeleteAllFiles is None:
-                            Rootn, Ext = os.path.splitext(
-                                File
-                            )  # This is to check special condition on linux where the binary doesn't have extension
+                            Rootn, Ext = os.path.splitext(File)  # This is to check special condition on linux where the binary doesn't have extension
 
-                            if (
-                                any(File.endswith(Item) for Item in ValidExtensions)
-                                or Ext == ""
-                            ):
+                            if (any(File.endswith(Item) for Item in ValidExtensions) or Ext == ""):
                                 os.remove(os.path.join(Root, File))
 
                         # If DeleteAllFiles is true, then we will always delete every file in this directory
@@ -354,14 +316,9 @@ def CleanCook(Target, TargetDir, ArchList, PlatList, BuildTypeList):
                     for File in Files:
 
                         if DeleteAllFiles is None:
-                            Rootn, Ext = os.path.splitext(
-                                File
-                            )  # This is to check special condition on linux where the binary doesn't have extension
+                            Rootn, Ext = os.path.splitext(File)  # This is to check special condition on linux where the binary doesn't have extension
 
-                            if (
-                                any(File.endswith(Item) for Item in ValidExtensions)
-                                or Ext == ""
-                            ):
+                            if (any(File.endswith(Item) for Item in ValidExtensions) or Ext == ""):
                                 os.remove(os.path.join(Root, File))
 
                         # If DeleteAllFiles is true, then we will always delete every file in this directory
@@ -373,41 +330,27 @@ def CleanCook(Target, TargetDir, ArchList, PlatList, BuildTypeList):
 
 
 # If a check fails, we will print it
+# <Text> What to ask
+# <Dir> The directory to print
 def FailOrAskToContinue(Text, Dir):
     if VerifySus == False:
-        Logger.Logger(
-            5,
-            "Suspicious Directory detected: "
-            + Text
-            + " ["
-            + str(Dir)
-            + "], Exiting...",
-        )
+        Logger.Logger(5, "Suspicious Directory detected: " + Text + " [" + str(Dir) + "], Exiting...")
     else:
-        Logger.Logger(
-            4,
-            "Suspicious Directory detected: "
-            + Text
-            + " ["
-            + str(Dir)
-            + "], Type 'Continue' if you wish to continue anyways",
-        )
+        Logger.Logger(4, "Suspicious Directory detected: " + Text + " [" + str(Dir) + "], Type 'Continue' if you wish to continue anyways")
         Continue = input("")
+
         if not Continue.lower() == "continue":
-            Logger.Logger(
-                5,
-                "Suspicious Directory Detected and user failed to give permission to continue",
-            )
+            Logger.Logger(5, "Suspicious Directory Detected and user failed to give permission to continue")
 
 
 # Checks for issues about the path we are deleting
+# <Path> The path
+# <TargetName> The Target Name
 # TODO - Add more checks
 def CheckForSusPaths(Path, TargetName):
 
     if not TargetName in Path:
-        FailOrAskToContinue(
-            "Target Name " + str(TargetName) + " instance not found in path", Path
-        )
+        FailOrAskToContinue("Target Name " + str(TargetName) + " instance not found in path", Path)
 
     if Path is None:
         FailOrAskToContinue("Path is None", Path)
@@ -417,6 +360,8 @@ def CheckForSusPaths(Path, TargetName):
 
 
 # Ask if we should continue
+# <Message> The message to confirm
+# <IsWarning> True if we should display it as warning
 def ConfirmMessage(Message, IsWarning=False):
 
     # If we are skipping dialog, do nothing
@@ -435,6 +380,9 @@ def ConfirmMessage(Message, IsWarning=False):
         Logger.Logger(5, "User denied continuation of cleaner")
 
 
+# Delete any directories that are empty
+# <RootDir> The root directory to delete from
+# <TopDown> UNUSED
 def DeleteEmptyDirs(RootDir):
 
     for Root, SubDirList, Files in os.walk(RootDir, topdown=False):
@@ -447,14 +395,20 @@ def DeleteEmptyDirs(RootDir):
             os.rmdir(Root)
 
 
+# Get the list of paths to delete
+# <OSPathA> The first path
+# <OSPathB> The second path
+# <ArchList> lists of arch to delete
+# <PlatformList> lists of platforms to delete
+# <BuildTypeList> lists of build types to delete
 def GetLists(OSPathA, OSPathB, ArchList, PlatformList, BuildTypeList):
+
     if DeleteAllPlatforms is False:
         PlatformList.append(Platform)
     else:
         PlatformList.extend(GetNamesFromDir(os.path.join(OSPathA)))
 
     for Pl in PlatformList:
-
         if DeleteAllArch is False:
             ArchList.append(Arch)
         else:
@@ -465,6 +419,4 @@ def GetLists(OSPathA, OSPathB, ArchList, PlatformList, BuildTypeList):
             if DeleteAllBuildType is False:
                 BuildTypeList.append(BuildType)
             else:
-                BuildTypeList.extend(
-                    GetNamesFromDir(os.path.join(OSPathA, Pl, Ar, OSPathB))
-                )
+                BuildTypeList.extend(GetNamesFromDir(os.path.join(OSPathA, Pl, Ar, OSPathB)))

@@ -26,47 +26,34 @@ class Binary:
         []
     )  # List of modules we will use for this binary, should be ModuleBuilder class
 
-    ExportLibs = False  # If true, we will export lib
-
-    Precompiled = False  # If Precompiled mode is activated
-
     AdditionalLibs = []  # Cashe of additional libraries we will link to binary
 
-    def __init__(
-        self,
-        InType,
-        InOutputFilePaths,
-        InIntermediateDir,
-        InLaunchModule,
-        InExportLibs,
-        InPrecompiled,
-    ):
+    Precompiled = False # If Precompiled mode is activated
+
+    def __init__(self, InType, InOutputFilePaths, InIntermediateDir, InLaunchModule, Precompiled):
         self.Type = InType
         self.OutputFilePaths = InOutputFilePaths
         self.IntermediateDir = InIntermediateDir
         self.LaunchModule = InLaunchModule
-        self.ExportLibs = InExportLibs
-        self.Precompiled = InPrecompiled
+        self.Precompiled = Precompiled
 
         self.OutputDir = self.OutputFilePaths[0]
         self.Modules.append(self.LaunchModule)
 
-    # Create all modules in the list
-    def CreateModules(self, FuncName):
-
-        for Item in self.Modules:
-            Item.CreateModule(FuncName, "Target")
-
     # Adds the module to list if it doesn't exist
+    # <InModule> Module Reader
     def AddModule(self, InModule):
         if InModule not in self.Modules:
             self.Modules.append(InModule)
 
     # Returns the new Compile Environment that adds binary information from already existing compile environment
+    # <OutputCompileEnv> The Compile Environment the new bin compile environment is based on
+    # <Return> New compile environment
     def ReturnBinCompileEnv(self, OutputCompileEnv):
 
         CompileEnv = OutputCompileEnv
 
+        # Set IsDynamic and IsLibrary based on binary type
         if self.Type == "Dynamic":
             CompileEnv.IsDynamic = True
 
@@ -76,6 +63,9 @@ class Binary:
         return CompileEnv
 
     # return's true if the path is contained in the parent
+    # <InPath> The path we will check
+    # <InParent> The directory we will check InPath
+    # <Return> True if path is contained in parent
     def IsUnderDir(InPath, InParent):
         try:
             InputPath = Path(InPath).resolve(strict=False)
@@ -89,15 +79,17 @@ class Binary:
 
     # Create's a link environment, we will compile each module associated with the binary
     # and put it in the InputFiles
-    def CreateLinkEnv(
-        self, Target, Toolchain, LinkEnv, CompileEnv, ExeDir, FileBuilder
-    ):
+    # <Target> The target file itself
+    # <Toolchain> The toolchain to use
+    # <LinkEnv> The link environment
+    # <CompileEnv> The LinkEnv to use
+    # <FileBuilder> The File Builder
+    # <Return> The new link environment
+    def CreateLinkEnv(self, Target, Toolchain, LinkEnv, CompileEnv, FileBuilder):
 
         NewLinkEnv = LinkEnvironment.LinkEnvironment()
 
         NewLinkEnv.Dup(LinkEnv)
-
-        LinkEnvModuleList = []
 
         BinList = []
 
@@ -105,67 +97,73 @@ class Binary:
 
         NewLinkEnv.AdditionalLibs.extend(CompileEnv.AdditionalLibs)
 
-        if (
-            Target._Project is not None
-            and self.IsUnderDir(os.path.dirname(Target._Project), self.IntermediateDir)
-            and NewCompileEnv.UseSharedBuildEnv is True
-        ):
+        # If project is not none and Project in Intermediate directory and we are using shared build environment, enable it in Compile Environment
+        if Target._Project is not None and self.IsUnderDir(os.path.dirname(Target._Project), self.IntermediateDir) and NewCompileEnv.UseSharedBuildEnv is True:
             NewCompileEnv.UseSharedBuildEnv = False
 
-        for Item in self.Modules:
+        # For each module
+        for ModuleBuilder in self.Modules:
             LinkFiles = []
 
-            NewLinkEnv.AdditionalLibs.extend(Item.Module.AdditionalLibs)
+            # Add additional libs from module to Link Environment
+            NewLinkEnv.AdditionalLibs.extend(ModuleBuilder.Module.AdditionalLibs)
 
-            # Compile Modules
-            if Item.Binary is None or Item.Binary == self:
+            # Compile Modules if binary is not set or is self
+            if ModuleBuilder.Binary is None or ModuleBuilder.Binary == self:
                 NewList = []
 
                 # Compile via ModuleBuilder
-                LinkFiles = Item.Compile(
-                    Target, Toolchain, NewCompileEnv, FileBuilder, NewList
-                )  # Compile Module
+                LinkFiles = ModuleBuilder.Compile(Target, Toolchain, NewCompileEnv, FileBuilder, NewList)
 
+                # Sync Compile Environment to Link Environment
                 NewLinkEnv.AdditionalLibs.extend(NewCompileEnv.AdditionalLibs)
 
+                # For each item to link
                 for LinkFilesItem in LinkFiles:
 
+                    # If item is not in input files, Extend input files to contain Item
                     if LinkFilesItem not in NewLinkEnv.InputFiles:
-                        # Extend InputFiles in LinkEnv to LinkFiles
                         NewLinkEnv.InputFiles.append(LinkFilesItem)
 
             else:
-
                 BinList.append(Item.Binary)
 
+            # Sync LinkEnv to Binary settings
             NewLinkEnv.OutputPaths = self.OutputFilePaths
             NewLinkEnv.IntermediateDir = self.IntermediateDir
             NewLinkEnv.OutputDir = self.OutputFilePaths[0]
-            NewLinkEnv.LinkEnvPrecondition = (
-                CompileEnv.LinkEnvPrecondition
-            )  # Set's LinkEnv Precondition from the CompileEnv one
+            NewLinkEnv.LinkEnvPrecondition = CompileEnv.LinkEnvPrecondition  # Set's LinkEnv Precondition from the CompileEnv one
 
         return NewLinkEnv
 
     # Create the binary, mainly involves compiling and linking. Returns output files
-    def Build(self, TargetReader, Toolchain, CompileEnv, LinkEnv, ExeDir, FileBuilder):
+    # <TargetReader> The target file itself
+    # <Toolchain> The toolchain to compile
+    # <CompileEnv> The compile environment
+    # <LinkEnv> The link environment
+    # <FileBuilder> The File Builder
+    # <Return> All linked files
+    def Build(self, TargetReader, Toolchain, CompileEnv, LinkEnv, FileBuilder):
 
+        # If we are using precompile and we are linking files together, then return empty
         if self.Precompiled is True and TargetReader.LinkFilesTogether is True:
             return []
 
-        BinLinkEnv = self.CreateLinkEnv(
-            TargetReader, Toolchain, LinkEnv, CompileEnv, ExeDir, FileBuilder
-        )
+        # Create binary link environment
+        BinLinkEnv = self.CreateLinkEnv(TargetReader, Toolchain, LinkEnv, CompileEnv, FileBuilder)
 
+        # If we are not linking files together, then just return input files
         if TargetReader.LinkFilesTogether is False:
             return BinLinkEnv.InputFiles
 
         OutputFiles = []
 
+        # Link files together
         Exes = Toolchain.LinkEveryFiles(BinLinkEnv, False, FileBuilder.ActionList)
 
         # TODO: Add ModuleNameToOutputItems FileBuilder function
 
+        # For each linked file, apply PostBuilt to each binary and return the output file
         for Item in Exes:
             Temp = Toolchain.PostBuilt(Item, BinLinkEnv, FileBuilder.ActionList)
             OutputFiles.extend(Temp)

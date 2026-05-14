@@ -57,9 +57,7 @@ class CompileEnvironment:
 
     ShadowVariableWarnings = True  # If we should give warnings about Shadow Variables
 
-    ShadowVariableAsError = (
-        False  # If we shall give an error if there's a shadow variable
-    )
+    ShadowVariableAsError = False  # If we shall give an error if there's a shadow variable
 
     UndefinedIdentifierWarnings = (
         True  # IF we should give warnings about Undefined Identifiers
@@ -129,11 +127,9 @@ class CompileEnvironment:
 
     HideSymbols = False  # If we should hide Symbols by default
 
-    LinkEnvPrecondition = (
-        []
-    )  # Fixes a bug, this will put any Precondition from CompileEnv to LinkEnv
+    LinkEnvPrecondition = [] # Fixes a bug, this will put any Precondition from CompileEnv to LinkEnv
 
-    CopyIncToIntermediate = False
+    CopyIncToIntermediate = False # if we should copy include files (.h/.hpp) to intermediate
 
     # Quick HACK Here just to sync with LinkEnv
     AdditionalLibs = []

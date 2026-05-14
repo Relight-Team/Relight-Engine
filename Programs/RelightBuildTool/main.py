@@ -4,47 +4,49 @@ from Configuration import RelightBuildTool_Info as RBT_INFO
 
 from Internal import Logger
 
-
 def main():
-    Args = GetArgs()
+    Args = GetArgs() # Get arguments
 
-    Logger.Logger(
-        3,
-        "Setting Up Logger...",
-        Args.GetAndParse("NoMessages"),
-        Args.GetAndParse("NoLog"),
-    )
+    Logger.Logger(3, "Setting Up Logger...", Args.GetAndParse("NoMessages"), Args.GetAndParse("NoLog"))
 
+    # Create log.txt if we are allowed to
     if Args.GetAndParse("NoLog") is not True:
         F = open("log.txt", "w")
         F.write("")
         F.close()
 
-    # Set mode to default
-
+    # Set Build mode to default if empty
     if Args.GetAndParse("Mode") is None:
         ModeToUse = "Build"
+
     else:
         ModeToUse = Args.GetAndParse("Mode")
 
+    # Switch to different modes depending on argument
     if ModeToUse.lower() == "build":
         from Modes import BuildMode as Mode
+
     elif ModeToUse.lower() == "clean":
         from Modes import CleanMode as Mode
+
     elif ModeToUse.lower() == "projectfiles":
-        Logger.Logger(
-            5,
-            "Project Files are not yet implemented due to lack of .RProject reader. Add this in future!",
+        Logger.Logger(5, "Project Files are not yet implemented due to lack of .RProject reader. Add this in future!",
         )
+
     elif ModeToUse.lower() == "test":
         from Modes import TestMode as Mode
+
     else:
         Logger.Logger(5, "The mode is " + str(ModeToUse) + " which we cannot detect!")
 
+    # Print header info
     PrintIntro(ModeToUse)
 
+    # run the 'main' function in the specified mode
     Mode.Main(Args)
 
+# Get's all arguments
+# <Return> Argument object
 def GetArgs():
     Parser = argparse.ArgumentParser(
         description="Builder tool for Relight Engine"
@@ -57,6 +59,7 @@ def GetArgs():
         metavar="(Global) [STRING]",
         help="The mode we are using (Default: Build)",
     )  # Options: Build, Clean, ProjectFiles, Test
+
     Parser.add_argument(
         "-Project",
         type=str,
@@ -186,6 +189,8 @@ def GetArgs():
     return Args
 
 
+# print header info
+# <Mode> The mode we are using, for printing
 def PrintIntro(Mode):
     print("====================")
     print(RBT_INFO.Name)
@@ -196,5 +201,6 @@ def PrintIntro(Mode):
     print("====================")
 
 
+# Execute main function
 if __name__ == "__main__":
     main()

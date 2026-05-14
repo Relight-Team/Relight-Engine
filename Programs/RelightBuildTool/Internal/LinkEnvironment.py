@@ -18,9 +18,7 @@ class LinkEnvironment:
 
     LocalShadowDir = None  # The local shadow directory, this directory serves as a temp directory of source files, mainly used when linking via mutliple servers
 
-    OutputPaths = (
-        []
-    )  # The full output binary files and it's path that this linker will produce
+    OutputPaths = []  # The full output binary files and it's path that this linker will produce
 
     LibraryPaths = []  # Paths to search for libraries
 
@@ -34,9 +32,7 @@ class LinkEnvironment:
 
     AdditionalBundlesRes = []  # Additional bundles to link
 
-    DelayLoadDynamics = (
-        []
-    )  # A list of "Delayed Load Dynamics". These are Dynamic libraries that will not load into the software until they are first called
+    DelayLoadDynamics = [] # A list of "Delayed Load Dynamics". These are Dynamic libraries that will not load into the software until they are first called
 
     AdditionalArgs = ""  # Additional arguments to pass
 
@@ -44,13 +40,9 @@ class LinkEnvironment:
 
     DisableSymbolCashe = False  # If true, we shall not create cached symbols
 
-    IsBuildingLibrary = (
-        False  # If true, then we are linking to a static Library (.a, .lib, etc)
-    )
+    IsBuildingLibrary = False  # If true, then we are linking to a static Library (.a, .lib, etc)
 
-    IsBuildingDynamic = (
-        False  # If true, then we are linking to a dynamic Library (.so, .dll, etc)
-    )
+    IsBuildingDynamic = False  # If true, then we are linking to a dynamic Library (.so, .dll, etc)
 
     IsTerminalSoftware = False  # TODO: Do we even need this? Unlike The parent reference, RBT doesn't care if the software is terminal or not, might remove this
 
@@ -64,9 +56,7 @@ class LinkEnvironment:
 
     AllowLTCG = False  # If true, then we will use LTCG (Link Time Code Generation)
 
-    PGOProfile = (
-        False  # If true, then we will use PGO Profile (Profile Guided Optimization)
-    )
+    PGOProfile = False  # If true, then we will use PGO Profile (Profile Guided Optimization)
 
     PGOOptimize = False  # If true, then we will use PGO Optimize
 
@@ -76,9 +66,7 @@ class LinkEnvironment:
 
     CreateMapFile = False  # If true, we will attempt to create map file, which stores detailed overview about the linker
 
-    AllowASLR = (
-        False  # If true, we will attempt ASLR (address space layout randomization)
-    )
+    AllowASLR = False  # If true, we will attempt ASLR (address space layout randomization)
 
     UseFastPDBLinking = False  # If we should use Fast PDB when linking
 
@@ -88,21 +76,19 @@ class LinkEnvironment:
 
     InputLibs = []  # # Libraries we will link
 
-    DefaultResFiles = []  #
+    DefaultResFiles = []  # Resource file to load if custom one is not given
 
-    GlobalResFiles = []  #
+    GlobalResFiles = []  # Resource files to load
 
-    IncFunctions = []  #
+    IncFunctions = []  # functions that will be exported from the module
 
     DefineFiles = []  # Files that contains definitions
 
     AdditionalProperty = []  # Additional Properties
 
-    CrossedReference = False  #
+    CrossedReference = False  # True if the current binary will create an import library, and the library is required by another module
 
-    LinkEnvPrecondition = (
-        []
-    )  # Fixes a bug, this will put any Precondition from CompileEnv to LinkEnv
+    LinkEnvPrecondition = []  # Fixes a bug, this will put any Precondition from CompileEnv to LinkEnv
 
     def __init__(self, InPlatform=None, InConfig=None, InArch=None):
         self.Platform = InPlatform

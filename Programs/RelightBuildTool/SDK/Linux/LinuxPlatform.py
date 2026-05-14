@@ -24,6 +24,9 @@ class LinuxPlatform(Platform.Platform):
         super().__init__(InPlatform, InCEPlatform)
         self.SDK = InSDK
 
+    # Get the Default Arch
+    # <ProjectFile> The project file, leave None if doesn't exist
+    # <Return> Arch name
     def GetDefaultArch(self, ProjectFile):
         Ret = self.Arch
 
@@ -34,14 +37,10 @@ class LinuxPlatform(Platform.Platform):
 
         # If abspath fails, we shall get it from command line instead
         if EngineIni is None:
-            EngineIni = os.path.join(
-                Directory_Manager.Engine_Directory, "Config", "BaseBuilder.cfg"
-            )
+            EngineIni = os.path.join(Directory_Manager.Engine_Directory, "Config", "BaseBuilder.cfg")
             pass  # FIXME: Get from command line, else get from BaseBuilder
 
-        TempConfig = ConfigManager.ReadConfig(
-            EngineIni, "PlatformInformation", "PlatformArch"
-        )
+        TempConfig = ConfigManager.ReadConfig(EngineIni, "PlatformInformation", "PlatformArch")
 
         # TODO: Shitty hack to ensure compatibility, idk if this even works, if it doesn't FIX IT!
         if "X86-64".lower() in TempConfig:
@@ -61,23 +60,33 @@ class LinuxPlatform(Platform.Platform):
 
         return Ret
 
+    # Add defines to target
+    # <Target> The target file
     def MakeTargetValid(self, Target):
 
         if Target.UseAddressSanitizer is True or Target.UseThreadSanitizer is True:
             Target.Defines.append("FORCE_ANSI_ALLOCATOR=1")
 
+    # Reset the target
+    # <Target> The target file
     def ResetTarget(self, Target):
         self.MakeTargetValid(Target)
 
+    # Do not add arch to bin name on linux
     def NeedsArchSuffix(self):
         return False
 
+    # Linux doesn't support XGE (or relight engine as a whole but ignore that)
     def CanUseXGE():
         return False
 
+    # We can parallel execute on linux
     def CanParallelExecute():
         return True
 
+    # Return's the platform binary extension based on the bin type
+    # <InBinType> The binary type, can be "EXE", "Dynamic", or "Static"
+    # <Return> What binary extension to use as a string
     def GetBinExtension(self, InBinType):
         if InBinType == "EXE":
             return ""
@@ -88,7 +97,12 @@ class LinuxPlatform(Platform.Platform):
         else:
             return None
 
-    def GetDebugExtensions(Target, InBinType):
+
+    # Return's the extension for debug info based on bin type
+    # <Target> The target file
+    # <InBinType> The binary type
+    # <Return> what debug binary extension to use
+    def GetDebugExtension(Target, InBinType):
         Ret = []
 
         if InBinType == "EXE":
@@ -99,6 +113,9 @@ class LinuxPlatform(Platform.Platform):
 
         return Ret
 
+    # Check conflits between Compile Environment and Link Environment
+    # <CompileEnv> The compile Environment
+    # <LinkEnv> The link environment
     def CheckEnvironmentConflicts(self, CompileEnv, LinkEnv):
 
         ErrMesg = "CompileEnv and LinkEnv mismatch: "
@@ -112,6 +129,11 @@ class LinuxPlatform(Platform.Platform):
         if CompileEnv.AllowLTCG != LinkEnv.AllowLTCG:
             Logger.Logger(5, ErrMesg + " AllowLTCG, CompileEnv: " + str(CompileEnv.AllowLTCG) + " LinkEnv: " + str(LinkEnv.AllowLTCG))
 
+
+    # Set up the environments
+    # <Target> The target file
+    # <Compile Environment> The compile Environment
+    # <Link Environment> The link environment
     def SetUpEnvironment(self, Target, CompileEnv, LinkEnv):
 
         BasePath = self.SDK.GetSDKArchPath(Target.Arch)
@@ -136,13 +158,19 @@ class LinuxPlatform(Platform.Platform):
         # For libraries
         CompileEnv.Defines.append("LINUX=1")
 
+    # If we should create debug stuff
+    # <BuildType> The build type
+    # <Return> true if we should create debug info
     def ShouldCreateDebugInfo(self, BuildType):
         if BuildType == "Final":
             return False
         else:
             return True
 
-    def CreateToolChain(self, InCppPlatform, Target):
+    # Create the linux Toolchain
+    # <Target> The target file
+    # <Return> Linux Toolchain class
+    def CreateToolChain(self, Target):
         Options = LinuxToolchain.Options
 
         if Target.UseAddressSanitizer is True:
@@ -154,9 +182,7 @@ class LinuxPlatform(Platform.Platform):
         if Target.UseUnknownSanitizer is True:
             Options.UseUnknownSanitizer = True
 
-        return LinuxToolchain.LinuxToolchain(
-            Target.Arch, self.SDK, Target.SavePSYM, Options
-        )
+        return LinuxToolchain.LinuxToolchain(Target.Arch, self.SDK, Target.SavePSYM, Options)
 
     def Deploy(Receipt):
         pass  # DEPLOY IS NOT SUPPORTED YET!

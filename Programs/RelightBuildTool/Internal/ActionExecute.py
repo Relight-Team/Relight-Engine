@@ -36,17 +36,11 @@ class RBTThread:
         # Start program
         try:
             try:
-                args = [
-                    self.Action.CommandPath,
-                    self.Action.Arguments,
-                ]  # Combines file path and arguments
-                RunningProgram = subprocess.Popen(
-                    args,
-                    cwd=self.Action.CurrentDirectory,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    text=True,
-                )
+
+                args = [self.Action.CommandPath, self.Action.Arguments]  # Combines file path and arguments
+
+                # Run the action
+                RunningProgram = subprocess.Popen(args, cwd=self.Action.CurrentDirectory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
                 # Run ReadOutput and ReadError
                 stdout, stderr = RunningProgram.communicate()
@@ -61,18 +55,11 @@ class RBTThread:
 
             RunningProgram.wait()  # Wait until program stops running
 
+            # Get exit code, and quit if the action's program returns an error
             self.ExitCode = RunningProgram.returncode
 
             if self.ExitCode != 0:
-                Logger.Logger(
-                    5,
-                    "Error while running program, Error Code: "
-                    + str(self.ExitCode)
-                    + ", Program name: "
-                    + self.Action.CommandPath
-                    + ", Program Arguments: "
-                    + self.Action.Arguments,
-                )
+                Logger.Logger(5, "Error while running program, Error Code: " + str(self.ExitCode) + ", Program name: " + self.Action.CommandPath + ", Program Arguments: " + self.Action.Arguments)
 
         except Exception:
             print("ERROR")
@@ -85,11 +72,17 @@ class RBTThread:
         athread.start()
 
 
+# Base class for executer type
 class ExecuteBase:
 
+    # Get the name
+    # <Return> name of executer type
     def Name(self):
         return "Base"
 
+    # Execute the list of actions
+    # <ActionList> The list of actions to execute
+    # <Return> true if there are no errors while executing actions
     def ExecuteActionList(self, ActionList):
         pass  # Overritten by child class
 
@@ -97,29 +90,26 @@ class ExecuteBase:
 # Executes actions one at a time
 class LinearExecuter(ExecuteBase):
 
+    # Get the name
+    # <Return> name of executer type
     def Name(self):
         return "Linear"
 
     # Execute each action from the action list
+    # <ActionList> the list of actions to execute
+    # <Return> true if there are no errors while executing actions
     def ExecuteActionList(self, ActionList):
 
-        ActionThreadDict = {}  # A dictionary of Action : Thread
+        ActionThreadDict = {}  # A dictionary of {Action | Thread}
         Logger.Logger(3, "Compiling C++ Code...")
 
-        Progress = 0
+        Progress = 0 # Progress of the execution
 
-        # Start all threads first
-        #for i in ActionList:
-            #if i not in ActionThreadDict:
-                #TD = RBTThread(i)
-                #TD.Start()
-                #ActionThreadDict[i] = TD
+        Loop = True # If we should loop
 
-        Loop = True
+        TotalActions = len(ActionList) # The number of total actions in list
 
-        TotalActions = len(ActionList)
-
-        ActionsExecuted = 0
+        ActionsExecuted = 0 # The amount of actions we have executed
 
         # Loop until we are done
         while Loop:
@@ -131,12 +121,17 @@ class LinearExecuter(ExecuteBase):
             for Action, Thread in ActionThreadDict.items():
                 if Thread is None or not Thread.Finished:
                     NonExeAction += 1
+
+
+            # Calculate the progress
             Progress = len(ActionList) - NonExeAction
-            #Logger.Logger(3, "Progress: " + str(Progress))
+
+            # Print out the progress
             sys.stdout.write(f"\rAction Progress: {Progress}/{len(ActionList)}\r")
             sys.stdout.flush()
             time.sleep(0.5)
 
+            # Break the loop if we executed more than what's in the action list
             if ActionsExecuted >= TotalActions:
                 break
 
@@ -155,54 +150,58 @@ class LinearExecuter(ExecuteBase):
                         #ExeAction += 1 # FIXME: THIS IS PROBLEMATIC!
                         NonExeAction += 1
 
-            for i in ActionList:
+            # Loop for every action in list
+            for ActionItem in ActionList:
 
-                ActionThr = None
+                ActionThr = None # The thread of the action
 
-                ActionThrFound = False
+                ActionThrFound = False # If the action is found in dictionary
 
-                # if true, set both ActionThrFound and ActionThr
-                if i in ActionThreadDict:
+                # if Action is in Dictionary, set both ActionThrFound and ActionThr
+                if ActionItem in ActionThreadDict:
                     ActionThrFound = True
-                    ActionThr = ActionThreadDict[i]
+                    ActionThr = ActionThreadDict[ActionItem]
 
+                # If we haven't found the action thread, then create one
                 if ActionThrFound is False:
-
-                    # if Execute Actions is less than the cpu count
+                    # only Execute Actions if we have less than the cpu count
                     if ExeAction < max(1, os.cpu_count()):
-                        ContainOutdatedPre = (
-                            False  # If any action's Precondition is outdated
-                        )
-                        ContainFailedPre = (
-                            False  # If any action's Precondition has failed
-                        )
+                        ContainOutdatedPre = False  # If any action's Precondition is outdated
+                        ContainFailedPre = False  # If any action's Precondition has failed
 
                         # Detect if any Precondition Actions is either outdated or has failed
-                        for j in i.PreconditionActions:
+                        for PreconditionActionItem in ActionItem.PreconditionActions:
 
-                            # Detect if any Precondition Actions is either outdated or has failed
-                            if j in ActionThreadDict:
-                                PreThread = ActionThreadDict[j]
+                            # If the precondition action is in the action thread dict
+                            if PreconditionActionItem in ActionThreadDict:
 
+                                # Create thread
+                                PreThread = ActionThreadDict[PreconditionActionItem]
+
+                                # Check if we successfully created PreThread
                                 if PreThread is None:
                                     ContainFailedPre = True
 
+                                # Action will be outdated if the Precondition is not finished
                                 elif PreThread.Finished is False:
                                     ContainOutdatedPre = True
 
+                                # Action will fail if the precondition action software failed
                                 elif PreThread.ExitCode != 0:
                                     ContainFailedPre = True
+
+                            # If precondition action is not in action thread dict, then it's outdated
                             else:
                                 ContainOutdatedPre = True
 
                         # If we failed, we can add the action to dictionary, but we should leave the thread blank, since we are not ready to execute yet
                         if ContainFailedPre is True:
-                            ActionThreadDict[i] = None
+                            ActionThreadDict[ActionItem] = None
 
                         # If it hasn't failed and isn't outdated, add action and the thread to the dictionary
                         elif ContainFailedPre is False:
 
-                            TD = RBTThread(i)  # Store action to execute
+                            TD = RBTThread(ActionItem)  # Store action to execute
                             try:
                                 TD.Start()  # Execute action
 
@@ -214,24 +213,24 @@ class LinearExecuter(ExecuteBase):
                             except Exception:
                                 print("FAILED")
 
-                            ActionThreadDict[i] = (
-                                TD  # Store Action with the value of the thread into the dictoonary
-                            )
+                            ActionThreadDict[ActionItem] = TD  # Store Action with the value of the thread into the dictionary)
 
                             ExeAction += 1  # add 1 to Executing Actions
                             ActionsExecuted += 1
 
 
 
-
+        # The value to return
         Ret = True
 
         # If there's any errors in the dictionary, return false
         for Action, ThreadItem in ActionThreadDict.items():
 
+            # If the thread part in dictionary is empty, or if the exit code is not 0, then we have errors
             if ThreadItem is None or ThreadItem.ExitCode != 0:
                 Ret = False
 
+        # Add space between logs
         print()
 
         # Return's the Ret value, this will let us know if there was any errors (true if no errors, false if there was errors)

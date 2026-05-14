@@ -1,3 +1,4 @@
+# Custom Argument class that handles arrays
 class Args:
 
     ParseArgs = None  # The Arg class that we will use

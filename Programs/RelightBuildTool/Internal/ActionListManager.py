@@ -8,6 +8,7 @@ from functools import cmp_to_key
 
 
 # Sort the list (this is to help executer)
+# <ActionList> the action list to sort, final result will replace the old list
 def Sort(ActionList):
 
     # Reset all DependCount
@@ -15,56 +16,66 @@ def Sort(ActionList):
         Item.DependCount = 0
 
     # Set all DependCount
-
     for Item in ActionList:
         Lis = []
         Item.AddDependCount(Lis)
 
-    # We can now sort ActionList
-
+    # We can now sort ActionList by comparing precondition
     Ret = ActionList.sort(key=cmp_to_key(Action.Action.ComparePrecondition))
 
+    # Replace ActionList to sorted list
     ActionList = Ret
 
 
 # Checks if there's a circular dependency (when modules rely on each other)
+# TODO: Add me!
 def CycleDetection(ActionList, ItemActionDictionary):
     pass
 
 
 # Add's the PreconditionListOutput of all actions and it's Precondition
+# <ActionList> a list of all actions to get precondition list
+# <PreconditionListOutput> The list to add precondition actions
 def GetPrecondition(ActionList, PreconditionListOutput):
-
     # For each action, run the GetPreconditionSingle
-
     for Item in ActionList:
         GetPreconditionSingle(Item, PreconditionListOutput)
 
 
-# Add's the PreconditionListOutput of an action and all it's Precondition
+# Add's the PreconditionActions of an action and all it's Precondition Recursively
+# <InAction> The action to add Precondition to list
+# <PreconditionListOutput> The list to add precondition actions
 def GetPreconditionSingle(InAction, PreconditionListOutput):
 
     # Ensure's that there are no duplicates
     if InAction not in PreconditionListOutput:
         PreconditionListOutput.append(InAction)  # Add self to list
 
-        # Adds all Precondition Items to list, via recursive
+        # Adds all Precondition Actions to list, via recursive
         for Item in InAction.PreconditionActions:
             GetPreconditionSingle(Item, PreconditionListOutput)
 
 
 # Checks if there's any issues with the action list
+# TODO: Add me!
 def CheckConflicts(ActionList):
     pass
 
 
 # Get's all Actions that are oudated
+# <ActionList> a list of actions to check if outdated
+# <OutdatedActionList> A Dictionary between an action and if it's outdated
+# <IgnoreOutdatedLib> If we should ignore outdated libraries
 def GetAllOutdatedActions(ActionList, OutdatedActionList, IgnoreOutdatedLib):
     for Item in ActionList:
         AddActionOutdated(Item, OutdatedActionList, IgnoreOutdatedLib)
 
 
 # Set's a specified action to check if it's outdated
+# <Action> The action to check
+# <OutdatedActionList> A Dictionary between an action and if it's outdated
+# <IgnoreOutdatedLib> If we should ignore outdated libraries
+# <Return> true if the object is outdated and needs to
 def AddActionOutdated(Action, OutdatedActionList, IgnoreOutdatedLib):
 
     Outdated = False
@@ -73,31 +84,26 @@ def AddActionOutdated(Action, OutdatedActionList, IgnoreOutdatedLib):
     if OutdatedActionList.get(Action) is True:
         return OutdatedActionList[Action]
 
-    # if the imput file doesn't exist, and it ends with .obj or .o, then we gotta update it
-
+    # if the input file doesn't exist, and it ends with .obj or .o, then we gotta update it
     for Input in Action.InputFiles:
         if not os.path.exists(Input):
             Outdated = True
+
             if Action not in OutdatedActionList:
                 OutdatedActionList[Action] = Outdated
-
                 return Outdated
 
     # If the file doesn't exist, and it isn't an object file, then we gotta compile it!
     for Output in Action.OutputItems:
-
         if not os.path.exists(Output):
             Outdated = True
 
     # If any input has been updated compared to all the output, then the entire action is outdated
     for Input in Action.InputFiles:
-
         SourceFileTime = os.path.getmtime(Input)
 
         for Output in Action.OutputItems:
-
             if os.path.exists(Output):
-
                 OutputFileTime = os.path.getmtime(Output)
 
                 if SourceFileTime > OutputFileTime:
@@ -111,6 +117,7 @@ def AddActionOutdated(Action, OutdatedActionList, IgnoreOutdatedLib):
             if os.path.exists(Output) and os.path.getsize(Output) == 0:
                 Outdated = True
 
+    # If we will not ignore outdated libs
     if IgnoreOutdatedLib is False:
         # Check if action is outdated for all precondition actions
         for Item in Action.PreconditionActions:
@@ -124,7 +131,6 @@ def AddActionOutdated(Action, OutdatedActionList, IgnoreOutdatedLib):
                 SourceFileTime = os.path.getmtime(Input)
 
                 for Output in Action.OutputItems:
-
                     if os.path.exists(Output):
                         OutputFileTime = os.path.getmtime(Output)
 
@@ -140,11 +146,14 @@ def AddActionOutdated(Action, OutdatedActionList, IgnoreOutdatedLib):
 
 
 # Deletes all files that are outdated
+# <OudatedActionList> A list of all actions that are outdated
+# TODO: Add me!
 def DeleteOutdatedFiles(OutdatedActionList):
     pass
 
 
 # Link the actions together
+# <ActionList> A list of actions to link together
 def Link(ActionList):
 
     # This dictionary will attach each output file to an action, there can be multiple actions per file, but only one file name
@@ -154,6 +163,7 @@ def Link(ActionList):
     # Output.exe | Action2
     ItemAction = {}
 
+    # Fill up ItemAction
     for Item in ActionList:
         for Fil in Item.OutputItems:
             ItemAction[Fil] = Item
@@ -178,7 +188,11 @@ def Link(ActionList):
 
 
 # Returns all Actions to Execute
-def GetActionToExecute(ActionList, PreconditionActionList, CppCache, IgnoreOutdatedLib):
+# <ActionList> List of all actions
+# <PreconditionActionList> List of all precondition actions
+# <IgnoreOutdatedLib> true if we should ignore outdated libraries
+# <Return> list of actions to execute
+def GetActionToExecute(ActionList, PreconditionActionList, IgnoreOutdatedLib):
 
     ActionOutdatedMap = {}  # Action | Bool
 
@@ -188,6 +202,7 @@ def GetActionToExecute(ActionList, PreconditionActionList, CppCache, IgnoreOutda
 
     ActionOutdatedDict = {}  # Action | Bool
 
+    # Get all outdated actions
     GetAllOutdatedActions(ActionList, ActionOutdatedDict, IgnoreOutdatedLib)
 
     Ret = []
@@ -202,21 +217,19 @@ def GetActionToExecute(ActionList, PreconditionActionList, CppCache, IgnoreOutda
 
 
 # Execute the list of actions
-def Execute(BuildConfig, ActionToExecuteList):
+# <ActionToExecuteList> The actions to execute
+def Execute(ActionToExecuteList):
 
     # If the list is empty, we can quit the execution
     if len(ActionToExecuteList) == 0:
         return
 
-    Executer = (
-        ActionExecute.LinearExecuter()
-    )  # FIXME: As a temp solution, we are just using LinearExecuter, add support for switching to multiple executers!
+    Executer = (ActionExecute.LinearExecuter())  # FIXME: As a temp solution, we are just using LinearExecuter, add support for switching to multiple executers!
 
     # Execute the action list, stores if successful
     Ex = Executer.ExecuteActionList(ActionToExecuteList)
 
     # If not successful, throw an error
-
     if Ex is False:
         Logger.Logger(5, "We have failed to run ActionToExecuteList") # TODO: Add detailed description
 

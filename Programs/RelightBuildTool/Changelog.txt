@@ -1,5 +1,5 @@
-1.2
+1.3
 ===
-- Fixed critical bug where if there's no intermediate data, it will fail unless you run RBT again
-- Fixed issue so now intermediate modules can be seperated between Engine intermediate and Project intermediate
-- Other random bug fixes
+- Removed all unneeded code
+- Reformatted code to make it easier to read
+- Added more comments to make it easier to understand
