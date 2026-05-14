@@ -1,11 +1,11 @@
 from pathlib import Path
 import os
 
-from . import ModuleBuilder
-from . import CompileEnvironment
-from . import LinkEnvironment
+from Builders import ModuleBuilder
+from Environments import CompileEnvironment
+from Environments import LinkEnvironment
 
-from . import Logger
+from Internal import Logger
 
 # Class representation of a binary, can be dynamic, static, or executable. This will help us manage, compile, and link environments
 
@@ -22,9 +22,7 @@ class Binary:
 
     LaunchModule = None  # This is our launch module, will always be included if the configs allow us to
 
-    Modules = (
-        []
-    )  # List of modules we will use for this binary, should be ModuleBuilder class
+    Modules = [] # List of modules we will use for this binary, should be ModuleBuilder class
 
     AdditionalLibs = []  # Cashe of additional libraries we will link to binary
 

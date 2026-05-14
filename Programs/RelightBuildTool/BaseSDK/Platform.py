@@ -5,7 +5,7 @@ import subprocess
 import inspect
 import importlib
 
-from Internal import CompileEnvironment as CE
+from Environments import CompileEnvironment as CE
 from Internal import ConfigManager as ConfigM
 from Internal import Logger
 

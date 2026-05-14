@@ -3,9 +3,9 @@ import os
 
 from Readers import ModuleReader
 
-from Internal import CompileEnvironment
+from Environments import CompileEnvironment
 
-from Internal import FileBuilder
+from Builders import FileBuilder
 
 from Internal import Logger
 

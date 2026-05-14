@@ -7,7 +7,7 @@ from . import Common
 
 from BaseSDK import Platform
 
-from Internal import CompileEnvironment as CE
+from Environments import CompileEnvironment as CE
 from Internal import ConfigManager
 from Internal import Logger
 

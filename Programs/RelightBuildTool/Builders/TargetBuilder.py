@@ -1,11 +1,12 @@
 import os
 
-from . import ModuleBuilder
-from . import Binary
-from . import CompileEnvironment
-from . import LinkEnvironment
-from . import FileBuilder
-from . import Logger
+from Builders import ModuleBuilder
+from Builders import Binary
+from Builders import FileBuilder
+
+from Environments import CompileEnvironment
+from Environments import LinkEnvironment
+from Internal import Logger
 
 
 from Readers import ModuleReader

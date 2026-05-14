@@ -11,8 +11,8 @@ from . import Common
 from BaseSDK import Toolchain
 
 
-from Internal import CompileEnvironment
-from Internal import Action
+from Environments import CompileEnvironment
+from Action import Action
 from Internal import File_Manager
 from Internal import Logger
 

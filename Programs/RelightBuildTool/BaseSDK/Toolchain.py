@@ -6,7 +6,7 @@ import subprocess
 from . import PlatformSDK
 
 
-from Internal import LinkEnvironment as LE
+from Environments import LinkEnvironment as LE
 
 
 class ToolchainSDK:

@@ -1,8 +1,8 @@
 import sys
 import os
 
-from Internal import ActionListManager
-from Internal import TargetBuilder
+from Action import ActionListManager
+from Builders import TargetBuilder
 from Internal import Logger
 
 from BaseSDK import Platform

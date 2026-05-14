@@ -1,8 +1,8 @@
 import os
 
-from . import Action
-from . import ActionExecute
-from . import Logger
+from Action import Action
+from Action import ActionExecute
+from Internal import Logger
 
 from functools import cmp_to_key
 
