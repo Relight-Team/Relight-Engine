@@ -34,7 +34,7 @@ struct RemovePointer<T*>
 // Compiles a function based on if the conditions are true. needs to be declared as typename EnableIf<> underneath the template
 // Example: you can have 2 functions with same name and params, one checks if it's a float and another checks if it's a pointer
 // based on your template input, a certain function will run
-// Return is void by default, as the compiler just needs to know that it exists
+// Return is void by default
 template <bool Condition, typename Return = void>
 struct EnableIf;
 
@@ -123,4 +123,44 @@ template <typename AnyTemplate>
 struct Not
 {
 	static constexpr bool Value = !AnyTemplate::Value;
+};
+
+// Checks if the type is a pointer
+
+template <typename T>
+struct IsPointer
+{
+	static constexpr bool Value = false;
+};
+
+template <typename T>
+struct IsPointer<T*>
+{
+	static constexpr bool Value = true;
+};
+
+// Checks if the type is a const
+
+template <typename T>
+struct IsConst
+{
+	static constexpr bool Value = false;
+};
+
+template <typename T>
+struct IsConst<const T>
+{
+	static constexpr bool Value = true;
+};
+
+template <typename T>
+struct IsReference
+{
+	static constexpr bool Value = false;
+};
+
+template <typename T>
+struct IsReference<T&>
+{
+	static constexpr bool Value = true;
 };
