@@ -24,7 +24,7 @@ struct RNameID
 
         RNameID(RNameIDList Input)
         {
-            Var = Input;
+            Var = static_cast<uint32>(Input);
         }
 
         uint32 Get()
