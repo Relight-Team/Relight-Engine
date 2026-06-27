@@ -357,13 +357,13 @@ class LinuxToolchain(Toolchain.ToolchainSDK):
     # <Return> Command as string
     @staticmethod
     def ArgCPP():
-        return " -x c++ -std=c++17"
+        return " -x c++ -std=c++20"
 
     # Get the arguments for PCH
     # <Return> Command as string
     @staticmethod
     def ArgPCH():
-        return " -x c++-header -std=c++17"
+        return " -x c++-header -std=c++20"
 
     # Whether to use llvm-ar or ar
     # <Return> the program to use for archiving as string
