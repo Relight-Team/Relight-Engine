@@ -6,9 +6,11 @@
 #include "UnixMisc.h"
 #include "UnixAtomics.h"
 #include "UnixMath.h"
+#include "UnixTLS.h"
 
 typedef UnixPlatformOutput PlatformOutput;
 typedef UnixPlatformFile PlatformFile;
 typedef UnixPlatformMisc PlatformMisc;
 typedef UnixPlatformAtomics PlatformAtomics;
 typedef UnixPlatformMath PlatformMath;
+typedef UnixPlatformTLS PlatformTLS;

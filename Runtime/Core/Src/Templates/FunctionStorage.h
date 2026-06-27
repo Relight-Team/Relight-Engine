@@ -25,11 +25,13 @@ namespace CORE_API::Internal::FunctionReference
         template <typename AnyCallableObject>
         typename RemoveReference<AnyCallableObject>::Type* Bind(AnyCallableObject&&) = delete;
 
+        // Return's the pointer
         void* GetPointer() const override
         {
             return FunctionPointer;
         }
 
+        // When unbinding, set the pointer to null
         void Unbind() override
         {
             FunctionPointer = nullptr;

@@ -51,4 +51,9 @@ struct RMemory
         return Memset(A, 0, Size);
     }
 
+    static void* MallocSystem(size_t Size, int32 Alignment = 0)
+    {
+        return malloc(Size);
+    }
+
 };

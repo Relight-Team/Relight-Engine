@@ -211,3 +211,8 @@ inline String operator+(const UTF16* A, String& B)
 {
     return String(A) + B;
 }
+
+inline String operator+(const char* A, const String& B)
+{
+    return String(A) + B;
+}
