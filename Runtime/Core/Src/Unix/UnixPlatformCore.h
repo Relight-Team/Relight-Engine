@@ -1,6 +1,6 @@
 #pragma once
 #include "UnixErrorHandling.h"
-typedef char16_t UTF16;
+typedef char8_t UTF8;
 
 typedef signed char int8;
 typedef unsigned char uint8;

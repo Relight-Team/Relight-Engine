@@ -125,7 +125,7 @@ struct FromString
 
     private:
 
-        static int32 GetActualNumber(UTF16 Str)
+        static int32 GetActualNumber(UTF8 Str)
         {
             return Str - u'0';
         }

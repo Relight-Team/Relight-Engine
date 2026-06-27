@@ -13,15 +13,15 @@ class String
 
     String() {}
 
-    String(const UTF16* InChars);
+    String(const UTF8* InChars);
 
-    String(const UTF16& InChars);
+    String(const UTF8& InChars);
 
     String(const char* InChars);
 
-    String(const Array<UTF16> InChars);
+    String(const Array<UTF8> InChars);
 
-    UTF16 operator[](const int32 I) const
+    UTF8 operator[](const int32 I) const
     {
         return CharArr[I];
     }
@@ -50,7 +50,7 @@ class String
 
     bool Compare(String B, bool CaseSensitive = true);
 
-    // Converts a UTF16 character into a ASCII character in string. Mostly used for displaying characters in terminal
+    // Converts a UTF8 character into a ASCII character in string. Mostly used for displaying characters in terminal
     char ToChar(int32 I)
     {
         return CharUtil::IntToChar(CharArr[I]);
@@ -74,15 +74,15 @@ class String
 
     String ToLower();
 
-    void Append(const UTF16& B);
+    void Append(const UTF8& B);
 
     void Append(const String& B);
 
-    void Append(const UTF16* B);
+    void Append(const UTF8* B);
 
     void Append(const char* B);
 
-    void Add(const UTF16& B)
+    void Add(const UTF8& B)
     {
         Append(B);
     }
@@ -93,7 +93,7 @@ class String
 
     String Reverse();
 
-    bool Contains(const UTF16& StrCheck);
+    bool Contains(const UTF8& StrCheck);
 
     bool Contains(const String& StrCheck);
 
@@ -122,7 +122,7 @@ class String
         TrimEnd();
     }
 
-    void TrimStartChar(UTF16 Input)
+    void TrimStartChar(UTF8 Input)
     {
         if(CharArr[0] == Input)
         {
@@ -130,7 +130,7 @@ class String
         }
     }
 
-    void TrimEndChar(UTF16 Input)
+    void TrimEndChar(UTF8 Input)
     {
         if(CharArr[CharArr.Indices()] == Input)
         {
@@ -138,7 +138,7 @@ class String
         }
     }
 
-    void TrimChar(UTF16 Input)
+    void TrimChar(UTF8 Input)
     {
         TrimStartChar(Input);
         TrimEndChar(Input);
@@ -159,7 +159,7 @@ class String
         TrimChar("\"");
     }
 
-    Array<UTF16> ToArr()
+    Array<UTF8> ToArr()
     {
         return CharArr;
     }
@@ -169,7 +169,7 @@ class String
         CharArr.Swap(A, B);
     }
 
-    void Replace(UTF16 Input, int32 Index)
+    void Replace(UTF8 Input, int32 Index)
     {
         CharArr.Replace(Input, Index);
     }
@@ -186,9 +186,9 @@ class String
 
     private:
 
-    Array<UTF16> CharArr;
+    Array<UTF8> CharArr;
 
-    bool WithInternal(const UTF16 B, int32 Index, bool Case = true);
+    bool WithInternal(const UTF8 B, int32 Index, bool Case = true);
     bool WithInternal(const char B, int32 Index, bool Case = true);
 };
 
@@ -202,12 +202,12 @@ inline String operator+(const char* A, String& B)
     return String(A) + B;
 }
 
-inline String operator+(String& A, const UTF16* B)
+inline String operator+(String& A, const UTF8* B)
 {
     return A + String(B);
 }
 
-inline String operator+(const UTF16* A, String& B)
+inline String operator+(const UTF8* A, String& B)
 {
     return String(A) + B;
 }

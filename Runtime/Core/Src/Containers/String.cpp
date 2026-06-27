@@ -2,9 +2,9 @@
 #include "PlatformCore.h"
 #include <iostream>
 
-String::String(const UTF16* InChars)
+String::String(const UTF8* InChars)
     {
-        const UTF16* PntTxt = InChars; // The start of the chars
+        const UTF8* PntTxt = InChars; // The start of the chars
         while(*PntTxt != '\0') // \0 means that we hit the end
         {
             CharArr.Add(*PntTxt);
@@ -12,7 +12,7 @@ String::String(const UTF16* InChars)
         }
     }
 
-String::String(const UTF16& InChars)
+String::String(const UTF8& InChars)
     {
         CharArr.Add(InChars);
     }
@@ -22,13 +22,13 @@ String::String(const char* InChars)
         const char* PntTxt = InChars; // The start of the chars
         while(*PntTxt != '\0') // \0 means that we hit the end
         {
-            UTF16 ToUtf = static_cast<UTF16>(*PntTxt);
+            UTF8 ToUtf = static_cast<UTF8>(*PntTxt);
             CharArr.Add(ToUtf);
             ++PntTxt;
         }
     }
 
-String::String(const Array<UTF16> InChars)
+String::String(const Array<UTF8> InChars)
     {
         CharArr = InChars;
     }
@@ -69,7 +69,7 @@ bool String::Compare(String B, bool CaseSensitive)
 
 String String::ToUpper()
 {
-    Array<UTF16> Temp;
+    Array<UTF8> Temp;
     for(int32 I = 0; I <= Indices(); I++)
     {
         Temp.Add(CharUtil::ToUpper(CharArr[I]));
@@ -80,7 +80,7 @@ String String::ToUpper()
 
 String String::ToLower()
 {
-    Array<UTF16> Temp;
+    Array<UTF8> Temp;
     for(int32 I = 0; I <= Indices(); I++)
     {
         Temp.Add(CharUtil::ToLower(CharArr[I]));
@@ -89,7 +89,7 @@ String String::ToLower()
     return Ret;
 }
 
-void String::Append(const UTF16& B)
+void String::Append(const UTF8& B)
 {
     String StrB = B;
     CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
@@ -100,7 +100,7 @@ void String::Append(const String& B)
     CharArr.Append(B.CharArr, B.CharArr.Length());
 }
 
-void String::Append(const UTF16* B)
+void String::Append(const UTF8* B)
 {
     String StrB = B;
     CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
@@ -160,7 +160,7 @@ bool String::EndsWith(const String& B, bool CaseSensitive)
     return DoesStart;
 }
 
-bool String::WithInternal(const UTF16 B, int32 Index, bool Case)
+bool String::WithInternal(const UTF8 B, int32 Index, bool Case)
 {
     if(Case == true)
     {
@@ -221,7 +221,7 @@ String String::Reverse()
     return StrRet;
 }
 
-bool String::Contains(const UTF16& StrCheck)
+bool String::Contains(const UTF8& StrCheck)
 {
     return CharArr.Contains(StrCheck);
 }
@@ -350,8 +350,8 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
         return false;
     }
 
-    Array<UTF16> RetLeft;
-    Array<UTF16> RightTemp;
+    Array<UTF8> RetLeft;
+    Array<UTF8> RightTemp;
 
     bool FailCheck = CharArr.SplitIndex(Index, RetLeft, RightTemp);
 
@@ -360,8 +360,8 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
         return false;
     }
 
-    Array<UTF16> TempLeft;
-    Array<UTF16> RetRight;
+    Array<UTF8> TempLeft;
+    Array<UTF8> RetRight;
 
 
     FailCheck = RightTemp.SplitIndexInclusive(Str.Indices(), TempLeft, RetRight);

@@ -18,7 +18,7 @@ public:
         }
     }
 
-    static inline void Print(const Array<UTF16>& Input)
+    static inline void Print(const Array<UTF8>& Input)
     {
         for(int32 I = 0; I <= Input.Indices(); I++)
         {
@@ -26,7 +26,7 @@ public:
         }
     }
 
-    static inline void Print(const UTF16& Input)
+    static inline void Print(const UTF8& Input)
     {
         std::cout << CharUtil::IntToChar(Input);
     }
@@ -36,7 +36,7 @@ public:
         std::cout << CharUtil::IntToChar(Input);
     }
 
-    static inline void Print(const UTF16* Input)
+    static inline void Print(const UTF8* Input)
     {
         String InputStr = Input;
         Print(InputStr);

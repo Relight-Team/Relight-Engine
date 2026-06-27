@@ -129,7 +129,7 @@ class RName
             }
         }
 
-        RName(UTF16* Input, bool Unique = false)
+        RName(UTF8* Input, bool Unique = false)
         {
             RName(String(Input), Unique);
         }

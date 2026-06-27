@@ -9,13 +9,13 @@ class BasePlatformOutput
 public:
     static inline void Print(const String& Input);
 
-    static inline void Print(const Array<UTF16>& Input);
+    static inline void Print(const Array<UTF8>& Input);
 
-    static inline void Print(const UTF16& Input);
+    static inline void Print(const UTF8& Input);
 
     static inline void Print(const char& Input);
 
-    static inline void Print(const UTF16* Input);
+    static inline void Print(const UTF8* Input);
 
     static inline void Print(const char* Input);
 

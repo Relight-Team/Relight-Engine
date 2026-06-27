@@ -49,7 +49,7 @@ inline String ToString(float Input)
 
             Dec *= 10;
             int32 Digit = int(Dec);
-            UTF16 CharTemp = 48 + Digit;
+            UTF8 CharTemp = 48 + Digit;
             Ret.Append(CharTemp);
             Dec -= Digit;
         }
@@ -79,7 +79,7 @@ inline String ToString(String Input)
     return Input;
 }
 
-inline String ToString(const UTF16* Input)
+inline String ToString(const UTF8* Input)
 {
     String Ret = Input;
     return Ret;
