@@ -1,5 +1,8 @@
 #pragma once
 #include "UnixErrorHandling.h"
+
+#define U(X) u8##X
+
 typedef char8_t UTF8;
 
 typedef signed char int8;

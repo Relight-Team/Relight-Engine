@@ -6,21 +6,9 @@
 #include "Log/LogCategory.h"
 #include "PlatformCore.h"
 
-void LogSystem::Add(CORE_API::LogCategory Cat, LogType Warn, String Msg)
+void LogSystem::GetColorPOSIX(enum LogType Type, String& ColorOutput)
 {
-    CategoryList.Add(Cat);
-    WarningList.Add(Warn);
-    MessageList.Add(Msg);
-
-    PrintLatestToTerminal();
-
-    // FIXME: Temp solution
-    Assert(Warn == LogType::Fatal, "Engine encountered runtime error!", "");
-}
-
-void LogSystem::GetColorPOSIX(String& ColorOutput)
-{
-    switch(WarningList[WarningList.Indices()])
+    switch(Type)
     {
         case (LogType::Warning):
             ColorOutput = "\e[93m";
@@ -42,18 +30,18 @@ void LogSystem::GetWhitePOSIX(String& ColorOutput)
     ColorOutput = "\e[0m";
 }
 
-void LogSystem::PrintLatestToTerminal()
+void LogSystem::PrintLogToTerminal(CORE_API::LogCategory Cat, LogType Warn, String Msg)
 {
 
     String Color;
-    GetColorPOSIX(Color);
-    CORE_API::LogCategory Category = CategoryList[CategoryList.Indices()];
-    String CategoryName = Category.GetName();
+    GetColorPOSIX(Warn, Color);
+
+    String CategoryName = Cat.GetName();
 
     PlatformOutput::Print(Color);
     PlatformOutput::Print("[" + CategoryName + "] ");
-    PlatformOutput::Print(GetLogTypeName(WarningList[WarningList.Indices()]) + ": ");
-    PlatformOutput::Print(MessageList[MessageList.Indices()]);
+    PlatformOutput::Print(GetLogTypeName(Warn) + ": ");
+    PlatformOutput::Print(Msg);
     GetWhitePOSIX(Color);
     PlatformOutput::Println(Color);
 }

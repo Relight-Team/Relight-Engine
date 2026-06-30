@@ -21,13 +21,30 @@ class LogSystem
 
         void Add(CORE_API::LogCategory Cat, LogType Warn, String Msg);
 
-        // Print the latest entry to terminal
-        void PrintLatestToTerminal();
+        // Print the log entry to terminal
+        void PrintLogToTerminal(CORE_API::LogCategory Cat, LogType Warn, String Msg);
+
+        // Flush contents to .log file
+        void Flush();
+
+        bool CanPrintToFile()
+        {
+            return PrintToFile;
+        }
+
+        bool CanPrintToTerm()
+        {
+            return PrintToTerm;
+        }
 
     private:
-        Array<CORE_API::LogCategory> CategoryList;
-        Array<LogType> WarningList;
-        Array<String> MessageList;
+
+        // If we should print to log
+        bool PrintToFile = false;
+
+        // If we should print to OS terminal
+        bool PrintToTerm = true;
+
 
         String GetLogTypeName(const LogType& Input)
         {
@@ -41,7 +58,7 @@ class LogSystem
 
         }
 
-        void GetColorPOSIX(String& ColorOutput);
+        void GetColorPOSIX(enum LogType Type, String& ColorOutput);
         void GetWhitePOSIX(String& ColorOutput);
 };
 

@@ -10,7 +10,13 @@
 
 inline void LOG(CORE_API::LogCategory Category, LogType LogWarning, String Text)
 {
-    EngineLogger.Add(Category, LogWarning, Text);
+    if(EngineLogger.CanPrintToTerm())
+    {
+        EngineLogger.PrintLogToTerminal(Category, LogWarning, Text);
+    }
+
+    // FIXME: Temp solution
+    Assert(LogWarning == LogType::Fatal, "Engine encountered runtime error!", "");
 }
 
 inline void LOG(String Text)
