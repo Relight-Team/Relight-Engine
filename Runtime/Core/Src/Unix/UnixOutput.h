@@ -5,6 +5,7 @@
 #include "Etc/CharUtil.h"
 #include "Etc/ToString.h"
 #include "PlatformCore.h"
+#include <stdio.h>
 #include <iostream>
 
 class UnixPlatformOutput : public BasePlatformOutput
@@ -62,5 +63,11 @@ public:
         String Temp = "\n";
         String TempInput = CORE_API::ToString(Input);
         Print(TempInput + Temp);
+    }
+
+    template <typename... Args>
+    static inline void Printf(Args... Input)
+    {
+        printf(Input...);
     }
 };

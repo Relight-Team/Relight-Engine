@@ -5,7 +5,6 @@
 #include "Containers/String.h"
 #include "Containers/Array.h"
 #include "Log/LogCategory.h"
-#include "PlatformCore.h"
 
 enum LogType
 {
@@ -23,6 +22,16 @@ class LogSystem
 
         // Print the log entry to terminal
         void PrintLogToTerminal(CORE_API::LogCategory Cat, LogType Warn, String Msg);
+
+        template <typename... InputTypes>
+        void PrintLogToTerminal(CORE_API::LogCategory Cat, LogType Warn, String Msg, InputTypes... Input)
+        {
+            StartLogInfo(Cat, Warn);
+
+            PlatformOutput::Printf(Msg.ToCStr(), Input...);
+
+            EndLogInfo();
+        }
 
         // Flush contents to .log file
         void Flush();
@@ -57,6 +66,12 @@ class LogSystem
             }
 
         }
+
+        void GetColor(enum LogType Type, String& ColorOutput);
+        void GetWhite(String& ColorOutput);
+
+        void StartLogInfo(CORE_API::LogCategory Cat, LogType Warn);
+        void EndLogInfo();
 
         void GetColorPOSIX(enum LogType Type, String& ColorOutput);
         void GetWhitePOSIX(String& ColorOutput);

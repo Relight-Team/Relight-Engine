@@ -51,6 +51,11 @@ class String
         return Ret;
     }
 
+    const char* operator*()
+    {
+        return ToCStr();
+    }
+
     bool Compare(String B, bool CaseSensitive = true);
 
     // Converts a UTF8 character into a ASCII character in string. Mostly used for displaying characters in terminal
@@ -197,9 +202,9 @@ class String
         return CharArr.ReturnPointer();
     }
 
-    uint32 TrueLength()
+     char* ToCStr()
     {
-        return CharArr.Length();
+        return reinterpret_cast<char*>(CharArr.ReturnPointer());
     }
 
     private:

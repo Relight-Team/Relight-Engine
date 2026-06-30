@@ -30,18 +30,42 @@ void LogSystem::GetWhitePOSIX(String& ColorOutput)
     ColorOutput = "\e[0m";
 }
 
+void LogSystem::GetColor(enum LogType Type, String& ColorOutput)
+{
+    GetColorPOSIX(Type, ColorOutput);
+}
+
+void LogSystem::GetWhite(String& ColorOutput)
+{
+    GetWhitePOSIX(ColorOutput);
+}
+
+
 void LogSystem::PrintLogToTerminal(CORE_API::LogCategory Cat, LogType Warn, String Msg)
 {
 
+    StartLogInfo(Cat, Warn);
+
+    PlatformOutput::Print(Msg);
+
+    EndLogInfo();
+}
+
+void LogSystem::StartLogInfo(CORE_API::LogCategory Cat, LogType Warn)
+{
     String Color;
-    GetColorPOSIX(Warn, Color);
+    GetColor(Warn, Color);
 
     String CategoryName = Cat.GetName();
 
     PlatformOutput::Print(Color);
     PlatformOutput::Print("[" + CategoryName + "] ");
     PlatformOutput::Print(GetLogTypeName(Warn) + ": ");
-    PlatformOutput::Print(Msg);
-    GetWhitePOSIX(Color);
+}
+
+void LogSystem::EndLogInfo()
+{
+    String Color;
+    GetWhite(Color);
     PlatformOutput::Println(Color);
 }

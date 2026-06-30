@@ -24,4 +24,7 @@ public:
 
     template <typename StringType>
     static void Println(const StringType& Input);
+
+    template <typename... Args>
+    static inline void Printf(Args... Input);
 };
