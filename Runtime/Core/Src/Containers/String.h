@@ -38,11 +38,14 @@ class String
 
     String operator+(const String& Other) const
     {
-        String Ret;
-        Ret.CharArr = CharArr;
+        String Ret = CharArr;
+
+        // Remove \0
+        Ret.CharArr.RemoveAt(CharArr.Indices());
+
         for(int32 I = 0; I <= Other.Indices(); I++)
         {
-            Ret.CharArr.Add(Other.CharArr[I]);
+            Ret.Add(Other.CharArr[I]);
         }
 
         return Ret;
@@ -60,14 +63,14 @@ class String
     // Example, "Hello" -> 4
     int32 Indices() const
     {
-        return CharArr.Indices();
+        return RealStringLength - 1;
     }
 
     // Get's the size of array starting at 1
     // Example, "Hello" -> 5
     int32 Length() const
     {
-        return CharArr.Length();
+        return RealStringLength;
     }
 
     String ToUpper();
@@ -110,6 +113,7 @@ class String
     void Empty()
     {
         CharArr.Empty();
+        RealStringLength = 0;
     }
 
     void TrimStart();
@@ -127,14 +131,16 @@ class String
         if(CharArr[0] == Input)
         {
             CharArr.RemoveAt(0);
+            RealStringLength--;
         }
     }
 
     void TrimEndChar(UTF8 Input)
     {
-        if(CharArr[CharArr.Indices()] == Input)
+        if(CharArr[CharArr.Indices() - 1] == Input)
         {
-            CharArr.RemoveAt(CharArr.Indices());
+            CharArr.RemoveAt(CharArr.Indices() - 1);
+            RealStringLength--;
         }
     }
 
@@ -161,7 +167,9 @@ class String
 
     Array<UTF8> ToArr()
     {
-        return CharArr;
+        Array<UTF8> Temp = CharArr;
+        Temp.RemoveAt(CharArr.Indices());
+        return Temp;
     }
 
     void Swap(int32 A, int32 B)
@@ -177,19 +185,52 @@ class String
     Array<char> ToArrayChar()
     {
         Array<char> Ret;
-        for(int32 i = 0; i <= CharArr.Indices(); i++)
+        for(int32 i = 0; i <= Indices(); i++)
         {
             Ret.Add(ToChar(i));
         }
         return Ret;
     }
 
+    UTF8* ReturnPointer()
+    {
+        return CharArr.ReturnPointer();
+    }
+
+    uint32 TrueLength()
+    {
+        return CharArr.Length();
+    }
+
     private:
 
     Array<UTF8> CharArr;
 
+    uint32 RealStringLength = 0;
+
     bool WithInternal(const UTF8 B, int32 Index, bool Case = true);
     bool WithInternal(const char B, int32 Index, bool Case = true);
+
+    void AddInternal(UTF8 Input)
+    {
+        // If the string is empty, then add both
+        if(CharArr.Length() == 0)
+        {
+            CharArr.Add(Input);
+            CharArr.Add('\0');
+            RealStringLength++;
+
+        }
+        // Else, we will override old termination and add new one
+        else
+        {
+            uint32 OldCount = CharArr.Indices();
+            CharArr[OldCount] = Input;
+            CharArr.Add('\0');
+            RealStringLength++;
+        }
+    }
+
 };
 
 inline String operator+(String& A, const char* B)

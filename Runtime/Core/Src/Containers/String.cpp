@@ -7,14 +7,14 @@ String::String(const UTF8* InChars)
         const UTF8* PntTxt = InChars; // The start of the chars
         while(*PntTxt != '\0') // \0 means that we hit the end
         {
-            CharArr.Add(*PntTxt);
+            AddInternal(*PntTxt);
             ++PntTxt;
         }
     }
 
 String::String(const UTF8& InChars)
     {
-        CharArr.Add(InChars);
+        AddInternal(InChars);
     }
 
 String::String(const char* InChars)
@@ -23,14 +23,17 @@ String::String(const char* InChars)
         while(*PntTxt != '\0') // \0 means that we hit the end
         {
             UTF8 ToUtf = static_cast<UTF8>(*PntTxt);
-            CharArr.Add(ToUtf);
+            AddInternal(ToUtf);
             ++PntTxt;
         }
     }
 
 String::String(const Array<UTF8> InChars)
     {
-        CharArr = InChars;
+        for(int I = 0; I <= InChars.Indices(); I++)
+        {
+            AddInternal(InChars[I]);
+        }
     }
 
 bool String::Compare(String B, bool CaseSensitive)
@@ -91,25 +94,25 @@ String String::ToLower()
 
 void String::Append(const UTF8& B)
 {
-    String StrB = B;
-    CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
+    AddInternal(B);
 }
 
 void String::Append(const String& B)
 {
-    CharArr.Append(B.CharArr, B.CharArr.Length());
+    for(uint32 I = 0; I < B.Length(); I++)
+    {
+        AddInternal(B[I]);
+    }
 }
 
 void String::Append(const UTF8* B)
 {
-    String StrB = B;
-    CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
+    Append(String(B));
 }
 
 void String::Append(const char* B)
 {
-    String StrB = B;
-    CharArr.Append(StrB.CharArr, StrB.CharArr.Length());
+    Append(String(B));
 }
 
 bool String::StartsWith(const String& B, bool CaseSensitive)
@@ -139,14 +142,14 @@ bool String::EndsWith(const String& B, bool CaseSensitive)
     bool DoesStart = false;
 
     // If B length is longer than String, then we know it's false
-    if(B.CharArr.Indices() > CharArr.Indices())
+    if(B.Indices() > Indices())
     {
         return false;
     }
 
-    int32 BaseI = CharArr.Indices();
+    int32 BaseI = Indices();
 
-     for(int32 I = B.CharArr.Indices(); I >= 0; I--)
+     for(int32 I = B.Indices(); I >= 0; I--)
     {
         DoesStart = WithInternal(B.CharArr[I], BaseI, CaseSensitive);
 
@@ -216,7 +219,13 @@ String String::Reverse()
 {
     String StrRet;
 
+    CharArr.RemoveAt(CharArr.Indices());
+
     StrRet.CharArr = CharArr.Reverse();
+
+    StrRet.CharArr.Add('\0');
+
+    StrRet.RealStringLength = RealStringLength;
 
     return StrRet;
 }
@@ -363,13 +372,20 @@ bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
     Array<UTF8> TempLeft;
     Array<UTF8> RetRight;
 
-
+    // FIXME: This is broken, fix found but breaks code somewhere else, fix later!
     FailCheck = RightTemp.SplitIndexInclusive(Str.Indices(), TempLeft, RetRight);
+
+    // Fix to replace in seperate function
+    // FailCheck = CharArr.SplitIndex(Index, TempLeft, RetRight)
 
     if(FailCheck == false)
     {
         return false;
     }
+
+    // Remove \0
+
+    RetRight.RemoveAt(RetRight.Indices());
 
     String RetLeftStr(RetLeft);
     String RetRightStr(RetRight);
@@ -391,6 +407,7 @@ void String::TrimStart()
         if(bIsWhitespace == true)
         {
             CharArr.RemoveAt(0);
+            RealStringLength--;
         }
         else
         {
@@ -422,10 +439,7 @@ void String::TrimStartChar(String Input)
 {
     if(StartsWith(Input))
     {
-        for(int32 I = 0; I <= Input.Indices(); I++)
-        {
-            CharArr.RemoveAt(0);
-        }
+        CharArr.RemoveAt(0);
     }
 }
 
@@ -433,9 +447,6 @@ void String::TrimEndChar(String Input)
 {
     if(EndsWith(Input))
     {
-        for(int32 I = 0; I <= Input.Indices() ; I++)
-        {
-            CharArr.RemoveAt(Indices());
-        }
+        CharArr.RemoveAt(Indices());
     }
 }
