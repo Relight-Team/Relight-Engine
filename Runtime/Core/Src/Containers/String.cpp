@@ -335,6 +335,59 @@ int32 String::Find(const String& StrCheck, bool CaseSensitive)
     return -1;
 }
 
+bool String::SplitInclusive(String& Str, String& Left, String& Right, bool CaseSensitive)
+{
+    // Fix crash if Str is empty
+    if(Str == "")
+    {
+        return false;
+    }
+
+    int32 Index = Find(Str, CaseSensitive);
+
+    // if it's -1, then str is not in String
+    if(Index == -1)
+    {
+        return false;
+    }
+
+    // if Str is the exact same as String, return false
+    if((Str.Indices() == CharArr.Indices()) && Index == 0)
+    {
+        return false;
+    }
+
+    Array<UTF8> RetLeft;
+    Array<UTF8> RetRight;
+
+    bool FailCheck = CharArr.SplitIndexInclusive(Index, RetLeft, RetRight);
+
+    if(FailCheck == false)
+    {
+        return false;
+    }
+
+    // Fix to replace in seperate function
+    // FailCheck = CharArr.SplitIndex(Index, TempLeft, RetRight)
+
+    if(FailCheck == false)
+    {
+        return false;
+    }
+
+    // Remove \0
+
+    RetRight.RemoveAt(RetRight.Indices());
+
+    String RetLeftStr(RetLeft);
+    String RetRightStr(RetRight);
+
+    Left = RetLeftStr;
+    Right = RetRightStr;
+
+    return true;
+}
+
 bool String::Split(String& Str, String& Left, String& Right, bool CaseSensitive)
 {
     // Fix crash if Str is empty

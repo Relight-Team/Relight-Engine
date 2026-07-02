@@ -116,6 +116,14 @@ class String
         return Split(const_cast<String&>(Str), Left, Right, CaseSensitive);
     }
 
+    bool SplitInclusive(String& Str, String& Left, String& Right, bool CaseSensitive = true);
+
+    // TODO - Simple hack to fix issue with const, please merge this later
+    bool SplitInclusive(const String& Str, String& Left, String& Right, bool CaseSensitive = true)
+    {
+        return SplitInclusive(const_cast<String&>(Str), Left, Right, CaseSensitive);
+    }
+
     void Empty()
     {
         CharArr.Empty();
