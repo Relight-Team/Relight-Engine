@@ -225,8 +225,6 @@ String String::Reverse()
 
     StrRet.CharArr.Add('\0');
 
-    StrRet.RealStringLength = RealStringLength;
-
     return StrRet;
 }
 
@@ -407,7 +405,6 @@ void String::TrimStart()
         if(bIsWhitespace == true)
         {
             CharArr.RemoveAt(0);
-            RealStringLength--;
         }
         else
         {

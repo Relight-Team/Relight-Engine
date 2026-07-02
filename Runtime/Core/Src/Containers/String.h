@@ -68,14 +68,15 @@ class String
     // Example, "Hello" -> 4
     int32 Indices() const
     {
-        return RealStringLength - 1;
+        return Length() - 1;
     }
 
     // Get's the size of array starting at 1
     // Example, "Hello" -> 5
     int32 Length() const
     {
-        return RealStringLength;
+        // Ignore's \0, unless it's empty
+        return CharArr.Length() == 0 ? 0 : CharArr.Length() - 1;
     }
 
     String ToUpper();
@@ -118,7 +119,6 @@ class String
     void Empty()
     {
         CharArr.Empty();
-        RealStringLength = 0;
     }
 
     void TrimStart();
@@ -136,7 +136,6 @@ class String
         if(CharArr[0] == Input)
         {
             CharArr.RemoveAt(0);
-            RealStringLength--;
         }
     }
 
@@ -145,7 +144,6 @@ class String
         if(CharArr[CharArr.Indices() - 1] == Input)
         {
             CharArr.RemoveAt(CharArr.Indices() - 1);
-            RealStringLength--;
         }
     }
 
@@ -211,8 +209,6 @@ class String
 
     Array<UTF8> CharArr;
 
-    uint32 RealStringLength = 0;
-
     bool WithInternal(const UTF8 B, int32 Index, bool Case = true);
     bool WithInternal(const char B, int32 Index, bool Case = true);
 
@@ -223,7 +219,6 @@ class String
         {
             CharArr.Add(Input);
             CharArr.Add('\0');
-            RealStringLength++;
 
         }
         // Else, we will override old termination and add new one
@@ -232,7 +227,6 @@ class String
             uint32 OldCount = CharArr.Indices();
             CharArr[OldCount] = Input;
             CharArr.Add('\0');
-            RealStringLength++;
         }
     }
 
