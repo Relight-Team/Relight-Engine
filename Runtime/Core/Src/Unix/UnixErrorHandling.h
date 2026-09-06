@@ -20,7 +20,14 @@ inline void AssertInternal(bool Condition, const char* Message, Input InputVar, 
     }
 }
 
+// Assert() will bring a runtime error for debug builds
+#ifndef RE_BUILDTYPE_FINAL
+    #define Assert(Condition, Message, InputVar) \
+    do { \
+        AssertInternal(Condition, Message, InputVar, #Condition, __FILE__, __LINE__); \
+    } while(0)
+#else
 #define Assert(Condition, Message, InputVar) \
-do { \
-    AssertInternal(Condition, Message, InputVar, #Condition, __FILE__, __LINE__); \
-} while(0)
+    do { \
+    } while(0)
+#endif
