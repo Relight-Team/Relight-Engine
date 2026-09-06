@@ -17,7 +17,7 @@ struct ArchiveState
     bool IsCountingMem = false; // Does Archive count memory?
 
     protected:
-    bool IsLoading = false; // Is Archive for loading data?
+    bool IsLoading = false; // Is Archive for loading data from disk?
     bool IsSaving = false; // Is Archive for saving data?
     bool IsTracking = false; // Is Archive tracking something? (like redo/undo)
     bool IsLoadingPak = false; // Is loading from pak file?
@@ -43,11 +43,14 @@ class Archive: private ArchiveState
         RMemory::Memset(Input, 0, Length);
     }
 
-    // Fource to finish writing buffered data to hard disk
+    // Force buffer data to output
     virtual void Flush() = 0;
 
     // Set the current offset of data storage
     virtual void Seek(int32 Offset) = 0;
+
+    // forces an uninitialized object to deserialize the data from archive into memory
+    virtual void Preload(RObject* Object);
 
     bool DoesReturnCode()
     {
