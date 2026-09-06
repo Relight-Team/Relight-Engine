@@ -164,3 +164,139 @@ struct IsReference<T&>
 {
 	static constexpr bool Value = true;
 };
+
+// Is floating type
+template <typename T>
+struct IsFloatingPoint
+{
+	static constexpr bool Value = false;
+};
+
+template <>
+struct IsFloatingPoint<float>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsFloatingPoint<double>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsFloatingPoint<long double>
+{
+	static constexpr bool Value = true;
+};
+
+template <typename T>
+struct IsFloatingPoint<const T>
+{
+	static constexpr bool Value = IsFloatingPoint<T>::Value;
+};
+
+template <typename T>
+struct IsFloatingPoint<volatile T>
+{
+	static constexpr bool Value = IsFloatingPoint<T>::Value;
+};
+
+template <typename T>
+struct IsFloatingPoint<const volatile T>
+{
+	static constexpr bool Value = IsFloatingPoint<T>::Value;
+};
+
+// Is integer type
+
+template <typename T>
+struct IsIntegral
+{
+	static constexpr bool Value = false;
+};
+
+template <>
+struct IsIntegral<bool>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<int8>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<uint8>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<int16>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<uint16>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<int32>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<uint32>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<int64>
+{
+	static constexpr bool Value = true;
+};
+
+template <>
+struct IsIntegral<uint64>
+{
+	static constexpr bool Value = true;
+};
+
+template <typename T>
+struct IsIntegral<const T>
+{
+	static constexpr bool Value = IsIntegral<T>::Value;
+};
+
+template <typename T>
+struct IsIntegral<volatile T>
+{
+	static constexpr bool Value = IsIntegral<T>::Value;
+};
+
+template <typename T>
+struct IsIntegral<const volatile T>
+{
+	static constexpr bool Value = IsIntegral<T>::Value;
+};
+
+// Remove const
+template <typename T>
+struct RemoveConst
+{
+	using Type = T;
+}
+
+template <typename T>
+struct RemoveConst<const T>
+{
+	using Type = T;
+}
