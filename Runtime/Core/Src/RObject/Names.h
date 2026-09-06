@@ -48,12 +48,12 @@ class RNamePool
 
         uint32 Length()
         {
-            return IDToName.Indices() + 1;
+            return IDToName.MaxIndex() + 1;
         }
 
-        uint32 Indices()
+        uint32 MaxIndex()
         {
-            return IDToName.Indices();
+            return IDToName.MaxIndex();
         }
 
         // get existing ID if it exists, otherwise return a new ID

@@ -101,12 +101,12 @@ inline String ToString(Array<ArrayInput> Input)
     }
 
     String Ret = "[";
-    for(int32 I = 0; I < Input.Indices(); I++)
+    for(int32 I = 0; I < Input.MaxIndex(); I++)
     {
         Ret.Append(ToString(Input[I]));
         Ret.Append(", ");
     }
-    Ret.Append(ToString(Input[Input.Indices()]));
+    Ret.Append(ToString(Input[Input.MaxIndex()]));
     Ret.Append("]");
 
     return Ret;

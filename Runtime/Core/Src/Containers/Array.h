@@ -142,7 +142,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
         }
 
         // Like Length(), but assumes the first element index is 0 instead of 1
-        int32 Indices() const
+        int32 MaxIndex() const
         {
             return CurrentSize - 1;
         }
@@ -214,7 +214,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
         {
             Array<T> Ret;
 
-            for(int32 I = Indices(); I >= 0 ; I--)
+            for(int32 I = MaxIndex(); I >= 0 ; I--)
             {
                 Ret.Add(Arr[I]);
             }
@@ -298,7 +298,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
         {
 
             int32 Cur = CurrentSize;
-            for(int32 i = Index; i < this->Indices(); i++)
+            for(int32 i = Index; i < this->MaxIndex(); i++)
             {
                 Arr[i] = Arr[i + 1];
             }
@@ -315,7 +315,7 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
 
         T Pop()
         {
-            return Pop(Indices());
+            return Pop(MaxIndex());
         }
 
         bool RemoveSingle(T Input)

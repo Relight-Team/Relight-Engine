@@ -32,7 +32,7 @@ void Heapify(ArrayType& Arr, int32 HeapSize, int32 Root)
 template <typename ArrayType>
 void Heapify(ArrayType& Arr)
 {
-    int32 Size = Arr.Indices();
+    int32 Size = Arr.MaxIndex();
     int32 StartIndex = (Size / 2) - 1;
 
     for(int32 I = StartIndex; I >= 0; I--)

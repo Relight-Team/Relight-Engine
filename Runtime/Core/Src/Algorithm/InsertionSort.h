@@ -22,6 +22,6 @@ void InsertionSort(ArrayType& Arr, int32 Min, int32 Max)
 template <typename ArrayType>
 void InsertionSort(ArrayType& Arr)
 {
-    int32 Length = Arr.Indices();
+    int32 Length = Arr.MaxIndex();
     InsertionSort(Arr, 0, Length);
 }

@@ -40,9 +40,9 @@ void IntroSort(ArrayType& Arr, int32 Min, int32 Max, int32 Depth)
 template <typename ArrayType>
 void IntroSort(ArrayType& Arr)
 {
-    int32 Max = Arr.Indices();
+    int32 Max = Arr.MaxIndex();
 
-    int32 Depth = 2 * floor(log(Arr.Indices()));
+    int32 Depth = 2 * floor(log(Arr.MaxIndex()));
 
     IntroSort(Arr, 0, Max, Depth);
 }

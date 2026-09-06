@@ -41,9 +41,9 @@ class String
         String Ret = CharArr;
 
         // Remove \0
-        Ret.CharArr.RemoveAt(CharArr.Indices());
+        Ret.CharArr.RemoveAt(CharArr.MaxIndex());
 
-        for(int32 I = 0; I <= Other.Indices(); I++)
+        for(int32 I = 0; I <= Other.MaxIndex(); I++)
         {
             Ret.Add(Other.CharArr[I]);
         }
@@ -66,7 +66,7 @@ class String
 
     // Length of array starting at 0
     // Example, "Hello" -> 4
-    int32 Indices() const
+    int32 MaxIndex() const
     {
         return Length() - 1;
     }
@@ -149,9 +149,9 @@ class String
 
     void TrimEndChar(UTF8 Input)
     {
-        if(CharArr[CharArr.Indices() - 1] == Input)
+        if(CharArr[CharArr.MaxIndex() - 1] == Input)
         {
-            CharArr.RemoveAt(CharArr.Indices() - 1);
+            CharArr.RemoveAt(CharArr.MaxIndex() - 1);
         }
     }
 
@@ -179,7 +179,7 @@ class String
     Array<UTF8> ToArr()
     {
         Array<UTF8> Temp = CharArr;
-        Temp.RemoveAt(CharArr.Indices());
+        Temp.RemoveAt(CharArr.MaxIndex());
         return Temp;
     }
 
@@ -196,7 +196,7 @@ class String
     Array<char> ToArrayChar()
     {
         Array<char> Ret;
-        for(int32 i = 0; i <= Indices(); i++)
+        for(int32 i = 0; i <= MaxIndex(); i++)
         {
             Ret.Add(ToChar(i));
         }
@@ -218,7 +218,7 @@ class String
 
         // Create temp to remove '\0'
         Array<UTF8> Temp = CharArr;
-        Temp.RemoveAt(Temp.Indices());
+        Temp.RemoveAt(Temp.MaxIndex());
 
         Ar << Temp;
 
@@ -250,7 +250,7 @@ class String
         // Else, we will override old termination and add new one
         else
         {
-            uint32 OldCount = CharArr.Indices();
+            uint32 OldCount = CharArr.MaxIndex();
             CharArr[OldCount] = Input;
             CharArr.Add('\0');
         }

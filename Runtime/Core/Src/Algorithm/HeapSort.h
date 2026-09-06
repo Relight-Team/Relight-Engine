@@ -7,7 +7,7 @@
 template <typename ArrayType>
 void HeapSort(ArrayType& Arr)
 {
-    int32 Length = Arr.Indices();
+    int32 Length = Arr.MaxIndex();
 
     for(int32 I = Length / 2 - 1; I >= 0; I--)
     {

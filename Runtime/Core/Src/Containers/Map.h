@@ -20,9 +20,9 @@ class Map
 
     // Read
 
-    int32 Indices()
+    int32 MaxIndex()
     {
-        return Key.Indices();
+        return Key.MaxIndex();
     }
 
     bool Exist(KeyType Name)
@@ -113,7 +113,7 @@ class Map
         {
             Key.Add(K);
             Value.Add(ValueType()); // default-constructed ValueType
-            i = Value.Indices() - 1;
+            i = Value.MaxIndex() - 1;
         }
         return Value[i];
     }
