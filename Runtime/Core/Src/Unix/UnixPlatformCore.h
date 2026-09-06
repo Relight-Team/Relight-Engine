@@ -13,3 +13,5 @@ typedef signed int int32;
 typedef unsigned int uint32;
 typedef signed long long int64;
 typedef unsigned long long uint64;
+
+using NULLPTR_TYPE = decltype(nullptr)
