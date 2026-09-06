@@ -213,6 +213,24 @@ class String
         return reinterpret_cast<char*>(CharArr.ReturnPointer());
     }
 
+    void Serialize(RArchive& Ar)
+    {
+
+        // Create temp to remove '\0'
+        Array<UTF8> Temp = CharArr;
+        Temp.RemoveAt(Temp.Indices());
+
+        Ar << Temp;
+
+        // If we are loading from archive, then re-add '\0'
+        if(Ar.DoesIsLoading())
+        {
+            Temp.Add('\0');
+        }
+
+        CharArr = Temp;
+    }
+
     private:
 
     Array<UTF8> CharArr;

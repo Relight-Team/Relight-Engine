@@ -447,6 +447,25 @@ Array(std::initializer_list<T> Init) : Arr(nullptr), CurrentSize(0)
             return Arr;
         }
 
+        void Serialize(RArchive& Ar)
+        {
+            uint32 Size = CurrentSize;
+
+            Ar << Size;
+
+            // If we are loading from the archive
+            if(Ar.DoesIsLoading())
+            {
+                InternalChangeSize(Size);
+            }
+
+            // Serialize each entry
+            for(int I = 0; I <= Size; I++)
+            {
+                Ar << Arr[I];
+            }
+        }
+
         // Destructor to free memory
     ~Array()
     {
