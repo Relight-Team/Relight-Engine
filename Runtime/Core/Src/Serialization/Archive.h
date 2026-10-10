@@ -1,6 +1,6 @@
 // Relight Engine Archive System
 
-// Archive is an abstract base class allowing abstractions for data reading and writing
+// RArchive is an abstract base class allowing abstractions for data reading and writing
 // Examples of child class: Memory reader/writer, file reader/writer, etc
 #pragma once
 #include "PlatformCore.h"
@@ -28,14 +28,14 @@ struct ArchiveState
     bool IsError = false; // Does Archive contain errors?
     bool IsFatal = false; // Does Archive have fatal errors?
 
-    friend class Archive;
+    friend class RArchive;
 };
 
-class Archive: private ArchiveState
+class RArchive: private ArchiveState
 {
     public:
 
-    virtual ~Archive() = default;
+    virtual ~RArchive() = default;
 
     // Convert data into a readable format
     virtual void Serialize(void* Input, uint32 Length)

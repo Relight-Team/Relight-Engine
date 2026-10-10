@@ -91,7 +91,7 @@ public:
         Z = InZ;
     }
 
-    bool Serialize(Archive& Container)
+    bool Serialize(RArchive& Container)
     {
         Container.Serialize(*this);
         return true;

@@ -7,7 +7,7 @@
 #include "Etc/CharUtil.h"
 
 // FIXME: This is a placeholder until custom file reader is implemented
-class FileReader : public Archive
+class FileReader : public RArchive
 {
 public:
     // Store File data in class
